@@ -12,6 +12,8 @@ interface ImagesAPI {
     @GET("/v3/images/random")
     suspend fun GetRandomImages(
         @Query("limit")
-        limit :String = "1"
+        limit :String = "5",
+        @Query("rating")
+        rating :String = "safe"
     ) : Response<nekoImage>
 }
