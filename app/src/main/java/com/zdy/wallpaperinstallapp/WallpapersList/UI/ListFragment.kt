@@ -9,10 +9,12 @@ import androidx.fragment.app.ListFragment
 import androidx.lifecycle.ViewModelProvider
 import com.zdy.wallpaperinstallapp.MainActivity
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.INavigate
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
+import com.zdy.wallpaperinstallapp.utils.Resource
 
 
 class ListFragment : Fragment() {
@@ -23,7 +25,6 @@ class ListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mViewModel = ViewModelProvider(requireActivity(),WallpaperListFactory(requireActivity().application))[WallpaperListViewModel::class.java]
 
     }
 
@@ -37,12 +38,33 @@ class ListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mViewModel = (activity as IGetViewModel).getViewModel()
         addListeners()
+
+
+
+
     }
+
+
 
     private fun addListeners(){
         binding.button.setOnClickListener {
             (requireActivity() as INavigate).NavigateToLikedList()
+        }
+        mViewModel.imageRequest.observe(viewLifecycleOwner){response->
+            when(response){
+                is Resource.Success ->{
+                    binding.resultResponseTextView.text = "Success"
+                }
+                is Resource.Error ->{
+                    binding.resultResponseTextView.text = response.message
+                }
+                is Resource.Loading ->{
+                    binding.resultResponseTextView.text = "Loading ..."
+                }
+            }
+
         }
     }
 

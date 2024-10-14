@@ -1,17 +1,17 @@
 package com.zdy.wallpaperinstallapp.Web.API
 
+import com.zdy.wallpaperinstallapp.Web.Objects.nekoImage
 import com.zdy.wallpaperinstallapp.utils.Constants
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ImagesAPI {
 
-    @GET("api.unsplash.com/photos")
+    // https://api.nekosapi.com/v3/images/random
+    @GET("/v3/images/random")
     suspend fun GetRandomImages(
-        @Query("page")
-        page :String = "1",
-        @Query("client_id")
-        client_id :String = Constants.ACCESS_KEY
-
-    )
+        @Query("limit")
+        limit :String = "1"
+    ) : Response<nekoImage>
 }
