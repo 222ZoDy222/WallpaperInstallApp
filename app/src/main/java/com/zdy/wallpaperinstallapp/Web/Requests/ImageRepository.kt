@@ -4,6 +4,6 @@ import com.zdy.wallpaperinstallapp.Web.RetrofitInstance
 
 class ImageRepository {
 
-    suspend fun getImages(limit: Int = 1) = RetrofitInstance.api.GetRandomImages(limit.toString())
+    suspend fun getImages(limit: Int = 30) = RetrofitInstance.api.GetRandomImages(limit.toString())
 
 }

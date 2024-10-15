@@ -1,14 +1,10 @@
 package com.zdy.wallpaperinstallapp.WallpapersList.ViewModel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zdy.wallpaperinstallapp.Web.Objects.Item
-import com.zdy.wallpaperinstallapp.Web.Objects.nekoImage
+import com.zdy.wallpaperinstallapp.Web.Objects.requestImages
 import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
-import com.zdy.wallpaperinstallapp.Web.RetrofitInstance
 import com.zdy.wallpaperinstallapp.utils.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -18,19 +14,19 @@ class WallpaperListViewModel(
 
 
 
-    val imageRequest : MutableLiveData<Resource<nekoImage>> = MutableLiveData()
+    val imageRequest : MutableLiveData<Resource<requestImages>> = MutableLiveData()
 
     init {
 
         // TODO: Start Load Internet Wallpaper
 
-        getRandomImage()
+        getRandomImages()
 
         // TODO: Start Load ROOM wallpaper
 
     }
 
-    fun getRandomImage() = viewModelScope.launch {
+    fun getRandomImages() = viewModelScope.launch {
 
         imageRequest.postValue(Resource.Loading())
         val response = imageRepository.getImages()
@@ -38,7 +34,7 @@ class WallpaperListViewModel(
 
     }
 
-    private fun handleImageResponse(response: Response<nekoImage>) : Resource<nekoImage>{
+    private fun handleImageResponse(response: Response<requestImages>) : Resource<requestImages>{
 
         if(response.isSuccessful){
             response.body()?.let {resultResponse ->

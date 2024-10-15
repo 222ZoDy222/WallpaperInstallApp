@@ -3,7 +3,23 @@
     <style name="Base.Theme.WallpaperInstallApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <item name="android:windowBackground">@drawable/application_background</item>
+
     </style>
 
     <style name="Theme.WallpaperInstallApp" parent="Base.Theme.WallpaperInstallApp" />
+
+
+    <style name="roundImageView">
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+        <item name="color">@color/white</item>
+
+    </style>
+
+
+
+
 </resources>
