@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.Web.Objects.nekoImage
+import com.zdy.wallpaperinstallapp.Web.Objects.NekoImage
 
 
 class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
@@ -17,9 +17,9 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<nekoImage>(){
-        override fun areItemsTheSame(oldItem: nekoImage, newItem: nekoImage): Boolean = oldItem.image_url == newItem.image_url
-        override fun areContentsTheSame(oldItem: nekoImage, newItem: nekoImage): Boolean = oldItem == newItem
+    private val differCallback = object : DiffUtil.ItemCallback<NekoImage>(){
+        override fun areItemsTheSame(oldItem: NekoImage, newItem: NekoImage): Boolean = oldItem.image_url == newItem.image_url
+        override fun areContentsTheSame(oldItem: NekoImage, newItem: NekoImage): Boolean = oldItem == newItem
     }
 
     val differ = AsyncListDiffer(this,differCallback)
@@ -52,10 +52,10 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((nekoImage)->Unit)? = null
+    private var onItemClickListener: ((NekoImage)->Unit)? = null
 
 
-    fun setOnItemClickListener(listener : (nekoImage) -> Unit){
+    fun setOnItemClickListener(listener : (NekoImage) -> Unit){
         onItemClickListener = listener
     }
 

@@ -15,10 +15,13 @@
         android:theme="@style/Theme.WallpaperInstallApp"
         tools:targetApi="31">
         <activity
+            android:name=".PickUpWallpaper.UI.SelectWallpaperActivity"
+            android:exported="false" />
+        <activity
             android:name=".PickUpWallpaper.UI.SelectedWallpaperActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".WallpapersList.UI.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

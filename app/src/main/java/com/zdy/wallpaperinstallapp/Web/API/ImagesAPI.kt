@@ -1,10 +1,9 @@
 package com.zdy.wallpaperinstallapp.Web.API
 
-import com.zdy.wallpaperinstallapp.Web.Objects.requestImages
+import com.zdy.wallpaperinstallapp.Web.Objects.RequestImages
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-import retrofit2.http.Tag
 
 interface ImagesAPI {
 
@@ -18,5 +17,5 @@ interface ImagesAPI {
         @Query("tag")
         tag :String = "2"
 
-    ) : Response<requestImages>
+    ) : Response<RequestImages>
 }

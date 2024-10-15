@@ -1,6 +1,6 @@
 package com.zdy.wallpaperinstallapp.Web.Objects
 
-data class nekoImage(
+data class NekoImage(
     val artist: String,
     val characters: List<Any>,
     val color_dominant: List<Int>,

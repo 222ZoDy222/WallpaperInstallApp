@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.Repository
+package com.zdy.wallpaperinstallapp.Web.Repository
 
 import com.zdy.wallpaperinstallapp.Web.RetrofitInstance
 

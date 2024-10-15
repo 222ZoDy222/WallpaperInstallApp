@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ImagesAdapter
+import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ImagesAdapter
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
@@ -54,6 +54,12 @@ class ListFragment : Fragment() {
         binding.apply {
             imagesAdapter = ImagesAdapter()
 
+            imagesAdapter.setOnItemClickListener { image->
+
+
+
+            }
+
             rcViewAdapter.apply {
                 adapter = imagesAdapter
                 layoutManager = GridLayoutManager(activity,2)
@@ -64,10 +70,8 @@ class ListFragment : Fragment() {
     }
 
     private fun addListeners(){
-//        binding.button.setOnClickListener {
-//            (requireActivity() as INavigate).NavigateToLikedList()
-//        }
-        mViewModel.imageRequest.observe(viewLifecycleOwner){response->
+
+        mViewModel.getImageRequest().observe(viewLifecycleOwner){response->
             when(response){
                 is Resource.Success ->{
                     Loading(false)

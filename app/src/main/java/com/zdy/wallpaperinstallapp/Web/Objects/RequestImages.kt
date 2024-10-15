@@ -1,6 +1,6 @@
 package com.zdy.wallpaperinstallapp.Web.Objects
 
-data class requestImages(
+data class RequestImages(
     val count: Int,
-    val items: List<nekoImage>
+    val items: List<NekoImage>
 )
