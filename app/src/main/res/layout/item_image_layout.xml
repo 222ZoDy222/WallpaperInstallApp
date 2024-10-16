@@ -7,25 +7,41 @@
     android:orientation="vertical"
     android:layout_margin="10dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageWallpaper"
+    <ProgressBar
+        android:id="@+id/progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/test_image"
-        app:shapeAppearanceOverlay="@style/roundImageView"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
-        />
-
-    <TextView
-        android:id="@+id/wallpaperDescription"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/data_container"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:paddingHorizontal="50dp"
-        android:lines="1"
-        android:ellipsize="end"
-        android:text="Test Hardcored text bla bla bla bla bla bla bla bla"
-        />
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageWallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/test_image"
+            app:shapeAppearanceOverlay="@style/roundImageView"
+
+            />
+
+        <TextView
+            android:id="@+id/wallpaperDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:paddingHorizontal="50dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:text="Test Hardcored text bla bla bla bla bla bla bla bla"
+            />
+
+    </LinearLayout>
+
+
 </LinearLayout>

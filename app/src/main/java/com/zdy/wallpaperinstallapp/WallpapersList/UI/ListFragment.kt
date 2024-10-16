@@ -6,9 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.ListFragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.INavigate
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ImagesAdapter
@@ -21,6 +26,8 @@ class ListFragment : Fragment() {
 
     private lateinit var mViewModel: WallpaperListViewModel
     lateinit var binding : FragmentListBinding
+
+    lateinit var pickUpViewModel : PickUpWallpaperViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +46,12 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel = (activity as IGetViewModel).getViewModel()
+
+        pickUpViewModel = ViewModelProvider(
+            requireActivity(),
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[PickUpWallpaperViewModel::class.java]
+
         setupRecycleView()
         addListeners()
 
@@ -55,9 +68,7 @@ class ListFragment : Fragment() {
             imagesAdapter = ImagesAdapter()
 
             imagesAdapter.setOnItemClickListener { image->
-
-
-
+                pickUpViewModel.PickUpImage(image)
             }
 
             rcViewAdapter.apply {
@@ -66,6 +77,8 @@ class ListFragment : Fragment() {
             }
 
         }
+
+
 
     }
 

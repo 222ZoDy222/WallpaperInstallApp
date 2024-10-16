@@ -17,9 +17,7 @@
         <activity
             android:name=".PickUpWallpaper.UI.SelectWallpaperActivity"
             android:exported="false" />
-        <activity
-            android:name=".PickUpWallpaper.UI.SelectedWallpaperActivity"
-            android:exported="false" />
+
         <activity
             android:name=".WallpapersList.UI.MainActivity"
             android:exported="true">

@@ -15,6 +15,7 @@ class RetrofitInstance {
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
 
+            // TODO: java.net.SocketTimeoutException: timeout
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build()
