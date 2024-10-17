@@ -10,9 +10,12 @@
 
     <style name="Theme.WallpaperInstallApp" parent="Base.Theme.WallpaperInstallApp" />
 
-
     <style name="Base.Theme.WallpaperInstallApp.FullScreen">
         <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="Base.Theme.WallpaperInstallApp.progressBars">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateDrawable">@drawable/loading_progressbar</item>
     </style>
 
     <style name="roundImageView">

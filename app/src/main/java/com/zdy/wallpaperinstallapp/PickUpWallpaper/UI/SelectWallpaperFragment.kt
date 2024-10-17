@@ -45,6 +45,7 @@ class SelectWallpaperFragment : Fragment() {
 
         mViewModel.getBackgroundDrawable().observe(viewLifecycleOwner){ drawable->
             if(drawable != null){
+                binding.loadbar.visibility = View.GONE
                 context?.let {context ->
                     binding.backgroundImage.setImageDrawable(drawable)
                     val imageWidth = drawable.intrinsicWidth
@@ -62,6 +63,7 @@ class SelectWallpaperFragment : Fragment() {
                 }
 
             } else{
+                binding.loadbar.visibility = View.VISIBLE
                 val url = mViewModel.getUrl()
 
                 // TODO: Progress bar
