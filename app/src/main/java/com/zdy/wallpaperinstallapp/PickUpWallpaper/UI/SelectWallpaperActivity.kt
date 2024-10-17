@@ -8,6 +8,7 @@ import com.zdy.wallpaperinstallapp.Logger.AppLogger
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
+import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.SetWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
 
 class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
@@ -18,6 +19,12 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
         ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory(application)
         )[PickUpWallpaperViewModel::class.java]
+    }
+
+    val mViewModelSet : SetWallpaperViewModel by lazy{
+        ViewModelProvider(this,
+            ViewModelProvider.AndroidViewModelFactory(application)
+        )[SetWallpaperViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,5 +56,6 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
         const val IMAGE_TAG = "EXPORTED_IMAGE"
     }
 
-    override fun getViewModel(): PickUpWallpaperViewModel = mViewModel
+    override fun getViewModelPickUp(): PickUpWallpaperViewModel = mViewModel
+    override fun getViewModelSet(): SetWallpaperViewModel = mViewModelSet
 }

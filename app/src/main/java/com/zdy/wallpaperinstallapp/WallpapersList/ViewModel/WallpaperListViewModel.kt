@@ -37,8 +37,16 @@ class WallpaperListViewModel(
     fun getRandomImages() = viewModelScope.launch {
 
         imageRequest.postValue(Resource.Loading())
-        val response = imageRepository.getImages()
-        imageRequest.postValue(handleImageResponse(response))
+        try{
+            val response = imageRepository.getImages()
+            imageRequest.postValue(handleImageResponse(response))
+
+        } catch (ex: Exception){
+            // TODO: плохое соединение с интернетом / повторить попытку
+            imageRequest.postValue(null)
+        }
+
+
 
     }
 

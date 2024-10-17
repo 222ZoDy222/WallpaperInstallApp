@@ -1,28 +1,27 @@
 package com.zdy.wallpaperinstallapp.PickUpWallpaper.UI
 
-import android.R
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.WallpaperManager
 import android.graphics.Bitmap
-import android.graphics.Matrix
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
-
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
+import java.io.IOException
 
 
 class SelectWallpaperFragment : Fragment() {
@@ -31,6 +30,7 @@ class SelectWallpaperFragment : Fragment() {
     lateinit var binding : FragmentSelectWallpaperBinding
 
     lateinit var mViewModel : PickUpWallpaperViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,11 +50,7 @@ class SelectWallpaperFragment : Fragment() {
                     binding.backgroundImage.setImageDrawable(drawable)
                     val imageWidth = drawable.intrinsicWidth
                     val imageHeight = drawable.intrinsicHeight
-                    val viewWidth_test = binding.imageContainer.width
-                    val viewHeight_test = binding.imageContainer.height
-                    if(viewWidth_test == 0 || viewHeight_test == 0){
-                        var temp = 0
-                    }
+
                     val viewWidth = context.resources.displayMetrics.widthPixels
                     val viewHeight = context.resources.displayMetrics.heightPixels
                     // Scaling image
@@ -98,14 +94,40 @@ class SelectWallpaperFragment : Fragment() {
 
 
     }
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mViewModel = (requireActivity() as IGetViewModelPickUp).getViewModel()
+        mViewModel = (requireActivity() as IGetViewModelPickUp).getViewModelPickUp()
+
+
 
         // If user clicked so fast
         binding.backgroundImage.viewTreeObserver.addOnGlobalLayoutListener { mViewModel.updateDrawableImage() }
+
+        //TODO: убрать эту кнопку, если еще не загружена картинка
+        binding.settingsWallpaperButton.setOnClickListener {
+
+            val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
+
+
+
+            mViewModel.selectedImage.value?.bitmap?.let { bitmap ->
+
+                context?.let {context ->
+                    // Получаем размеры изображения и ImageView
+
+
+
+                    viewModelSetWallpaper.setWallpaper(bitmap, Rect(0, 100, 600, 700))
+
+                }
+
+            }
+
+
+        }
 
 
         // Listener for moving wallpaper image
@@ -126,6 +148,7 @@ class SelectWallpaperFragment : Fragment() {
 
 
     }
+
 
 
 

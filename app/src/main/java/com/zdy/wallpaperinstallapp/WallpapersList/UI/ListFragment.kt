@@ -70,6 +70,15 @@ class ListFragment : Fragment() {
 
     private fun addListeners(){
 
+        mViewModel.getImageRequest().observe(viewLifecycleOwner){imageRequest ->
+            binding.reloadContainer.visibility = if (imageRequest == null) View.VISIBLE else View.GONE
+            binding.loadbar.visibility = View.GONE
+        }
+
+        binding.reloadButton.setOnClickListener {
+            mViewModel.getRandomImages()
+        }
+
         mViewModel.getImageRequest().observe(viewLifecycleOwner){response->
             when(response){
                 is Resource.Success ->{

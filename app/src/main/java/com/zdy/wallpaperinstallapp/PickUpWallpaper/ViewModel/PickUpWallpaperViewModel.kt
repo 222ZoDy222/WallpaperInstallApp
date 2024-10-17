@@ -4,6 +4,8 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.Rect
+import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -28,8 +30,7 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
     fun SelectImage(image : PickUpImage){
         val bitmap = loadBitmapFromFile()
         bitmap?.let {
-            //image.bitmap = it
-            // TODO: if saved file is null load by url
+            image.bitmap = it
         }
         deleteSavedImage()
 
@@ -66,8 +67,7 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
 
     // Set background after getting image by URL
     fun SetBackgroundImage(bitmap: Bitmap){
-        //selectedImage.value?.bitmap = bitmap
-        //setBackgroundImage()
+        selectedImage.value?.bitmap = bitmap
         backgroundDrawable.value = BitmapDrawable(
             getApplication<Application>().applicationContext.resources,
             bitmap
@@ -159,6 +159,33 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
         // Устанавливаем максимальные смещения по осям
         maxX = viewWidth - imageWidth * scale
         maxY = viewHeight - imageHeight * scale
+    }
+
+    // Метод для получения смещённой области (Rect), которая будет использована для обоев
+    fun getWallpaperRect(imageWidth: Int, imageHeight: Int, viewWidth: Int, viewHeight: Int): Rect {
+        // Получаем текущие значения матрицы (масштаб и смещение)
+        val values = FloatArray(9)
+        matrix.getValues(values)
+
+        val scale = values[Matrix.MSCALE_X]
+        val translateX = values[Matrix.MTRANS_X]
+        val translateY = values[Matrix.MTRANS_Y]
+
+        // Рассчитываем видимую область изображения
+        val visibleRect = RectF(
+            -translateX / scale,
+            -translateY / scale,
+            (viewWidth - translateX) / scale,
+            (viewHeight - translateY) / scale
+        )
+
+        // Преобразуем в целочисленный Rect
+        return Rect(
+            visibleRect.left.toInt(),
+            visibleRect.top.toInt(),
+            visibleRect.right.toInt(),
+            visibleRect.bottom.toInt()
+        )
     }
 
 
