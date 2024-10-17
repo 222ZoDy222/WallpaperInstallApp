@@ -11,6 +11,10 @@
     <style name="Theme.WallpaperInstallApp" parent="Base.Theme.WallpaperInstallApp" />
 
 
+    <style name="Base.Theme.WallpaperInstallApp.FullScreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="roundImageView">
 
         <item name="cornerFamily">rounded</item>

@@ -1,5 +1,7 @@
 package com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +16,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
+import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.Web.Objects.NekoImage
+import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
+import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
 
 
 class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
@@ -24,9 +31,9 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    private val differCallback = object : DiffUtil.ItemCallback<NekoImage>(){
-        override fun areItemsTheSame(oldItem: NekoImage, newItem: NekoImage): Boolean = oldItem.image_url == newItem.image_url
-        override fun areContentsTheSame(oldItem: NekoImage, newItem: NekoImage): Boolean = oldItem == newItem
+    private val differCallback = object : DiffUtil.ItemCallback<PickUpImage>(){
+        override fun areItemsTheSame(oldItem: PickUpImage, newItem: PickUpImage): Boolean = oldItem.url == newItem.url
+        override fun areContentsTheSame(oldItem: PickUpImage, newItem: PickUpImage): Boolean = oldItem == newItem
     }
 
     val differ = AsyncListDiffer(this,differCallback)
@@ -41,6 +48,7 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
         )
     }
 
+    @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
         var item = differ.currentList[position]
 
@@ -49,38 +57,34 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
             val progressbar = findViewById<ProgressBar>(R.id.progress_bar)
             val imageView = findViewById<ImageView>(R.id.imageWallpaper)
             progressbar.visibility = View.VISIBLE
-            Glide.with(this)
-                .load(item.image_url)
-                .addListener(object : RequestListener<Drawable>{
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>,
-                        isFirstResource: Boolean
-                    ): Boolean {
+            item.url?.let {url ->
+                ImagesRepository.LoadBitmapByURL(this,
+                    url,
+                    object : CustomTarget<Bitmap>(){
+                        override fun onResourceReady(
+                            resource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            progressbar.visibility = View.GONE
+                            //item.bitmap = resource
+                            imageView.setImageBitmap(resource)
+                        }
 
-                        return false
-                    }
+                        override fun onLoadCleared(placeholder: Drawable?) {
 
-                    override fun onResourceReady(
-                        resource: Drawable,
-                        model: Any,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        progressbar.visibility = View.GONE
-                        imageView.setImageDrawable(resource)
-                        return false
-                    }
+                        }
 
-                })
-                .into(findViewById(R.id.imageWallpaper))
-            try{
-                findViewById<TextView>(R.id.wallpaperDescription).text = item.tags.toString()
-            } catch (ex: Exception){
-                findViewById<TextView>(R.id.wallpaperDescription).text = "Some image harcored"
+                        override fun onLoadFailed(errorDrawable: Drawable?) {
+                            // TODO: Error message
+                            progressbar.visibility = View.GONE
+                        }
+
+                    })
             }
+
+
+
+            findViewById<TextView>(R.id.wallpaperDescription).text = item.description.toString()
 
             setOnClickListener{
                 onItemClickListener?.invoke(item)
@@ -93,10 +97,10 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
         return differ.currentList.size
     }
 
-    private var onItemClickListener: ((NekoImage)->Unit)? = null
+    private var onItemClickListener: ((PickUpImage)->Unit)? = null
 
 
-    fun setOnItemClickListener(listener : (NekoImage) -> Unit){
+    fun setOnItemClickListener(listener : (PickUpImage) -> Unit){
         onItemClickListener = listener
     }
 

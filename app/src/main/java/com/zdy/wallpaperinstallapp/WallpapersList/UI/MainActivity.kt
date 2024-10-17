@@ -2,25 +2,20 @@ package com.zdy.wallpaperinstallapp.WallpapersList.UI
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IPickUpImage
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.Web.Objects.NekoImage
 import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
 
-class MainActivity : AppCompatActivity(), INavigate, IGetViewModel {
+class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
 
 
 
@@ -29,9 +24,6 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModel {
         val repository = ImageRepository()
         ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperListViewModel::class.java]
     }
-
-    lateinit var pickUpViewModel : PickUpWallpaperViewModel
-
 
     lateinit var navController: NavController
 
@@ -43,16 +35,14 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModel {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = navHostFragment.navController
 
-        pickUpViewModel = ViewModelProvider(
-            this as ViewModelStoreOwner,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[PickUpWallpaperViewModel::class.java]
 
-
-        pickUpViewModel.imageToPickUp.observe(this){image ->
+        mViewModel.getImageToPickUp().observe(this){image ->
             if(image != null){
-                val temp = pickUpViewModel.imageToPickUp.value
+                val pickUpImage = PickUpImage(null, image.url, image.description)
+                val bundle = Bundle()
+                bundle.putParcelable(SelectWallpaperActivity.IMAGE_TAG, pickUpImage)
                 val intent = Intent(this,SelectWallpaperActivity::class.java)
+                intent.putExtras(bundle)
                 startActivity(intent)
             }
 
