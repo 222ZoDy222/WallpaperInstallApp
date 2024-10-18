@@ -1,5 +1,6 @@
 package com.zdy.wallpaperinstallapp.WallpapersList.UI
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +10,11 @@ import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ImagesAdapter
+import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
+import java.util.function.Predicate
 
 
 class ListFragment : Fragment() {
@@ -62,6 +65,10 @@ class ListFragment : Fragment() {
                 layoutManager = GridLayoutManager(activity,2)
             }
 
+            imagesAdapter.setOnRefreshClickListener {
+                mViewModel.getRandomImages()
+            }
+
         }
 
 
@@ -79,18 +86,29 @@ class ListFragment : Fragment() {
             mViewModel.getRandomImages()
         }
 
+        mViewModel.getListWallpaperItems().observe(viewLifecycleOwner){
+            imagesAdapter.differ.submitList(it)
+        }
+
+
+
         mViewModel.getImageRequest().observe(viewLifecycleOwner){response->
             when(response){
                 is Resource.Success ->{
-                    Loading(false)
                     response.data?.let {
-                        imagesAdapter.differ.submitList(mViewModel.ConvertImages(it))
+                        val newList = mViewModel.ConvertImages(it)
+                        val listItems = mutableListOf<ItemRecycle>()
+                        for(i in newList){
+                            listItems.add(ItemRecycle.RecycleWallpaperItem(i))
+                        }
+                        listItems.add(ItemRecycle.RecycleButtonItem())
+                        imagesAdapter.differ.submitList(listItems)
                     }
+                    Loading(false)
                 }
                 is Resource.Error ->{
                     Loading(false)
                     // TODO: Show Error message
-
                 }
                 is Resource.Loading ->{
                     Loading(true)
@@ -107,9 +125,5 @@ class ListFragment : Fragment() {
             binding.loadbar.visibility = View.GONE
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = ListFragment()
 
-    }
 }

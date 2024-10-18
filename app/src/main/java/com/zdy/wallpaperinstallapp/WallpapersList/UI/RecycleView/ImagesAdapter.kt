@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -24,72 +26,75 @@ import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.Web.Objects.NekoImage
 import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
+import java.lang.IllegalArgumentException
 
 
-class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
+class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
 
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    private val differCallback = object : DiffUtil.ItemCallback<PickUpImage>(){
-        override fun areItemsTheSame(oldItem: PickUpImage, newItem: PickUpImage): Boolean = oldItem.url == newItem.url
-        override fun areContentsTheSame(oldItem: PickUpImage, newItem: PickUpImage): Boolean = oldItem == newItem
+    private val differCallback = object : DiffUtil.ItemCallback<ItemRecycle>(){
+        override fun areItemsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean {
+            return oldItem == newItem
+        }
+        override fun areContentsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean{
+            return if(oldItem is ItemRecycle.RecycleWallpaperItem
+                && newItem is ItemRecycle.RecycleWallpaperItem){
+                (oldItem).image.url == (newItem).image.url
+            } else false
+        }
     }
 
     val differ = AsyncListDiffer(this,differCallback)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        return ImageViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_image_layout,
-                parent,
-                false
-            )
-        )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesRecycleViewHolder {
+
+        return when(viewType){
+            R.layout.item_image_layout ->{
+                ImagesRecycleViewHolder.WallpaperRecycleViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.item_image_layout,
+                        parent,
+                        false
+                    )
+                )
+            }
+            R.layout.item_button_layout ->{
+                ImagesRecycleViewHolder.ButtonRecycleViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.item_button_layout,
+                        parent,
+                        false
+                    )
+                )
+            }
+            else -> throw throw  IllegalArgumentException("Invalid view type provider")
+        }
+
     }
 
     @SuppressLint("CheckResult")
-    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ImagesRecycleViewHolder, position: Int) {
         var item = differ.currentList[position]
 
-        holder.itemView.apply {
-            // Load image by URL
-            val progressbar = findViewById<ProgressBar>(R.id.progress_bar)
-            val imageView = findViewById<ImageView>(R.id.imageWallpaper)
-            progressbar.visibility = View.VISIBLE
-            item.url?.let {url ->
-                ImagesRepository.LoadBitmapByURL(this,
-                    url,
-                    object : CustomTarget<Bitmap>(){
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            progressbar.visibility = View.GONE
-                            //item.bitmap = resource
-                            imageView.setImageBitmap(resource)
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-
-                        }
-
-                        override fun onLoadFailed(errorDrawable: Drawable?) {
-                            // TODO: Error message
-                            progressbar.visibility = View.GONE
-                        }
-
-                    })
+        when(holder){
+            is ImagesRecycleViewHolder.ButtonRecycleViewHolder -> {
+                holder.itemView.apply {
+                    findViewById<ImageButton>(R.id.refresh_button).setOnClickListener {
+                        onRefreshClickListener?.invoke()
+                    }
+                }
             }
-
-
-
-            findViewById<TextView>(R.id.wallpaperDescription).text = item.description.toString()
-
-            setOnClickListener{
-                onItemClickListener?.invoke(item)
+            is ImagesRecycleViewHolder.WallpaperRecycleViewHolder -> {
+                holder.bind(item as ItemRecycle.RecycleWallpaperItem)
+                holder.itemView.apply {
+                    setOnClickListener{
+                        onItemClickListener?.invoke(item.image)
+                    }
+                }
             }
         }
+
+
 
     }
 
@@ -97,11 +102,23 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesAdapter.ImageViewHolder>() {
         return differ.currentList.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return when(differ.currentList[position]){
+            is ItemRecycle.RecycleButtonItem -> R.layout.item_button_layout
+            is ItemRecycle.RecycleWallpaperItem -> R.layout.item_image_layout
+        }
+    }
+
     private var onItemClickListener: ((PickUpImage)->Unit)? = null
 
+    private var onRefreshClickListener: (()->Unit)? = null
 
     fun setOnItemClickListener(listener : (PickUpImage) -> Unit){
         onItemClickListener = listener
+    }
+
+    fun setOnRefreshClickListener(listener: () -> Unit){
+        onRefreshClickListener = listener
     }
 
 }

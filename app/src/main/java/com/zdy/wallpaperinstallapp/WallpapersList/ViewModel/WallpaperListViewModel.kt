@@ -3,11 +3,13 @@ package com.zdy.wallpaperinstallapp.WallpapersList.ViewModel
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.graphics.Bitmap
+import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
+import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.Web.Objects.RequestImages
 import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
@@ -16,6 +18,7 @@ import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.function.Predicate
 
 
 class WallpaperListViewModel(
@@ -25,6 +28,13 @@ class WallpaperListViewModel(
 
     private val imageRequest: MutableLiveData<Resource<RequestImages>> = MutableLiveData()
     fun getImageRequest(): MutableLiveData<Resource<RequestImages>> = imageRequest
+
+
+    private val listWallpaperItems : MutableLiveData<MutableList<ItemRecycle>> = MutableLiveData(
+        mutableListOf<ItemRecycle>()
+    )
+
+    fun getListWallpaperItems() = listWallpaperItems
 
     init {
 
@@ -46,7 +56,21 @@ class WallpaperListViewModel(
             imageRequest.postValue(null)
         }
 
+    }
 
+    private fun AddImages(images: RequestImages){
+
+        listWallpaperItems.value?.let {list ->
+            list.clear()
+            val newImages = ConvertImages(images)
+
+            for (im in newImages){
+                list.add(ItemRecycle.RecycleWallpaperItem(im))
+            }
+
+            list.add(ItemRecycle.RecycleButtonItem())
+
+        }
 
     }
 
@@ -113,6 +137,23 @@ class WallpaperListViewModel(
     companion object{
 
         const val SELECTED_IMAGE_NAME = "SelectedImage.wi"
+
+        fun DeleteButtonItem(list: MutableList<ItemRecycle>){
+
+            val condition = Predicate<ItemRecycle> {
+                it is ItemRecycle.RecycleButtonItem
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                list.removeIf(condition)
+            } else{
+                for (item in list){
+                    if(item is ItemRecycle.RecycleButtonItem){
+                        list.remove(item)
+                    }
+                }
+            }
+
+        }
 
     }
 

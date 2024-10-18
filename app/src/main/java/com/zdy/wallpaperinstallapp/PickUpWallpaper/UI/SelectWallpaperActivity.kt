@@ -38,12 +38,17 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
             intent.extras?.getParcelable<PickUpImage>(IMAGE_TAG)
         }
 
-        if(image != null){
-            mViewModel.SelectImage(image)
-        } else {
-            AppLogger.Log("Select image is null")
+        if(savedInstanceState == null){
+            if(image != null){
+                mViewModel.SelectImage(image)
+            } else {
+                AppLogger.Log("Select image is null")
+                finish()
+            }
+        } else{
             finish()
         }
+
 
 
     }

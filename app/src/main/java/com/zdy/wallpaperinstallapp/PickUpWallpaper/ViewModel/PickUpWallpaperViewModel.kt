@@ -161,32 +161,7 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
         maxY = viewHeight - imageHeight * scale
     }
 
-    // Метод для получения смещённой области (Rect), которая будет использована для обоев
-    fun getWallpaperRect(imageWidth: Int, imageHeight: Int, viewWidth: Int, viewHeight: Int): Rect {
-        // Получаем текущие значения матрицы (масштаб и смещение)
-        val values = FloatArray(9)
-        matrix.getValues(values)
 
-        val scale = values[Matrix.MSCALE_X]
-        val translateX = values[Matrix.MTRANS_X]
-        val translateY = values[Matrix.MTRANS_Y]
-
-        // Рассчитываем видимую область изображения
-        val visibleRect = RectF(
-            -translateX / scale,
-            -translateY / scale,
-            (viewWidth - translateX) / scale,
-            (viewHeight - translateY) / scale
-        )
-
-        // Преобразуем в целочисленный Rect
-        return Rect(
-            visibleRect.left.toInt(),
-            visibleRect.top.toInt(),
-            visibleRect.right.toInt(),
-            visibleRect.bottom.toInt()
-        )
-    }
 
 
 }

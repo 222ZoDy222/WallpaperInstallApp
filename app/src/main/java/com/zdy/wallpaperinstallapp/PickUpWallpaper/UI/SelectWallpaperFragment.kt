@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.WallpaperManager
 import android.graphics.Bitmap
+import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -14,6 +15,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.graphics.scale
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -22,6 +24,7 @@ import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperView
 import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
 import java.io.IOException
+import kotlin.math.abs
 
 
 class SelectWallpaperFragment : Fragment() {
@@ -111,17 +114,15 @@ class SelectWallpaperFragment : Fragment() {
 
             val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
 
-
-
             mViewModel.selectedImage.value?.bitmap?.let { bitmap ->
 
                 context?.let {context ->
-                    // Получаем размеры изображения и ImageView
 
-
-
-                    viewModelSetWallpaper.setWallpaper(bitmap, Rect(0, 100, 600, 700))
-
+                    viewModelSetWallpaper.setWallpaper(
+                        bitmap,
+                        mViewModel.getMatrix(),
+                        context
+                    )
                 }
 
             }
