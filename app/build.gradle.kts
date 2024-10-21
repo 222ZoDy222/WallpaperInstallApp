@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
 }
 
 android {
@@ -37,9 +39,14 @@ android {
     buildFeatures{
         viewBinding = true
     }
+
+    repositories {
+        mavenCentral()
+    }
 }
 
 dependencies {
+
 
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -55,8 +62,14 @@ dependencies {
     //------------------------------------//
 
     // --- Room --- //
-    implementation("androidx.room:room-common:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+
     //--------------//
 
     // --- Retrofit --- //

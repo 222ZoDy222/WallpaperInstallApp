@@ -36,8 +36,6 @@ class WallpaperListViewModel(
 
         getRandomImages()
 
-        // TODO: Start Load ROOM wallpaper
-
     }
 
     fun getRandomImages() = viewModelScope.launch {

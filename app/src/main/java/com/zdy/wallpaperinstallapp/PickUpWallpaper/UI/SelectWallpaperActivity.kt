@@ -4,14 +4,19 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.Logger.AppLogger
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.SetWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.ViewModels.WallpaperListFactory
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
-class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
+class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp, IGetLikedViewModel {
 
 
 
@@ -25,6 +30,11 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
         ViewModelProvider(this,
             ViewModelProvider.AndroidViewModelFactory(application)
         )[SetWallpaperViewModel::class.java]
+    }
+
+    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
+        val repository = ImagesRepository(WallpaperDatabase(this))
+        ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperLikedListViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,4 +73,5 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
 
     override fun getViewModelPickUp(): PickUpWallpaperViewModel = mViewModel
     override fun getViewModelSet(): SetWallpaperViewModel = mViewModelSet
+    override fun getLikedViewModel(): WallpaperLikedListViewModel = mViewModelLiked
 }

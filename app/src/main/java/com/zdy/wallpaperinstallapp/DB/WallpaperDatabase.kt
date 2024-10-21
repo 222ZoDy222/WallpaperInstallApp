@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.zdy.wallpaperinstallapp.models.ObjectsWeb.NekoImage
+import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
+
 
 @Database(
-    entities = [NekoImage::class],
+    entities = [LocalWallpaper::class],
     version = 1
 )
 abstract class WallpaperDatabase : RoomDatabase() {

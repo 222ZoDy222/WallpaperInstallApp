@@ -10,14 +10,15 @@ import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListFactory
+import com.zdy.wallpaperinstallapp.WallpapersList.ViewModels.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
-class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
+class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLikedViewModel {
 
 
 
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
         ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperListViewModel::class.java]
     }
 
-    val viewModelLiked: WallpaperLikedListViewModel by lazy {
+    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
         val repository = ImagesRepository(WallpaperDatabase(this))
         ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperLikedListViewModel::class.java]
     }
@@ -61,11 +62,9 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
         navController.navigate(R.id.action_listFragment_to_listFragmentLiked)
     }
 
-    override fun getViewModel(): WallpaperListViewModel {
-        return mViewModel
-    }
+    override fun getViewModel(): WallpaperListViewModel = mViewModel
 
-
+    override fun getLikedViewModel(): WallpaperLikedListViewModel = mViewModelLiked
 
 
 }

@@ -66,7 +66,6 @@ class ListFragment : Fragment() {
             }
 
             imagesAdapter.setOnRefreshClickListener {
-                imagesAdapter.differ.submitList(null)
                 mViewModel.getRandomImages()
 
             }
