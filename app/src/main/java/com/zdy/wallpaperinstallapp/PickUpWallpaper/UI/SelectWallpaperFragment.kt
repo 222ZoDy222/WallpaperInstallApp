@@ -21,7 +21,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
-import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
 import java.io.IOException
 import kotlin.math.abs

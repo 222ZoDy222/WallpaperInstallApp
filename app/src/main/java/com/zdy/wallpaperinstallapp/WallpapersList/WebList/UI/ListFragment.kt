@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.UI
+package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI
 
 import android.os.Build
 import android.os.Bundle
@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModelList
-import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ImagesAdapter
-import com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView.ItemRecycle
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ImagesAdapter
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
 import java.util.function.Predicate
@@ -66,7 +66,9 @@ class ListFragment : Fragment() {
             }
 
             imagesAdapter.setOnRefreshClickListener {
+                imagesAdapter.differ.submitList(null)
                 mViewModel.getRandomImages()
+
             }
 
         }

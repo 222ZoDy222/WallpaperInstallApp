@@ -1,31 +1,14 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.Target
-import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.Web.Objects.NekoImage
-import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
-import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
 import java.lang.IllegalArgumentException
 
 
@@ -38,7 +21,8 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         }
         override fun areContentsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean{
             return if(oldItem is ItemRecycle.RecycleWallpaperItem
-                && newItem is ItemRecycle.RecycleWallpaperItem){
+                && newItem is ItemRecycle.RecycleWallpaperItem
+            ){
                 (oldItem).image.url == (newItem).image.url
             } else false
         }

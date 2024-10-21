@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.zdy.wallpaperinstallapp.Logger.AppLogger
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.SetWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
@@ -32,7 +32,7 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp {
         setContentView(R.layout.activity_select_wallpaper)
 
         val image = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-             intent.extras?.getParcelable(IMAGE_TAG,PickUpImage::class.java)
+             intent.extras?.getParcelable(IMAGE_TAG, PickUpImage::class.java)
         } else{
             @Suppress("DEPRECATION")
             intent.extras?.getParcelable<PickUpImage>(IMAGE_TAG)

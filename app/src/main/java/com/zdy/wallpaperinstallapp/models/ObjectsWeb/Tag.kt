@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.Web.Objects
+package com.zdy.wallpaperinstallapp.models.ObjectsWeb
 
 data class Tag(
     val description: String,

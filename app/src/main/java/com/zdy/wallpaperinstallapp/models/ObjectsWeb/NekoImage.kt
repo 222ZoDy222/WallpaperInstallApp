@@ -1,4 +1,9 @@
-package com.zdy.wallpaperinstallapp.Web.Objects
+package com.zdy.wallpaperinstallapp.models.ObjectsWeb
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+
 
 data class NekoImage(
     //val artist: String,

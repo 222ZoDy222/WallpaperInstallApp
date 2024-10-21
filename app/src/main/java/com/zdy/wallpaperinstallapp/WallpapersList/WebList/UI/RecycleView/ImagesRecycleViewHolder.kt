@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
 sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 

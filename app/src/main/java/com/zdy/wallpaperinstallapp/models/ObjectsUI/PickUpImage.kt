@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects
+package com.zdy.wallpaperinstallapp.models.ObjectsUI
 
 import android.graphics.Bitmap
 import android.os.Build

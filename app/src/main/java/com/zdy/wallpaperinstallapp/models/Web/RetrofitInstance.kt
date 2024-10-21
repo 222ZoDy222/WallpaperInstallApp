@@ -1,6 +1,6 @@
-package com.zdy.wallpaperinstallapp.Web
+package com.zdy.wallpaperinstallapp.models.Web
 
-import com.zdy.wallpaperinstallapp.Web.API.ImagesAPI
+import com.zdy.wallpaperinstallapp.models.Web.API.ImagesAPI
 import com.zdy.wallpaperinstallapp.utils.Constants.Companion.BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

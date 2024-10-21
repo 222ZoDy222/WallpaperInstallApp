@@ -4,20 +4,12 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.graphics.Rect
-import android.graphics.RectF
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.Web.Repository.ImagesRepository
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import java.io.File
 
 class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(application) {

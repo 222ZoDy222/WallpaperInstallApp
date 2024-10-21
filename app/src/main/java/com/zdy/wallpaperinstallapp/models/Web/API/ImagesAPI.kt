@@ -1,6 +1,6 @@
-package com.zdy.wallpaperinstallapp.Web.API
+package com.zdy.wallpaperinstallapp.models.Web.API
 
-import com.zdy.wallpaperinstallapp.Web.Objects.RequestImages
+import com.zdy.wallpaperinstallapp.models.ObjectsWeb.RequestImages
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

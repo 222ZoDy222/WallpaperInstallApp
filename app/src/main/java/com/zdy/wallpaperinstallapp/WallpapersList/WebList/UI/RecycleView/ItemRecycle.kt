@@ -1,6 +1,6 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.UI.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
 
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 
 sealed class ItemRecycle {
 

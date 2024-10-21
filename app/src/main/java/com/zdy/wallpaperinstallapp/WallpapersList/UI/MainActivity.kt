@@ -6,14 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.zdy.wallpaperinstallapp.PickUpWallpaper.Objects.PickUpImage
+import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModelList
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListFactory
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.Web.Requests.ImageRepository
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListFactory
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
 class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
 
@@ -21,8 +23,13 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList {
 
 
     val mViewModel: WallpaperListViewModel by lazy {
-        val repository = ImageRepository()
+        val repository = ImagesRepository(WallpaperDatabase(this))
         ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperListViewModel::class.java]
+    }
+
+    val viewModelLiked: WallpaperLikedListViewModel by lazy {
+        val repository = ImagesRepository(WallpaperDatabase(this))
+        ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperLikedListViewModel::class.java]
     }
 
     lateinit var navController: NavController

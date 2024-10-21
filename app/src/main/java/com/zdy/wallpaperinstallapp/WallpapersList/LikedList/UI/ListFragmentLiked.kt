@@ -1,12 +1,12 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.UI
+package com.zdy.wallpaperinstallapp.WallpapersList.LikedList.UI
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zdy.wallpaperinstallapp.WallpapersList.Interfaces.IGetViewModelList
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListLikedBinding
 
 
@@ -20,7 +20,7 @@ class ListFragmentLiked : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentListLikedBinding.inflate(inflater)
         return binding.root
     }
