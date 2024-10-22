@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ImagesAdapter
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
@@ -20,6 +22,7 @@ import java.util.function.Predicate
 class ListFragment : Fragment() {
 
     private lateinit var mViewModel: WallpaperListViewModel
+    private  lateinit var mViewModelLiked: WallpaperLikedListViewModel
     lateinit var binding : FragmentListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,7 +42,7 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mViewModel = (activity as IGetViewModelList).getViewModel()
-
+        mViewModelLiked = (activity as IGetLikedViewModel).getLikedViewModel()
 
         setupRecycleView()
         addListeners()
@@ -70,12 +73,18 @@ class ListFragment : Fragment() {
 
             }
 
+            imagesAdapter.setOnItemLikeClickListener {
+                // TODO: Save wallpaper
+            }
+
         }
 
 
 
     }
 
+
+    var testIndex = 0
     private fun addListeners(){
 
         mViewModel.getImageRequest().observe(viewLifecycleOwner){imageRequest ->
@@ -87,9 +96,6 @@ class ListFragment : Fragment() {
             mViewModel.getRandomImages()
         }
 
-        mViewModel.getListWallpaperItems().observe(viewLifecycleOwner){
-            imagesAdapter.differ.submitList(it)
-        }
 
 
 
@@ -97,6 +103,7 @@ class ListFragment : Fragment() {
             when(response){
                 is Resource.Success ->{
                     response.data?.let {
+                        imagesAdapter.differ.submitList(null)
                         val newList = mViewModel.ConvertImages(it)
                         val listItems = mutableListOf<ItemRecycle>()
                         for(i in newList){
@@ -104,6 +111,22 @@ class ListFragment : Fragment() {
                         }
                         listItems.add(ItemRecycle.RecycleButtonItem())
                         imagesAdapter.differ.submitList(listItems)
+                        // Update already Liked images
+                        listItems.forEach {item->
+                            if(item is ItemRecycle.RecycleWallpaperItem){
+                                item.image.url?.let { url ->
+                                    mViewModelLiked.alreadyHaveWallpaper(url).observe(viewLifecycleOwner){ isSaved->
+                                        var saved = isSaved
+                                        if(testIndex++ >= 3){
+                                            testIndex = 0
+                                            saved = true
+                                        }
+                                        imagesAdapter.updateImageSavedStatus(item, saved)
+                                    }
+                                }
+                            }
+
+                        }
                     }
                     Loading(false)
                 }

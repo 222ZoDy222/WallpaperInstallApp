@@ -8,7 +8,8 @@ import android.os.Parcelable
 data class PickUpImage(
     var bitmap: Bitmap?,
     val url: String?,
-    val description: String?
+    val description: String?,
+    var isLiked: Boolean = false
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
@@ -18,7 +19,7 @@ data class PickUpImage(
             parcel.readParcelable(Bitmap::class.java.classLoader)
         },
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

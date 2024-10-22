@@ -26,11 +26,6 @@ class WallpaperListViewModel(
     fun getImageRequest(): MutableLiveData<Resource<RequestImages>> = imageRequest
 
 
-    private val listWallpaperItems : MutableLiveData<MutableList<ItemRecycle>> = MutableLiveData(
-        mutableListOf<ItemRecycle>()
-    )
-
-    fun getListWallpaperItems() = listWallpaperItems
 
     init {
 
@@ -104,9 +99,10 @@ class WallpaperListViewModel(
             } catch (ex: Exception) {
 
             }
+
             resultList.add(PickUpImage(null, image.image_url, description))
         }
-
+        val test = imageRepository.getSavedWallpaper()
         return resultList
 
     }

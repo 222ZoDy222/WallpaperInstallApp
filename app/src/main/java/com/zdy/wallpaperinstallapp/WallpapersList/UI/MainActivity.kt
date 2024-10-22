@@ -11,26 +11,28 @@ import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModels.WallpaperListFactory
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
 class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLikedViewModel {
 
 
-
+    val imagesRepository: ImagesRepository by lazy {
+        val repository = ImagesRepository(WallpaperDatabase(this))
+        repository
+    }
 
     val mViewModel: WallpaperListViewModel by lazy {
-        val repository = ImagesRepository(WallpaperDatabase(this))
-        ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperListViewModel::class.java]
+        ViewModelProvider(this, WallpaperListFactory(application,imagesRepository))[WallpaperListViewModel::class.java]
     }
 
     val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        val repository = ImagesRepository(WallpaperDatabase(this))
-        ViewModelProvider(this, WallpaperListFactory(application,repository))[WallpaperLikedListViewModel::class.java]
+        ViewModelProvider(this, WallpaperLikedListFactory(application,imagesRepository))[WallpaperLikedListViewModel::class.java]
     }
 
     lateinit var navController: NavController

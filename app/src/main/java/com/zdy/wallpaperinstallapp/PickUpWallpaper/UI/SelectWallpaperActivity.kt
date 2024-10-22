@@ -13,7 +13,7 @@ import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.SetWallpaperViewMod
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
-import com.zdy.wallpaperinstallapp.WallpapersList.ViewModels.WallpaperListFactory
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
 class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp, IGetLikedViewModel {

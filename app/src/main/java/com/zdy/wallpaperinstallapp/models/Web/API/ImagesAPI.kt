@@ -14,8 +14,11 @@ interface ImagesAPI {
         limit :String = "5",
         @Query("rating")
         rating :String = "safe",
+        @Query("id")
+        id :String = "20",
         @Query("tag")
-        tag :String = "2"
+        tag: String = "9",
+
 
     ) : Response<RequestImages>
 }

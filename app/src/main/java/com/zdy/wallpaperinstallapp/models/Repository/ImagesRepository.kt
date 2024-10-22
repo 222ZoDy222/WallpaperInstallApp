@@ -23,6 +23,12 @@ class ImagesRepository(
 
     suspend fun delete(wallpaper: LocalWallpaper) = db.getWallpaperDao().delete(wallpaper)
 
+    suspend fun alreadyHave(url: String): Boolean{
+        val wallpapers = db.getWallpaperDao().AlreadySaved(url)
+        return wallpapers.isNotEmpty()
+    }
+
+
     companion object
     {
         fun LoadBitmapByURL(view : View, url : String,target : CustomTarget<Bitmap>){

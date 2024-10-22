@@ -1,9 +1,8 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.ViewModels
+package com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
 class WallpaperListFactory(

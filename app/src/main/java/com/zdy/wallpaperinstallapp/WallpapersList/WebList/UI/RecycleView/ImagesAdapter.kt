@@ -17,14 +17,15 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<ItemRecycle>(){
         override fun areItemsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean {
-            return oldItem == newItem
-        }
-        override fun areContentsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean{
             return if(oldItem is ItemRecycle.RecycleWallpaperItem
                 && newItem is ItemRecycle.RecycleWallpaperItem
             ){
                 (oldItem).image.url == (newItem).image.url
             } else false
+
+        }
+        override fun areContentsTheSame(oldItem: ItemRecycle, newItem: ItemRecycle): Boolean{
+            return oldItem == newItem
         }
     }
 
@@ -74,6 +75,9 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
                     setOnClickListener{
                         onItemClickListener?.invoke(item.image)
                     }
+                    findViewById<ImageButton>(R.id.like_button).setOnClickListener {
+                        onItemLikeClickListener?.invoke(item.image)
+                    }
                 }
             }
         }
@@ -90,10 +94,13 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         return when(differ.currentList[position]){
             is ItemRecycle.RecycleButtonItem -> R.layout.item_button_layout
             is ItemRecycle.RecycleWallpaperItem -> R.layout.item_image_layout
+
         }
     }
 
     private var onItemClickListener: ((PickUpImage)->Unit)? = null
+
+    private var onItemLikeClickListener: ((PickUpImage)->Unit)? = null
 
     private var onRefreshClickListener: (()->Unit)? = null
 
@@ -101,8 +108,20 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         onItemClickListener = listener
     }
 
+    fun setOnItemLikeClickListener(listener : (PickUpImage) -> Unit){
+        onItemLikeClickListener = listener
+    }
+
     fun setOnRefreshClickListener(listener: () -> Unit){
         onRefreshClickListener = listener
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateImageSavedStatus(itemRecycle: ItemRecycle.RecycleWallpaperItem, saved: Boolean?) {
+        itemRecycle.image.isLiked = saved == true
+        val indexItem = differ.currentList.indexOf(itemRecycle)
+        notifyDataSetChanged()
+    }
+
 
 }

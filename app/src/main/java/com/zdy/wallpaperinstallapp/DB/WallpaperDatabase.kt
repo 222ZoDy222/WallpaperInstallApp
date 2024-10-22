@@ -9,7 +9,8 @@ import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 
 @Database(
     entities = [LocalWallpaper::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class WallpaperDatabase : RoomDatabase() {
 
