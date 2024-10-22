@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WallpapersList.WebList.UI.ListFragment">
+    tools:context=".WallpapersList.WebList.UI.ListFragmentWeb">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reloadContainer"
@@ -53,10 +53,6 @@
         app:spanCount="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

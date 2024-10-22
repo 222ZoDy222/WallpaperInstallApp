@@ -119,8 +119,7 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
     @SuppressLint("NotifyDataSetChanged")
     fun updateImageSavedStatus(itemRecycle: ItemRecycle.RecycleWallpaperItem, saved: Boolean?) {
         itemRecycle.image.isLiked = saved == true
-        val indexItem = differ.currentList.indexOf(itemRecycle)
-        notifyDataSetChanged()
+        notifyItemChanged(differ.currentList.indexOf(itemRecycle))
     }
 
     fun updateImageSavedStatus(image: PickUpImage){

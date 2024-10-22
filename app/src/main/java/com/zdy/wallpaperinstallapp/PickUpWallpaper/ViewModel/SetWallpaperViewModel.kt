@@ -12,8 +12,10 @@ import android.graphics.RectF
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.Display
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.zdy.wallpaperinstallapp.models.SetWallpaperModel.WallpaperSetter
 import kotlinx.coroutines.launch
 import java.security.AccessController.getContext
 
@@ -25,6 +27,9 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
 
     fun setWallpaper(image: Bitmap, matrix: Matrix, context: Context) = viewModelScope.launch {
 
+        // TODO: Make it !!!
+//        WallpaperSetter.setHomeWallpaper(image.toDrawable(context.resources),context)
+//        return@launch
         val imageWidth = image.width
         val imageHeight = image.height
         val screenWidth : Int

@@ -40,7 +40,7 @@ class SelectWallpaperActivity : AppCompatActivity(), IGetViewModelPickUp, IGetLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_wallpaper)
-
+        supportActionBar?.hide()
         val image = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
              intent.extras?.getParcelable(IMAGE_TAG, PickUpImage::class.java)
         } else{

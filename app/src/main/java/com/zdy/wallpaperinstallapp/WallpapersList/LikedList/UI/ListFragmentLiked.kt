@@ -5,15 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListLikedBinding
 
 
-class ListFragmentLiked : Fragment() {
+class ListFragmentLiked : FragmentList() {
 
 
-    private lateinit var mViewModel: WallpaperListViewModel
+
     lateinit var binding: FragmentListLikedBinding
 
 
@@ -27,12 +28,10 @@ class ListFragmentLiked : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // TODO: This is DRY bad practice (should create inheritor mb)
-        mViewModel = (activity as IGetViewModelList).getViewModel()
-        addListeners()
+
     }
 
-    private fun addListeners(){
+    override fun addListeners(){
 
     }
 
