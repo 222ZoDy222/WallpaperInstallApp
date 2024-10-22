@@ -1,13 +1,12 @@
 package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
@@ -16,7 +15,6 @@ import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRec
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
-import java.util.function.Predicate
 
 
 class ListFragment : Fragment() {
@@ -74,7 +72,13 @@ class ListFragment : Fragment() {
             }
 
             imagesAdapter.setOnItemLikeClickListener {
-                // TODO: Save wallpaper
+                var result = mViewModelLiked.onLikeClicked(it)
+                imagesAdapter.updateImageSavedStatus(it)
+                view?.let{view->
+                    Snackbar.make(view,result, Snackbar.LENGTH_SHORT).show()
+                }
+
+            
             }
 
         }
@@ -116,12 +120,8 @@ class ListFragment : Fragment() {
                             if(item is ItemRecycle.RecycleWallpaperItem){
                                 item.image.url?.let { url ->
                                     mViewModelLiked.alreadyHaveWallpaper(url).observe(viewLifecycleOwner){ isSaved->
-                                        var saved = isSaved
-                                        if(testIndex++ >= 3){
-                                            testIndex = 0
-                                            saved = true
-                                        }
-                                        imagesAdapter.updateImageSavedStatus(item, saved)
+
+                                        imagesAdapter.updateImageSavedStatus(item, isSaved)
                                     }
                                 }
                             }

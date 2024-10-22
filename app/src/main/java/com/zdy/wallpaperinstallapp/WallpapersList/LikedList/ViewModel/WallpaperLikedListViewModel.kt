@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import kotlinx.coroutines.launch
 
@@ -15,7 +16,33 @@ class WallpaperLikedListViewModel(
 ) : AndroidViewModel(application) {
 
 
-    fun saveWallpaper(wallpaper: LocalWallpaper) = viewModelScope.launch {
+
+    fun onLikeClicked(wallpaper: PickUpImage) : String{
+
+        if(wallpaper.isLiked){
+            // TODO: Delete
+            return "Wallpaper deleted from liked"
+        } else{
+            return saveWallpaper(wallpaper)
+        }
+
+    }
+    private fun saveWallpaper(wallpaper: PickUpImage) : String{
+        if(wallpaper.url != null && wallpaper.description != null){
+            val localWallpaper = LocalWallpaper(
+                description = wallpaper.description,
+                image_url =  wallpaper.url,
+                image_path = "",
+            )
+            // TODO: Save Image in local path
+            saveWallpaper(localWallpaper)
+            wallpaper.isLiked = true
+            return "Wallpaper saved"
+        }
+        return "Wallpaper save ERROR"
+
+    }
+    private fun saveWallpaper(wallpaper: LocalWallpaper) = viewModelScope.launch {
         imageRepository.insert(wallpaper)
     }
 

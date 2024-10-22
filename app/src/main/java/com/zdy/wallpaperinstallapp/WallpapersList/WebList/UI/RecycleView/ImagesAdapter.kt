@@ -123,5 +123,17 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun updateImageSavedStatus(image: PickUpImage){
+        for (wallpaperIndex in differ.currentList.indices){
+            val wallpaper = differ.currentList[wallpaperIndex]
+            if(wallpaper is ItemRecycle.RecycleWallpaperItem){
+                if(wallpaper.image == image){
+                    notifyItemChanged(wallpaperIndex)
+                    break
+                }
+            }
+        }
+    }
+
 
 }
