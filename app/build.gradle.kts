@@ -47,8 +47,10 @@ android {
 dependencies {
 
 
-
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    // --- Glide --- //
+    //implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.15.1")
+    //----------------//
 
     // --- Coroutines --- //
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
