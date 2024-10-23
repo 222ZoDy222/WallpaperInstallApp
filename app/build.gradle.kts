@@ -47,8 +47,11 @@ android {
 dependencies {
 
 
-
+    // --- Glide --- //
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.15.1")
+    //----------------//
 
     // --- Coroutines --- //
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
@@ -61,11 +64,9 @@ dependencies {
     //------------------------------------//
 
     // --- Room --- //
-
     implementation("androidx.room:room-ktx:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
-
     //--------------//
 
     // --- Retrofit --- //

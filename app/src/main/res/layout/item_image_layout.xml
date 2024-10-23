@@ -31,9 +31,8 @@
                 android:layout_height="200dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test_image"
+                tools:src="@drawable/test_image"
                 app:layout_constraintBottom_toBottomOf="parent"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -41,17 +40,17 @@
 
             <ImageButton
                 android:id="@+id/like_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
 
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/shape_radius"
+                android:backgroundTint="@color/black"
+                android:scaleType="centerCrop"
                 android:src="@drawable/like_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/shape_radius"
-                android:backgroundTint="@color/black"
 
                 />
 
@@ -65,7 +64,8 @@
             android:paddingHorizontal="50dp"
             android:lines="1"
             android:ellipsize="end"
-            android:text="Test Hardcored text bla bla bla bla bla bla bla bla"
+            android:layout_marginTop="5dp"
+            tools:text="Test Hardcored text bla bla bla bla bla bla bla bla"
             />
 
     </LinearLayout>

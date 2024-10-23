@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.models.ObjectsWeb
+package com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.NekoImageObjects
 
 data class Tag(
     val description: String,
