@@ -28,8 +28,8 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
     fun setWallpaper(image: Bitmap, matrix: Matrix, context: Context) = viewModelScope.launch {
 
         // TODO: Make it !!!
-//        WallpaperSetter.setHomeWallpaper(image.toDrawable(context.resources),context)
-//        return@launch
+        WallpaperSetter.setHomeWallpaper(image.toDrawable(context.resources),context)
+        return@launch
         val imageWidth = image.width
         val imageHeight = image.height
         val screenWidth : Int

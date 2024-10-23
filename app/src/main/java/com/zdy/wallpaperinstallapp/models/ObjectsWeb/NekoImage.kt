@@ -33,5 +33,6 @@ data class NekoImage(
     val source_id: String,
     val tags: List<Tag>,
     val updated_at: Double,
-    val verification: String
+    val verification: String,
+    val desc: String,
 )
