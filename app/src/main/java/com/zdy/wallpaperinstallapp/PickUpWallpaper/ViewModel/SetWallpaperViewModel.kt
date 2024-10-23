@@ -4,12 +4,15 @@ import android.app.Activity
 import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.view.Display
 import androidx.core.graphics.drawable.toDrawable
@@ -27,31 +30,32 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
 
     fun setWallpaper(image: Bitmap, matrix: Matrix, context: Context) = viewModelScope.launch {
 
-        // TODO: Make it !!!
-//        WallpaperSetter.setHomeWallpaper(image.toDrawable(context.resources),context)
-//        return@launch
-        val imageWidth = image.width
-        val imageHeight = image.height
-        val screenWidth : Int
-        val screenHeight : Int
 
-         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-             val metrics =(context as Activity).windowManager.currentWindowMetrics
-             screenWidth = metrics.bounds.width()
-             screenHeight = metrics.bounds.height()
-        } else@Suppress("DEPRECATION") {
+        SetWallpaperSettings(image,context)
 
-            val display = (context as Activity).windowManager.defaultDisplay
-             screenWidth = display.width
-             screenHeight = display.height
-         }
-
-        val values = FloatArray(9)
-        matrix.getValues(values)
-
-        val visibleRect = getWallpaperRect(imageWidth, imageHeight, screenWidth, screenHeight, matrix)
-
-        setWallpaper(image,visibleRect)
+        // First variant of setting wallpaper that crop image on Huawei
+//        val imageWidth = image.width
+//        val imageHeight = image.height
+//        val screenWidth : Int
+//        val screenHeight : Int
+//
+//         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+//             val metrics =(context as Activity).windowManager.currentWindowMetrics
+//             screenWidth = metrics.bounds.width()
+//             screenHeight = metrics.bounds.height()
+//        } else@Suppress("DEPRECATION") {
+//
+//            val display = (context as Activity).windowManager.defaultDisplay
+//             screenWidth = display.width
+//             screenHeight = display.height
+//         }
+//
+//        val values = FloatArray(9)
+//        matrix.getValues(values)
+//
+//        val visibleRect = getWallpaperRect(imageWidth, imageHeight, screenWidth, screenHeight, matrix)
+//
+//        setWallpaper(image,visibleRect)
     }
 
 
@@ -71,6 +75,27 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
             // TODO: Alert Dialog - Ошибка при установке обоев
             var t = 0
         }
+
+
+    }
+
+    private fun SetWallpaperSettings(bitmap: Bitmap, context: Context){
+
+        val bitmapPath : String = MediaStore.Images.Media.insertImage(
+            context.contentResolver,
+            bitmap,
+            "Wallpaper settings",
+            "Set wallpaper")
+
+        val bitmapUri = Uri.parse(bitmapPath)
+
+        val intent = Intent(Intent.ACTION_ATTACH_DATA).setDataAndType(
+            bitmapUri,
+            WALLPAPER_INTENT_TYPE)
+            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            .putExtra("mimeType", WALLPAPER_INTENT_TYPE)
+
+        context.startActivity(Intent.createChooser(intent,"Wallpaper settings"))
 
 
     }
@@ -100,6 +125,13 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
             visibleRect.right.toInt(),
             visibleRect.bottom.toInt()
         )
+    }
+
+
+    companion object{
+
+        const val WALLPAPER_INTENT_TYPE = "image/jpeg"
+
     }
 
 }
