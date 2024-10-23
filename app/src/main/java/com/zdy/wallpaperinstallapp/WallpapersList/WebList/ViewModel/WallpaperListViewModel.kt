@@ -6,8 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
-import com.zdy.wallpaperinstallapp.models.ObjectsWeb.RequestImages
+import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
 import kotlinx.coroutines.launch
@@ -93,16 +92,10 @@ class WallpaperListViewModel(
 
         val resultList = mutableListOf<PickUpImage>()
         for (image in requestImages.items) {
-            var description = ""
-            try {
-                description = image.tags.toString()
-            } catch (ex: Exception) {
 
-            }
-
-            resultList.add(PickUpImage(null, image.image_url, description))
+            resultList.add(PickUpImage(null, image.image_url, image.desc))
         }
-        val test = imageRepository.getSavedWallpaper()
+
         return resultList
 
     }

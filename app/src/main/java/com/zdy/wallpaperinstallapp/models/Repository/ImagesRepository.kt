@@ -10,6 +10,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.Web.RetrofitInstance
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
+import com.zdy.wallpaperinstallapp.models.Web.SSL.GlideApp
+import com.zdy.wallpaperinstallapp.models.Web.SSL.UnsafeGlideModule
 
 class ImagesRepository(
     val db: WallpaperDatabase
@@ -38,7 +40,7 @@ class ImagesRepository(
 
         fun LoadBitmapByURL(context: Context, url : String, target : CustomTarget<Bitmap>){
 
-            Glide.with(context)
+            GlideApp.with(context)
                 .asBitmap()
                 .load(url)
                 .into(target)

@@ -1,8 +1,4 @@
-package com.zdy.wallpaperinstallapp.models.ObjectsWeb
-
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
+package com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.NekoImageObjects
 
 
 data class NekoImage(
@@ -34,5 +30,5 @@ data class NekoImage(
     val tags: List<Tag>,
     val updated_at: Double,
     val verification: String,
-    val desc: String,
+
 )

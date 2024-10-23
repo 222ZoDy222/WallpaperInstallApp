@@ -6,6 +6,9 @@
 
         <item name="android:windowBackground">@drawable/application_background</item>
 
+        <item name="android:textColor">@color/textColor</item>
+        <item name="fontFamily">@font/bicubik</item>
+
     </style>
 
     <style name="Theme.WallpaperInstallApp" parent="Base.Theme.WallpaperInstallApp" />
