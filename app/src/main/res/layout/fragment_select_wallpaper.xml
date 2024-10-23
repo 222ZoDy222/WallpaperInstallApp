@@ -21,12 +21,13 @@
             android:id="@+id/background_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="matrix"
             android:background="@color/white"
             android:clickable="true"
             android:focusable="true"
+            android:scaleType="matrix"
+            tools:ignore="MissingConstraints"
             tools:src="@drawable/test_fit_image"
-            tools:ignore="MissingConstraints" />
+            tools:visibility="gone" />
 
     </FrameLayout>
 
@@ -36,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="50dp"
-        android:visibility="visible"
+        android:visibility="gone"
 
         app:layout_constraintBottom_toTopOf="@+id/image_container"
         app:layout_constraintEnd_toStartOf="@+id/image_container"
@@ -49,13 +50,37 @@
         android:layout_height="75dp"
         android:layout_marginBottom="50dp"
         android:background="@drawable/background_button_filled"
-        android:scaleType="fitCenter"
-        android:padding="15dp"
         android:contentDescription="Apply to settings"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/baseline_app_settings_alt_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/shareWallpaperButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:background="@drawable/background_button_filled"
+        android:contentDescription="@string/share_wallpaper"
+        android:padding="15dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ios_share_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsWallpaperButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settingsWallpaperButton"
+        app:layout_constraintTop_toTopOf="@+id/settingsWallpaperButton" />
+
+    <include
+        layout="@layout/like_button"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="46dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsWallpaperButton"
+        app:layout_constraintEnd_toStartOf="@+id/settingsWallpaperButton"
+        app:layout_constraintStart_toStartOf="@+id/image_container"
+        app:layout_constraintTop_toTopOf="@+id/settingsWallpaperButton" />
 
 
 

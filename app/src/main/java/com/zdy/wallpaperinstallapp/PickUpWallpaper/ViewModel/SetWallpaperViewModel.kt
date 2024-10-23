@@ -1,37 +1,52 @@
 package com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel
 
-import android.app.Activity
 import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
-import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
-import android.util.DisplayMetrics
-import android.view.Display
-import androidx.core.graphics.drawable.toDrawable
+import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.zdy.wallpaperinstallapp.models.SetWallpaperModel.WallpaperSetter
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import kotlinx.coroutines.launch
-import java.security.AccessController.getContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.Format
 
 
 class SetWallpaperViewModel(application: Application) : AndroidViewModel(application) {
 
 
+    fun getImageFormatFromUrl(url: String): Bitmap.CompressFormat? {
+        return when {
+            url.endsWith(".jpg", ignoreCase = true) || url.endsWith(".jpeg", ignoreCase = true) -> Bitmap.CompressFormat.JPEG
+            url.endsWith(".png", ignoreCase = true) -> Bitmap.CompressFormat.PNG
+            url.endsWith(".webp", ignoreCase = true) -> Bitmap.CompressFormat.WEBP
+            else -> null
+        }
+    }
+
+    fun setWallpaper(image: PickUpImage, context: Context) = viewModelScope.launch {
 
 
-    fun setWallpaper(image: Bitmap, matrix: Matrix, context: Context) = viewModelScope.launch {
+        val format = image.url?.let {
+            getImageFormatFromUrl(it)
+        }
+        if(format != null){
+            image.bitmap?.let {
+                SetWallpaperSettings(it,context,format)
+            }
+        } else{
+            // TODO: Exception Unknown Format of image
+        }
 
-
-        SetWallpaperSettings(image,context)
 
         // First variant of setting wallpaper that crop image on Huawei
 //        val imageWidth = image.width
@@ -73,35 +88,56 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
             // TODO: Alert Dialog - Обои установлены
         } catch (ex: Exception){
             // TODO: Alert Dialog - Ошибка при установке обоев
-            var t = 0
+
         }
 
 
     }
 
-    private fun SetWallpaperSettings(bitmap: Bitmap, context: Context){
+    private fun SetWallpaperSettings(bitmap: Bitmap, context: Context, format: Bitmap.CompressFormat){
 
-        val bitmapPath : String = MediaStore.Images.Media.insertImage(
-            context.contentResolver,
-            bitmap,
-            "Wallpaper settings",
-            "Set wallpaper")
+        try {
+            // Creating wallpaper image in cache directory
+            val cachePath = File(context.cacheDir, "images")
+            cachePath.mkdirs()
 
-        val bitmapUri = Uri.parse(bitmapPath)
+            val (fileName, mimeType) = when (format) {
+                Bitmap.CompressFormat.JPEG -> "$WALLPAPER_CACHE_FILE_NAME.jpg" to "image/jpeg"
+                Bitmap.CompressFormat.PNG -> "$WALLPAPER_CACHE_FILE_NAME.png" to "image/png"
+                Bitmap.CompressFormat.WEBP -> "$WALLPAPER_CACHE_FILE_NAME.webp" to "image/webp"
+                else -> "$WALLPAPER_CACHE_FILE_NAME.png" to "image/png"
+            }
 
-        val intent = Intent(Intent.ACTION_ATTACH_DATA).setDataAndType(
-            bitmapUri,
-            WALLPAPER_INTENT_TYPE)
-            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            .putExtra("mimeType", WALLPAPER_INTENT_TYPE)
+            val file = File(cachePath, fileName)
+            val fileOutputStream = FileOutputStream(file)
+            bitmap.compress(format, 100, fileOutputStream)
+            fileOutputStream.close()
 
-        context.startActivity(Intent.createChooser(intent,"Wallpaper settings"))
+            // Получаем URI файла через FileProvider
+            val bitmapUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                file
+            )
 
+            // Создаём интент для установки обоев
+            val intent = Intent(Intent.ACTION_ATTACH_DATA).setDataAndType(
+                bitmapUri,
+                mimeType
+            )
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                .putExtra("mimeType", mimeType)
+
+            context.startActivity(Intent.createChooser(intent, "Wallpaper settings"))
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
 
     }
 
     // Метод для получения смещённой области (Rect), которая будет использована для обоев
-    private fun getWallpaperRect(imageWidth: Int, imageHeight: Int, viewWidth: Int, viewHeight: Int, matrix : Matrix): Rect {
+    private fun getWallpaperRect(viewWidth: Int, viewHeight: Int, matrix : Matrix): Rect {
         // Получаем текущие значения матрицы (масштаб и смещение)
         val values = FloatArray(9)
         matrix.getValues(values)
@@ -131,6 +167,7 @@ class SetWallpaperViewModel(application: Application) : AndroidViewModel(applica
     companion object{
 
         const val WALLPAPER_INTENT_TYPE = "image/jpeg"
+        const val WALLPAPER_CACHE_FILE_NAME = "wallpaper."
 
     }
 

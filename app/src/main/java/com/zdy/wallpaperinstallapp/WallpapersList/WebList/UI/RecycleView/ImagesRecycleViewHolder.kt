@@ -3,23 +3,16 @@ package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
@@ -69,7 +62,7 @@ sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(it
                 val imageID = if(item.image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
                 val iconLike: Drawable =
                     resources.getDrawable(imageID, context.theme);
-                findViewById<ImageButton>(R.id.like_button).setImageDrawable(iconLike)
+                findViewById<ImageButton>(R.id.include_like_button).setImageDrawable(iconLike)
 
 
 

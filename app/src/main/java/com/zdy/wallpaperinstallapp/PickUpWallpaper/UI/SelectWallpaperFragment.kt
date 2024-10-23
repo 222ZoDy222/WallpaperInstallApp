@@ -23,6 +23,7 @@ import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickU
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
+import java.io.File
 import java.io.IOException
 import kotlin.math.abs
 
@@ -114,13 +115,12 @@ class SelectWallpaperFragment : Fragment() {
 
             val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
 
-            mViewModel.selectedImage.value?.bitmap?.let { bitmap ->
+            mViewModel.selectedImage.value?.let { image ->
 
                 context?.let {context ->
 
                     viewModelSetWallpaper.setWallpaper(
-                        bitmap,
-                        mViewModel.getMatrix(),
+                        image,
                         context
                     )
                 }

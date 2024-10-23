@@ -75,7 +75,7 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
                     setOnClickListener{
                         onItemClickListener?.invoke(item.image)
                     }
-                    findViewById<ImageButton>(R.id.like_button).setOnClickListener {
+                    findViewById<ImageButton>(R.id.include_like_button).setOnClickListener {
                         onItemLikeClickListener?.invoke(item.image)
                     }
                 }
