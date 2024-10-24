@@ -14,6 +14,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.utils.getBitmapFormat
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -24,24 +25,17 @@ import java.text.Format
 class SetWallpaperViewModel(application: Application) : AndroidViewModel(application) {
 
 
-    fun getImageFormatFromUrl(url: String): Bitmap.CompressFormat? {
-        return when {
-            url.endsWith(".jpg", ignoreCase = true) || url.endsWith(".jpeg", ignoreCase = true) -> Bitmap.CompressFormat.JPEG
-            url.endsWith(".png", ignoreCase = true) -> Bitmap.CompressFormat.PNG
-            url.endsWith(".webp", ignoreCase = true) -> Bitmap.CompressFormat.WEBP
-            else -> null
-        }
-    }
+
 
     fun setWallpaper(image: PickUpImage, context: Context) = viewModelScope.launch {
 
 
         val format = image.url?.let {
-            getImageFormatFromUrl(it)
+
         }
         if(format != null){
             image.bitmap?.let {
-                SetWallpaperSettings(it,context,format)
+                SetWallpaperSettings(it,context, image.url.getBitmapFormat()!!)
             }
         } else{
             // TODO: Exception Unknown Format of image

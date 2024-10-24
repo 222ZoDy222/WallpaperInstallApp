@@ -3,6 +3,7 @@ package com.zdy.wallpaperinstallapp.WallpapersList.UI
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -10,7 +11,7 @@ import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ImagesAdapter
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ImagesAdapter
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 
 open class FragmentList : Fragment() {
@@ -19,7 +20,7 @@ open class FragmentList : Fragment() {
     protected  lateinit var mViewModelLiked: WallpaperLikedListViewModel
 
     val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter()
+        ImagesAdapter(lifecycleScope)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

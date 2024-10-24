@@ -1,9 +1,10 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.RecycleView
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,9 @@ import com.zdy.wallpaperinstallapp.R
 import java.lang.IllegalArgumentException
 
 
-class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
+class ImagesAdapter(
+    private val lifecycleScope: LifecycleCoroutineScope,
+) : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
 
     private val differCallback = object : DiffUtil.ItemCallback<ItemRecycle>(){
@@ -40,7 +43,8 @@ class ImagesAdapter : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
                         R.layout.item_image_layout,
                         parent,
                         false
-                    )
+                    ),
+                    lifecycleScope
                 )
             }
             R.layout.item_button_layout ->{

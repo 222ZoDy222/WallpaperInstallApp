@@ -5,7 +5,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ItemRecycle
+import com.zdy.wallpaperinstallapp.models.LocalSave.BitmapSaveManager
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
@@ -39,6 +40,9 @@ class WallpaperLikedListViewModel(
 
             // TODO: Save Image in local path
             saveWallpaper(localWallpaper)
+            viewModelScope.launch {
+                BitmapSaveManager.saveImageWallpaper(wallpaper, application.applicationContext)
+            }
             wallpaper.isLiked = true
             return "Wallpaper saved"
         }
@@ -55,6 +59,9 @@ class WallpaperLikedListViewModel(
             )
             // TODO: Delete Image from local path
             deleteWallpaper(localWallpaper)
+            viewModelScope.launch {
+                BitmapSaveManager.deleteImageWallpaper(wallpaper, application.applicationContext)
+            }
             wallpaper.isLiked = false
             return "Wallpaper deleted"
         }

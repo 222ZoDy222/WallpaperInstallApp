@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.RecycleView
 
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 

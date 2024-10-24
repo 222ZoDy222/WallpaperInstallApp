@@ -13,7 +13,7 @@ import androidx.core.view.MenuProvider
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
 
