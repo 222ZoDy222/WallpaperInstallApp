@@ -8,6 +8,7 @@
 
         <item name="android:textColor">@color/textColor</item>
         <item name="fontFamily">@font/bicubik</item>
+        <item name="android:windowActionBar">true</item>
 
     </style>
 

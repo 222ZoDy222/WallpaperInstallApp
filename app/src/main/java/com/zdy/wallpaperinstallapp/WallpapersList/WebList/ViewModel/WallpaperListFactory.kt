@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
+@Suppress("UNCHECKED_CAST")
 class WallpaperListFactory(
     val application: Application,
     val imageRepository: ImagesRepository

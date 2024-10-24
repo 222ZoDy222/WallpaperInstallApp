@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLike
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host) as NavHostFragment
         navController = navHostFragment.navController
 
+        setupActionBarWithNavController(navController)
 
         mViewModel.getImageToPickUp().observe(this){image ->
             if(image != null){
@@ -60,8 +63,21 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLike
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
     override fun NavigateToLikedList() {
-        navController.navigate(R.id.action_listFragment_to_listFragmentLiked)
+        try{
+            navController.navigate(R.id.action_listFragment_to_listFragmentLiked)
+        }catch (ex:Exception){
+            // User fast clicked many times on button to navigate
+        }
+
+    }
+
+    override fun NavigateBack() {
+        navController.navigateUp()
     }
 
     override fun getViewModel(): WallpaperListViewModel = mViewModel

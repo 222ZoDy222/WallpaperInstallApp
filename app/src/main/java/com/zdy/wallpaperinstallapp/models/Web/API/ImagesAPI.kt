@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface ImagesAPI {
 
-    // https://api.nekosapi.com/v3/images/random
+
     @GET("/get_images")
     suspend fun GetRandomImages(
         @Query("limit")

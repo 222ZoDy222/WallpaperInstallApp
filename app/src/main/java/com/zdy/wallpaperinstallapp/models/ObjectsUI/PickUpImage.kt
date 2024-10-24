@@ -9,7 +9,10 @@ data class PickUpImage(
     var bitmap: Bitmap?,
     val url: String?,
     val description: String?,
-    var isLiked: Boolean = false
+    var isLiked: Boolean = false,
+    val image_path : String? = null,
+    val localID: Int? = null
+
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){

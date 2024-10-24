@@ -2,10 +2,17 @@ package com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
@@ -21,12 +28,41 @@ class ListFragmentWeb : FragmentList() {
         savedInstanceState: Bundle?
     ): View {
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+
+
 
         binding = FragmentListBinding.inflate(inflater)
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val menuHost : MenuHost = requireActivity()
+
+        menuHost.invalidateMenu()
+
+        menuHost.addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+
+                menuInflater.inflate(R.menu.action_bar_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId){
+                    R.id.goLiked_button ->{
+                        (menuHost as INavigate).NavigateToLikedList()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+        }, viewLifecycleOwner)
+        (requireActivity() as AppCompatActivity).supportActionBar?.show()
+
+    }
 
 
 

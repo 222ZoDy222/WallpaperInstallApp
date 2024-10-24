@@ -25,6 +25,11 @@ interface WallpaperImageDao {
     @Delete
     suspend fun delete(wallpaper: LocalWallpaper)
 
+    @Query(
+        "DELETE FROM WallpaperImages WHERE image_url = :url"
+    )
+    suspend fun deleteByURL(url: String)
+
 
     @Query(
         "SELECT * FROM WallpaperImages WHERE image_url=:url"

@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
@@ -17,11 +18,11 @@ class WallpaperLikedListViewModel(
 
 
 
+
     fun onLikeClicked(wallpaper: PickUpImage) : String{
 
         if(wallpaper.isLiked){
-            // TODO: Delete
-            return "Wallpaper deleted from liked"
+            return deleteWallpaper(wallpaper)
         } else{
             return saveWallpaper(wallpaper)
         }
@@ -30,18 +31,36 @@ class WallpaperLikedListViewModel(
     private fun saveWallpaper(wallpaper: PickUpImage) : String{
         if(wallpaper.url != null && wallpaper.description != null){
             val localWallpaper = LocalWallpaper(
+                id = wallpaper.localID,
                 description = wallpaper.description,
                 image_url =  wallpaper.url,
                 image_path = "",
             )
+
             // TODO: Save Image in local path
             saveWallpaper(localWallpaper)
             wallpaper.isLiked = true
             return "Wallpaper saved"
         }
         return "Wallpaper save ERROR"
-
     }
+
+    private fun deleteWallpaper(wallpaper: PickUpImage): String{
+        if(wallpaper.url != null && wallpaper.description != null){
+            val localWallpaper = LocalWallpaper(
+                id = wallpaper.localID,
+                description = wallpaper.description,
+                image_url =  wallpaper.url,
+                image_path = "",
+            )
+            // TODO: Delete Image from local path
+            deleteWallpaper(localWallpaper)
+            wallpaper.isLiked = false
+            return "Wallpaper deleted"
+        }
+        return "Wallpaper delete ERROR"
+    }
+
     private fun saveWallpaper(wallpaper: LocalWallpaper) = viewModelScope.launch {
         imageRepository.insert(wallpaper)
     }
@@ -49,7 +68,9 @@ class WallpaperLikedListViewModel(
     fun getSavedWallpaper() = imageRepository.getSavedWallpaper()
 
     fun deleteWallpaper(wallpaper: LocalWallpaper) = viewModelScope.launch {
-        imageRepository.delete(wallpaper)
+        if(wallpaper.id != null)
+            imageRepository.delete(wallpaper)
+        else imageRepository.deleteByUrl(wallpaper.image_url)
     }
 
     fun alreadyHaveWallpaper(url: String) : LiveData<Boolean>{
@@ -62,6 +83,25 @@ class WallpaperLikedListViewModel(
 
         return result
 
+
+    }
+
+    fun ConvertImages(locaWallpapers : List<LocalWallpaper>) : List<ItemRecycle> {
+
+        val resultList = mutableListOf<ItemRecycle>()
+        for (image in locaWallpapers) {
+            // TODO: Make image bitmap by path
+            val pickUpImage = PickUpImage(null,
+                image.image_url,
+                image.description,
+                isLiked = true,
+                image_path = null,
+                localID = image.id)
+
+            resultList.add(ItemRecycle.RecycleWallpaperItem(pickUpImage))
+        }
+
+        return resultList
 
     }
 

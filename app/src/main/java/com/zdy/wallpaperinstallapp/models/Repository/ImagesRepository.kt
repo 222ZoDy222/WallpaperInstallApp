@@ -17,13 +17,15 @@ class ImagesRepository(
     val db: WallpaperDatabase
 ) {
 
-    suspend fun getRandomImages(limit: Int = 29) = RetrofitInstance.api.GetRandomImages(limit.toString())
+    suspend fun getRandomImages(limit: Int = 31) = RetrofitInstance.api.GetRandomImages(limit.toString())
 
     suspend fun insert(wallpaper: LocalWallpaper) = db.getWallpaperDao().insert(wallpaper)
 
     fun getSavedWallpaper() = db.getWallpaperDao().getSavedWallpapers()
 
     suspend fun delete(wallpaper: LocalWallpaper) = db.getWallpaperDao().delete(wallpaper)
+
+    suspend fun deleteByUrl(url: String) = db.getWallpaperDao().deleteByURL(url)
 
     suspend fun alreadyHave(url: String): Boolean{
         val wallpapers = db.getWallpaperDao().AlreadySaved(url)

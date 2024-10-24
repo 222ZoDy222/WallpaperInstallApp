@@ -4,4 +4,6 @@ interface INavigate {
 
     fun NavigateToLikedList()
 
+    fun NavigateBack()
+
 }
