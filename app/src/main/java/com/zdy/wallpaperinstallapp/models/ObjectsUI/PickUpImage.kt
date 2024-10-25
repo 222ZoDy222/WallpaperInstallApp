@@ -7,10 +7,9 @@ import android.os.Parcelable
 
 data class PickUpImage(
     var bitmap: Bitmap?,
-    val url: String?,
+    val url: String,
     val description: String?,
     var isLiked: Boolean = false,
-    val image_path : String? = null,
     val localID: Int? = null
 
 ) : Parcelable{
@@ -21,7 +20,7 @@ data class PickUpImage(
             @Suppress("DEPRECATION")
             parcel.readParcelable(Bitmap::class.java.classLoader)
         },
-        parcel.readString(),
+        parcel.readString()!!,
         parcel.readString(),
     )
 

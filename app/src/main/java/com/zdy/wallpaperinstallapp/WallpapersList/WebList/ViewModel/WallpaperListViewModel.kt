@@ -88,17 +88,7 @@ class WallpaperListViewModel(
     }
 
 
-    fun ConvertImages(requestImages: RequestImages): List<PickUpImage> {
 
-        val resultList = mutableListOf<PickUpImage>()
-        for (image in requestImages.items) {
-
-            resultList.add(PickUpImage(null, image.image_url, image.desc))
-        }
-
-        return resultList
-
-    }
 
 
     companion object{

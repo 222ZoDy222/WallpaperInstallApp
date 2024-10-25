@@ -6,18 +6,24 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import java.io.File
 
-class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(application) {
+class PickUpWallpaperViewModel(private val application: Application) : AndroidViewModel(application) {
 
 
     var selectedImage : MutableLiveData<PickUpImage> = MutableLiveData()
 
     private var backgroundDrawable : MutableLiveData<Drawable> = MutableLiveData()
+    fun getBackgroundDrawable() = backgroundDrawable
+
 
     fun SelectImage(image : PickUpImage){
         val bitmap = loadBitmapFromFile()
@@ -25,18 +31,34 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
             image.bitmap = it
         }
         deleteSavedImage()
-
         selectedImage.value = image
+
         setBackgroundImage()
     }
 
-    fun getUrl(): String? {
-        return selectedImage.value?.url
+
+    private fun setDrawableImage(image: PickUpImage){
+
+        if(image.bitmap != null){
+            backgroundDrawable.value = image.bitmap!!.toDrawable(application.resources)
+        }
+        else {
+            loadWeb(image)
+        }
+
     }
 
+    private fun loadWeb(image: PickUpImage){
+        ImagesRepository.LoadBitmapByURL(application.applicationContext,image.url, object : CustomTarget<Bitmap>(){
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                selectedImage.value?.bitmap = resource
+                backgroundDrawable.value = resource.toDrawable(application.resources)
+            }
 
+            override fun onLoadCleared(placeholder: Drawable?) {}
 
-    fun getBackgroundDrawable() = backgroundDrawable
+        })
+    }
 
     private fun setBackgroundImage(){
 
@@ -50,8 +72,7 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
                 backgroundDrawable.value = drawable
 
             } else{
-                // Load image by URL
-                backgroundDrawable.value = null
+                loadWeb(selectedImage.value!!)
 
             }
         }
@@ -136,8 +157,31 @@ class PickUpWallpaperViewModel(application: Application) : AndroidViewModel(appl
         return matrix
     }
 
+    fun setImageToFullScreen(drawable: Drawable){
+        val imageWidth = drawable.intrinsicWidth
+        val imageHeight = drawable.intrinsicHeight
+
+        val viewWidth = application.applicationContext.resources.displayMetrics.widthPixels
+        val viewHeight = application.applicationContext.resources.displayMetrics.heightPixels
+
+        val scaleX = viewWidth.toFloat() / imageWidth.toFloat()
+        val scaleY = viewHeight.toFloat() / imageHeight.toFloat()
+        val scale = maxOf(scaleX, scaleY)
+
+        val dx = (viewWidth - imageWidth * scale) / 2
+        val dy = (viewHeight - imageHeight * scale) / 2
+
+        matrix.setScale(scale, scale)
+        matrix.postTranslate(dx, dy)
+
+        // Устанавливаем максимальные смещения по осям
+        maxX = viewWidth - imageWidth * scale
+        maxY = viewHeight - imageHeight * scale
+    }
+
     // Начальная установка изображения на полный экран
     fun setImageToFullScreen(imageWidth: Int, imageHeight: Int, viewWidth: Int, viewHeight: Int) {
+
         val scaleX = viewWidth.toFloat() / imageWidth.toFloat()
         val scaleY = viewHeight.toFloat() / imageHeight.toFloat()
         val scale = maxOf(scaleX, scaleY)

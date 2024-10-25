@@ -13,7 +13,6 @@ import androidx.core.view.MenuProvider
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
-import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ItemRecycle
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
 
@@ -23,13 +22,12 @@ class ListFragmentWeb : FragmentList() {
 
     lateinit var binding : FragmentListBinding
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-
 
         binding = FragmentListBinding.inflate(inflater)
         return binding.root
@@ -78,9 +76,12 @@ class ListFragmentWeb : FragmentList() {
 
     override fun addListeners(){
 
+        super.addListeners()
+
         mViewModel.getImageRequest().observe(viewLifecycleOwner){imageRequest ->
             binding.reloadContainer.visibility = if (imageRequest == null) View.VISIBLE else View.GONE
             binding.loadbar.visibility = View.GONE
+
         }
 
         binding.reloadButton.setOnClickListener {
@@ -88,30 +89,13 @@ class ListFragmentWeb : FragmentList() {
         }
 
 
+
+
         mViewModel.getImageRequest().observe(viewLifecycleOwner){response->
             when(response){
                 is Resource.Success ->{
                     response.data?.let {
-                        imagesAdapter.differ.submitList(null)
-                        val newList = mViewModel.ConvertImages(it)
-                        val listItems = mutableListOf<ItemRecycle>()
-                        for(i in newList){
-                            listItems.add(ItemRecycle.RecycleWallpaperItem(i))
-                        }
-                        listItems.add(ItemRecycle.RecycleButtonItem())
-                        imagesAdapter.differ.submitList(listItems)
-                        // Update already Liked images
-                        listItems.forEach {item->
-                            if(item is ItemRecycle.RecycleWallpaperItem){
-                                item.image.url?.let { url ->
-                                    mViewModelLiked.alreadyHaveWallpaper(url).observe(viewLifecycleOwner){ isSaved->
-
-                                        imagesAdapter.updateImageSavedStatus(item, isSaved)
-                                    }
-                                }
-                            }
-
-                        }
+                        recycleViewModel.setWebList(it)
                     }
                     Loading(false)
                 }

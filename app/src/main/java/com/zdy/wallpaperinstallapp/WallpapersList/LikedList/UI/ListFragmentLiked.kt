@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
+import androidx.lifecycle.ViewModelProvider
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ViewModel.RecycleViewModel
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
@@ -46,12 +49,9 @@ class ListFragmentLiked : FragmentList() {
     }
 
     override fun addListeners(){
-
+        super.addListeners()
         mViewModelLiked.getSavedWallpaper().observe(viewLifecycleOwner){wallpapers->
-
-            val images = mViewModelLiked.ConvertImages(wallpapers)
-            imagesAdapter.differ.submitList(images)
-
+            recycleViewModel.setLocalList(wallpapers)
         }
 
     }

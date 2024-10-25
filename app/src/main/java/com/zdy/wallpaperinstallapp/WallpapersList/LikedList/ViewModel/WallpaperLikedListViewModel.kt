@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.ItemRecycle
+import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.LocalSave.BitmapSaveManager
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
@@ -80,36 +80,21 @@ class WallpaperLikedListViewModel(
         else imageRepository.deleteByUrl(wallpaper.image_url)
     }
 
-    fun alreadyHaveWallpaper(url: String) : LiveData<Boolean>{
+//    fun alreadyHaveWallpaper(url: String) : LiveData<Boolean>{
+//        val result = MutableLiveData<Boolean>()
+//        viewModelScope.launch {
+//            result.value = imageRepository.alreadyHave(url)
+//        }
+//        return result
+//
+//    }
+
+    suspend fun alreadyHaveWallpaper(url: String) : MutableLiveData<Boolean> {
         val result = MutableLiveData<Boolean>()
-
-        viewModelScope.launch {
-
-            result.value = imageRepository.alreadyHave(url)
-        }
-
+        result.value = imageRepository.alreadyHave(url)
         return result
-
-
     }
 
-    fun ConvertImages(locaWallpapers : List<LocalWallpaper>) : List<ItemRecycle> {
 
-        val resultList = mutableListOf<ItemRecycle>()
-        for (image in locaWallpapers) {
-            // TODO: Make image bitmap by path
-            val pickUpImage = PickUpImage(null,
-                image.image_url,
-                image.description,
-                isLiked = true,
-                image_path = null,
-                localID = image.id)
-
-            resultList.add(ItemRecycle.RecycleWallpaperItem(pickUpImage))
-        }
-
-        return resultList
-
-    }
 
 }

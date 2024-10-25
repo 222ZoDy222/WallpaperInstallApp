@@ -35,21 +35,12 @@ class ImagesRepository(
 
     companion object
     {
-        fun LoadBitmapByURL(view : View, url : String,target : CustomTarget<Bitmap>){
-            LoadBitmapByURL(view.context,url,target)
-        }
-
-
         fun LoadBitmapByURL(context: Context, url : String, target : CustomTarget<Bitmap>){
-
             GlideApp.with(context)
                 .asBitmap()
                 .load(url)
                 .into(target)
-
         }
-
-
     }
 
 

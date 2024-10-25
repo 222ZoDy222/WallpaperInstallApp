@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.WallpapersList.RecycleView
+package com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.UI
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -80,7 +80,7 @@ class ImagesAdapter(
                         onItemClickListener?.invoke(item.image)
                     }
                     findViewById<ImageButton>(R.id.include_like_button).setOnClickListener {
-                        onItemLikeClickListener?.invoke(item.image)
+                        onItemLikeClickListener?.invoke(item)
                     }
                 }
             }
@@ -104,7 +104,7 @@ class ImagesAdapter(
 
     private var onItemClickListener: ((PickUpImage)->Unit)? = null
 
-    private var onItemLikeClickListener: ((PickUpImage)->Unit)? = null
+    private var onItemLikeClickListener: ((ItemRecycle.RecycleWallpaperItem)->Unit)? = null
 
     private var onRefreshClickListener: (()->Unit)? = null
 
@@ -112,7 +112,7 @@ class ImagesAdapter(
         onItemClickListener = listener
     }
 
-    fun setOnItemLikeClickListener(listener : (PickUpImage) -> Unit){
+    fun setOnItemLikeClickListener(listener : (ItemRecycle.RecycleWallpaperItem) -> Unit){
         onItemLikeClickListener = listener
     }
 
@@ -120,11 +120,6 @@ class ImagesAdapter(
         onRefreshClickListener = listener
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateImageSavedStatus(itemRecycle: ItemRecycle.RecycleWallpaperItem, saved: Boolean?) {
-        itemRecycle.image.isLiked = saved == true
-        notifyItemChanged(differ.currentList.indexOf(itemRecycle))
-    }
 
     fun updateImageSavedStatus(image: PickUpImage){
         for (wallpaperIndex in differ.currentList.indices){
@@ -136,6 +131,11 @@ class ImagesAdapter(
                 }
             }
         }
+    }
+
+    fun updateImage(item: ItemRecycle.RecycleWallpaperItem){
+        val index = differ.currentList.indexOf(item)
+        notifyItemChanged(index)
     }
 
 
