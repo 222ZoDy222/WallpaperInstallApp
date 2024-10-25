@@ -2,16 +2,19 @@ package com.zdy.wallpaperinstallapp.models.Repository
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.view.View
-import com.bumptech.glide.Glide
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.TYPE_ETHERNET
+import android.net.ConnectivityManager.TYPE_WIFI
+import android.net.ConnectivityManager.TYPE_MOBILE
+import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
+import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
+import android.os.Build
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.Web.RetrofitInstance
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.Web.SSL.GlideApp
-import com.zdy.wallpaperinstallapp.models.Web.SSL.UnsafeGlideModule
 
 class ImagesRepository(
     val db: WallpaperDatabase
@@ -41,6 +44,35 @@ class ImagesRepository(
                 .load(url)
                 .into(target)
         }
+
+        private fun hasInternetConnection(context: Context): Boolean {
+            val connectivityManager = context.getSystemService(
+                Context.CONNECTIVITY_SERVICE
+            ) as ConnectivityManager
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val activeNetwork = connectivityManager.activeNetwork ?: return false
+                val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+                return when {
+                    capabilities.hasTransport(TRANSPORT_WIFI) -> true
+                    capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+                    capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            } else {
+
+                @Suppress("DEPRECATION")
+                connectivityManager.activeNetworkInfo?.run {
+                    return when(type) {
+                        TYPE_WIFI -> true
+                        TYPE_MOBILE -> true
+                        TYPE_ETHERNET -> true
+                        else -> false
+                    }
+                }
+            }
+            return false
+        }
+
     }
 
 
