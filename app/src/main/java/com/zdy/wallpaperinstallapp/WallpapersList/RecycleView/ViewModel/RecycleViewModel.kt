@@ -13,6 +13,7 @@ import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.Model.RecycleConve
 import com.zdy.wallpaperinstallapp.WallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.LocalSave.BitmapSaveManager
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
+import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import kotlinx.coroutines.launch
@@ -62,7 +63,20 @@ class RecycleViewModel(
     fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem){
         likedListViewModel.onLikeClicked(item.image)
         onUpdateItem?.invoke(item)
+    }
 
+
+    fun checkForUpdates(image: PickUpImage){
+        viewModelScope.launch{
+            itemsRecycle.value?.forEach itemScope@{item->
+                if(item is ItemRecycle.RecycleWallpaperItem){
+                    if(item.image.url == image.url){
+                        item.image.isLiked = image.isLiked
+                        onUpdateItem?.invoke(item)
+                    }
+                }
+            }
+        }
     }
 
     // Load local or Web images
@@ -70,28 +84,29 @@ class RecycleViewModel(
 
         viewModelScope.launch {
             itemsRecycle.value?.forEach itemScope@{item->
-                if(item !is ItemRecycle.RecycleWallpaperItem) return@itemScope
-                val wallpaperItem = item as ItemRecycle.RecycleWallpaperItem
-                // try to get saved bitmap
-                val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, application.applicationContext)
-
-                // it's already exist image, so it's also liked image
-                if(bitmap != null){
-                    item.image.isLiked = true
-                    item.image.bitmap = bitmap
-                    onUpdateItem?.invoke(item)
-                    return@itemScope
-                } else{
-                    loadWeb(item)
-                    return@itemScope
-                }
-
-
-
-
+                loadImage(item)
             }
         }
+    }
+    private suspend fun loadImage(item: ItemRecycle){
+        if(item !is ItemRecycle.RecycleWallpaperItem) return
+        loadImage(item)
+    }
+    private suspend fun loadImage(item: ItemRecycle.RecycleWallpaperItem){
+        val wallpaperItem = item as ItemRecycle.RecycleWallpaperItem
+        // try to get saved bitmap
+        val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, application.applicationContext)
 
+        // it's already exist image, so it's also liked image
+        if(bitmap != null){
+            item.image.isLiked = true
+            item.image.bitmap = bitmap
+            onUpdateItem?.invoke(item)
+            return
+        } else{
+            loadWeb(item)
+            return
+        }
     }
 
     private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem) {

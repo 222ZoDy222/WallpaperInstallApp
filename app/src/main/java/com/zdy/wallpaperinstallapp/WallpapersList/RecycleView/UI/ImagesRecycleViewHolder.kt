@@ -46,7 +46,7 @@ sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(it
                 val iconLike: Drawable =
                     resources.getDrawable(imageID, context.theme);
                 findViewById<ImageButton>(R.id.include_like_button).setImageDrawable(iconLike)
-                
+
             }
 
         }

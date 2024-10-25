@@ -1,6 +1,7 @@
 package com.zdy.wallpaperinstallapp.PickUpWallpaper.UI
 
 import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
+import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
 
 
@@ -51,8 +54,10 @@ class SelectWallpaperFragment : Fragment() {
 
 
     }
+
+
     @RequiresApi(Build.VERSION_CODES.N)
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +66,6 @@ class SelectWallpaperFragment : Fragment() {
         // If user clicked so fast
         binding.backgroundImage.viewTreeObserver.addOnGlobalLayoutListener { mViewModel.updateDrawableImage() }
 
-        //TODO: убрать эту кнопку, если еще не загружена картинка
         binding.settingsWallpaperButton.setOnClickListener {
 
             val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
@@ -73,6 +77,28 @@ class SelectWallpaperFragment : Fragment() {
                         context
                     )
                 }
+            }
+        }
+
+        binding.likeButtonInclude.likeButton.setOnClickListener {
+            mViewModel.onLikeImage()
+        }
+
+        binding.shareWallpaperButton.setOnClickListener {
+            val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
+            mViewModel.selectedImage.value?.let {image->
+                context?.let {context->
+                    viewModelSetWallpaper.ShareWallpaper(image,context)
+                }
+            }
+        }
+
+        mViewModel.selectedImage.observe(viewLifecycleOwner) { image ->
+            image?.let {
+                val imageID = if(image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
+                val iconLike: Drawable =
+                    resources.getDrawable(imageID, context?.theme);
+                binding.likeButtonInclude.likeButton.setImageDrawable(iconLike)
             }
         }
 
@@ -97,7 +123,7 @@ class SelectWallpaperFragment : Fragment() {
         val visibleValue = if(value) View.VISIBLE else View.INVISIBLE
         binding.settingsWallpaperButton.visibility = visibleValue
         binding.shareWallpaperButton.visibility = visibleValue
-
+        binding.likeButtonInclude.likeButton.visibility = visibleValue
     }
 
 

@@ -60,8 +60,10 @@ class WallpaperListViewModel(
     private val imageToPickUp = MutableLiveData<PickUpImage>()
     fun getImageToPickUp() : MutableLiveData<PickUpImage> = imageToPickUp
 
-    fun PickUpImage(pickImage: PickUpImage){
-        SaveImage(pickImage)
+    fun PickUpImage(pickImage: PickUpImage?){
+        if(pickImage != null){
+            SaveImage(pickImage)
+        }
         imageToPickUp.value = pickImage
     }
 

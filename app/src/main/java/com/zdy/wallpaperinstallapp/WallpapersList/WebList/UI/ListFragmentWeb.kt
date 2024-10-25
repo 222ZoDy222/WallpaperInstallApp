@@ -89,8 +89,6 @@ class ListFragmentWeb : FragmentList() {
         }
 
 
-
-
         mViewModel.getImageRequest().observe(viewLifecycleOwner){response->
             when(response){
                 is Resource.Success ->{

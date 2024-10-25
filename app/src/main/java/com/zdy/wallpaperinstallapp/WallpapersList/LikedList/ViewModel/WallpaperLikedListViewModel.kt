@@ -38,7 +38,6 @@ class WallpaperLikedListViewModel(
                 image_path = "",
             )
 
-            // TODO: Save Image in local path
             saveWallpaper(localWallpaper)
             viewModelScope.launch {
                 BitmapSaveManager.saveImageWallpaper(wallpaper, application.applicationContext)
@@ -57,7 +56,6 @@ class WallpaperLikedListViewModel(
                 image_url =  wallpaper.url,
                 image_path = "",
             )
-            // TODO: Delete Image from local path
             deleteWallpaper(localWallpaper)
             viewModelScope.launch {
                 BitmapSaveManager.deleteImageWallpaper(wallpaper, application.applicationContext)

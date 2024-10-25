@@ -2,39 +2,27 @@ package com.zdy.wallpaperinstallapp.WallpapersList.UI
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.UI.WallpaperActivity
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
-import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.IGetViewModelList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 
-class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLikedViewModel {
+class MainActivity : WallpaperActivity(), INavigate, IGetViewModelList {
 
 
-    val imagesRepository: ImagesRepository by lazy {
-        val repository = ImagesRepository(WallpaperDatabase(this))
-        repository
-    }
+
 
     val mViewModel: WallpaperListViewModel by lazy {
         ViewModelProvider(this, WallpaperListFactory(application,imagesRepository))[WallpaperListViewModel::class.java]
-    }
-
-    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        ViewModelProvider(this, WallpaperLikedListFactory(application,imagesRepository))[WallpaperLikedListViewModel::class.java]
     }
 
     lateinit var navController: NavController
@@ -49,17 +37,7 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLike
 
         setupActionBarWithNavController(navController)
 
-        mViewModel.getImageToPickUp().observe(this){image ->
-            if(image != null){
-                val pickUpImage = PickUpImage(null, image.url, image.description)
-                val bundle = Bundle()
-                bundle.putParcelable(SelectWallpaperActivity.IMAGE_TAG, pickUpImage)
-                val intent = Intent(this,SelectWallpaperActivity::class.java)
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
 
-        }
 
     }
 
@@ -81,8 +59,6 @@ class MainActivity : AppCompatActivity(), INavigate, IGetViewModelList, IGetLike
     }
 
     override fun getViewModel(): WallpaperListViewModel = mViewModel
-
-    override fun getLikedViewModel(): WallpaperLikedListViewModel = mViewModelLiked
 
 
 }

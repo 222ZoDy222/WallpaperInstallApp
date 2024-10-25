@@ -11,12 +11,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import java.io.File
 
-class PickUpWallpaperViewModel(private val application: Application) : AndroidViewModel(application) {
+class PickUpWallpaperViewModel(
+    private val application: Application,
+    private val likedListViewModel: WallpaperLikedListViewModel
+) : AndroidViewModel(application) {
 
 
     var selectedImage : MutableLiveData<PickUpImage> = MutableLiveData()
@@ -24,6 +28,14 @@ class PickUpWallpaperViewModel(private val application: Application) : AndroidVi
     private var backgroundDrawable : MutableLiveData<Drawable> = MutableLiveData()
     fun getBackgroundDrawable() = backgroundDrawable
 
+
+    fun onLikeImage(){
+        selectedImage.value?.let {
+            likedListViewModel.onLikeClicked(selectedImage.value!!)
+            selectedImage.value = selectedImage.value
+            var t = 0
+        }
+    }
 
     fun SelectImage(image : PickUpImage){
         val bitmap = loadBitmapFromFile()

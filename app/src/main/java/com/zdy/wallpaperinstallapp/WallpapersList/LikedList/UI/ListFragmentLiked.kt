@@ -41,7 +41,6 @@ class ListFragmentLiked : FragmentList() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-
         val menuHost: MenuHost = requireActivity()
         menuHost.invalidateMenu()
 
