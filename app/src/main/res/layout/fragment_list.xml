@@ -43,6 +43,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <ProgressBar
         android:id="@+id/loadbar"
+        android:indeterminateDrawable="@drawable/loading_progressbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:visibility="gone"/>
@@ -54,8 +55,10 @@
         tools:listitem="@layout/item_image_layout"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
+        android:nestedScrollingEnabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

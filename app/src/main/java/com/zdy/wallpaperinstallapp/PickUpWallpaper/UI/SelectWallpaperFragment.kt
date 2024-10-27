@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
 
 
@@ -99,6 +98,7 @@ class SelectWallpaperFragment : Fragment() {
                 val iconLike: Drawable =
                     resources.getDrawable(imageID, context?.theme);
                 binding.likeButtonInclude.likeButton.setImageDrawable(iconLike)
+                binding.bottomSheetInclude.descriptionText.text = image.description
             }
         }
 

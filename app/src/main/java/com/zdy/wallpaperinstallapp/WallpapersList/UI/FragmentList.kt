@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.UI.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.Interfaces.IGetLikedViewModel
@@ -65,6 +68,7 @@ open class FragmentList : Fragment() {
                 bundle.putParcelable(SelectWallpaperActivity.WALLPAPER_TAG, image)
                 val intent = Intent(context, SelectWallpaperActivity::class.java)
                 intent.putExtras(bundle)
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 mViewModel.PickUpImage(null)
                 selectWallpaperLauncher?.launch(intent)
             }
@@ -104,8 +108,20 @@ open class FragmentList : Fragment() {
 
         val recycle = view?.findViewById<RecyclerView>(R.id.rcViewAdapter)
         recycle?.let {
+
+            it.setHasFixedSize(true)
+            val gridManager = GridLayoutManager(activity,2)
+//            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+//                override fun getSpanSize(position: Int): Int {
+//                    return if(imagesAdapter.isButtonType(position)) 2 else 1
+//                }
+//
+//            }
+            it.layoutManager = gridManager
             it.adapter = imagesAdapter
-            it.layoutManager = GridLayoutManager(activity,2)
+
+
+            //it.layoutManager = LinearLayoutManager(activity)
         }
 
         imagesAdapter.setOnItemClickListener { image->

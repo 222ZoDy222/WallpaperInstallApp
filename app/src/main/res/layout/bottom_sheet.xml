@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Animation.Design.BottomSheetDialog"
+    android:id="@+id/bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_peekHeight="24dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@drawable/bottom_sheet_header"
+
+        android:scaleType="centerInside"
+        android:src="@drawable/baseline_arrow_drop_up_24" />
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/buttonBackground"
+        android:paddingTop="50dp"
+        android:paddingBottom="100dp"
+        android:paddingHorizontal="20dp"
+        android:text="Description blaDescription blaDescription blaDescription blaDescription blaDescription blaDescription blaDescription bla"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

@@ -98,7 +98,13 @@ class ImagesAdapter(
         return when(differ.currentList[position]){
             is ItemRecycle.RecycleButtonItem -> R.layout.item_button_layout
             is ItemRecycle.RecycleWallpaperItem -> R.layout.item_image_layout
+        }
+    }
 
+    fun isButtonType(position: Int) : Boolean{
+        return when(differ.currentList[position]){
+            is ItemRecycle.RecycleButtonItem -> true
+            is ItemRecycle.RecycleWallpaperItem -> false
         }
     }
 

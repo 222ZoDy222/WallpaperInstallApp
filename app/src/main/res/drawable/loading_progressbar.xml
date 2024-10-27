@@ -15,7 +15,7 @@
 
         <gradient android:startColor="@color/white"
             android:angle="90"
-            android:endColor="@color/bottomBackground"/>
+            android:endColor="@color/buttonBackground"/>
 
     </shape>
 
