@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.Interfaces.IGetViewModelPickUp
 import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.PickUpWallpaperViewModel
+import com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel.SetWallpaperViewModel
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.FragmentSelectWallpaperBinding
 
@@ -22,7 +23,7 @@ class SelectWallpaperFragment : Fragment() {
     lateinit var binding : FragmentSelectWallpaperBinding
 
     lateinit var mViewModel : PickUpWallpaperViewModel
-
+    lateinit var mViewModelSetWallpaper : SetWallpaperViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,17 +62,14 @@ class SelectWallpaperFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mViewModel = (requireActivity() as IGetViewModelPickUp).getViewModelPickUp()
-
+        mViewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
         // If user clicked so fast
         binding.backgroundImage.viewTreeObserver.addOnGlobalLayoutListener { mViewModel.updateDrawableImage() }
 
         binding.settingsWallpaperButton.setOnClickListener {
-
-            val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
-
             mViewModel.selectedImage.value?.let { image ->
                 context?.let {context ->
-                    viewModelSetWallpaper.setWallpaper(
+                    mViewModelSetWallpaper.setWallpaper(
                         image,
                         context
                     )
@@ -84,10 +82,10 @@ class SelectWallpaperFragment : Fragment() {
         }
 
         binding.shareWallpaperButton.setOnClickListener {
-            val viewModelSetWallpaper = (requireActivity() as IGetViewModelPickUp).getViewModelSet()
+
             mViewModel.selectedImage.value?.let {image->
                 context?.let {context->
-                    viewModelSetWallpaper.ShareWallpaper(image,context)
+                    mViewModelSetWallpaper.ShareWallpaper(image,context)
                 }
             }
         }
@@ -101,6 +99,7 @@ class SelectWallpaperFragment : Fragment() {
                 binding.bottomSheetInclude.descriptionText.text = image.description
             }
         }
+
 
         // Listener for moving wallpaper image
         binding.backgroundImage.setOnTouchListener { _, event ->
@@ -118,6 +117,7 @@ class SelectWallpaperFragment : Fragment() {
         }
 
     }
+
 
     private fun showButtons(value: Boolean){
         val visibleValue = if(value) View.VISIBLE else View.INVISIBLE

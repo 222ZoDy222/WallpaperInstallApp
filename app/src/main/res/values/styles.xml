@@ -1,17 +1,37 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.WallpaperInstallApp" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <item name="android:windowBackground">@drawable/application_background</item>
-
+        <item name="colorPrimary">@color/white</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="fontFamily">@font/bicubik</item>
-        <item name="android:windowActionBar">true</item>
 
+        <item name="android:windowActionBar">true</item>
+        <item name="android:textViewStyle">@style/BicubikTextViewStyle</item>
+
+        <!-- Action bar initialize font -->
+        <item name="actionBarStyle">@style/AppTheme.ActionBar</item>
 
     </style>
+
+
+    <!-- ============================================= Action bar initialize font ============================================= -->
+    <style name="AppTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="titleTextStyle">@style/AppTheme.ActionBarText</item>
+        <item name="background">@color/black</item>
+    </style>
+
+    <style name="AppTheme.ActionBarText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:fontFamily">@font/bicubik</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!-- ====================================================================================================================== -->
+
+    <style name="BicubikTextViewStyle">
+        <item name="android:fontFamily">@font/bicubik</item>
+    </style>
+
 
     <style name="Theme.WallpaperInstallApp" parent="Base.Theme.WallpaperInstallApp" />
 

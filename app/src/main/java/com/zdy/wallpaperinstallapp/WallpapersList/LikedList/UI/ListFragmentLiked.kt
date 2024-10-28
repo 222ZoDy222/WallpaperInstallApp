@@ -51,7 +51,13 @@ class ListFragmentLiked : FragmentList() {
         super.addListeners()
         mViewModelLiked.getSavedWallpaper().observe(viewLifecycleOwner){wallpapers->
             recycleViewModel.setLocalList(wallpapers)
+            setHaveWallpapers(wallpapers.isNotEmpty())
         }
     }
+
+    private fun setHaveWallpapers(value: Boolean){
+        binding.noLikedText.visibility = if(value) View.GONE else View.VISIBLE
+    }
+
 
 }

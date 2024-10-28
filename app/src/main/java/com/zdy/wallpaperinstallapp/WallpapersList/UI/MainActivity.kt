@@ -2,6 +2,7 @@ package com.zdy.wallpaperinstallapp.WallpapersList.UI
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -29,6 +30,7 @@ class MainActivity : WallpaperActivity(), INavigate, IGetViewModelList {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ResourcesCompat.getFont(this,R.font.bicubik)
         setContentView(R.layout.activity_main)
 
 

@@ -130,6 +130,12 @@ class RecycleViewModel(
 
                     }
 
+                    override fun onLoadFailed(errorDrawable: Drawable?) {
+                        viewModelScope.launch {
+                            loadImage(item)
+                        }
+                    }
+
                 })
         }
     }

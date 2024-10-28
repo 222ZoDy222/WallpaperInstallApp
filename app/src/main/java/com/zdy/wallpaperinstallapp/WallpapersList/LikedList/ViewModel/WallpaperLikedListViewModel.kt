@@ -30,12 +30,11 @@ class WallpaperLikedListViewModel(
 
     }
     private fun saveWallpaper(wallpaper: PickUpImage) : String{
-        if(wallpaper.url != null && wallpaper.description != null){
+        if(wallpaper.description != null){
             val localWallpaper = LocalWallpaper(
                 id = wallpaper.localID,
                 description = wallpaper.description,
                 image_url =  wallpaper.url,
-                image_path = "",
             )
 
             saveWallpaper(localWallpaper)
@@ -54,7 +53,6 @@ class WallpaperLikedListViewModel(
                 id = wallpaper.localID,
                 description = wallpaper.description,
                 image_url =  wallpaper.url,
-                image_path = "",
             )
             deleteWallpaper(localWallpaper)
             viewModelScope.launch {

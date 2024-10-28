@@ -1,29 +1,30 @@
 package com.zdy.wallpaperinstallapp.PickUpWallpaper.ViewModel
 
+import android.app.AlertDialog
 import android.app.Application
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Bitmap.CompressFormat
-import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.RectF
 import android.net.Uri
 import android.os.Build
-import androidx.core.content.ContextCompat
+import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.zdy.wallpaperinstallapp.WallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.utils.getBitmapFormat
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.text.Format
 
 
 class SetWallpaperViewModel(
@@ -33,13 +34,16 @@ class SetWallpaperViewModel(
 
 
 
-
     fun ShareWallpaper(image: PickUpImage, context: Context){
+        
+
         val format = image.url.getBitmapFormat()
         if (format != null) {
             image.bitmap?.let { shareWallpaperSettings(it,context,format) }
         } else{
-            // TODO: Exception Unknown Format of image
+            ShowAlertDialog(context.getString(R.string.error),
+                context.getString(R.string.unknown_format_of_image),
+                context)
         }
     }
 
@@ -52,7 +56,8 @@ class SetWallpaperViewModel(
                 SetWallpaperSettings(it,context, format)
             }
         } else{
-            // TODO: Exception Unknown Format of image
+            ShowAlertDialog(context.getString(R.string.error),
+                context.getString(R.string.unknown_format_of_image), context)
         }
 
 
@@ -93,9 +98,8 @@ class SetWallpaperViewModel(
                 WallpaperManager.getInstance(getApplication<Application>().applicationContext).setBitmap(image)
             }
 
-            // TODO: Alert Dialog - Обои установлены
+
         } catch (ex: Exception){
-            // TODO: Alert Dialog - Ошибка при установке обоев
 
         }
 
@@ -197,6 +201,31 @@ class SetWallpaperViewModel(
         )
     }
 
+
+    private fun ShowAlertDialog(title: String, message: String, context: Context){
+        val alertDialog = AlertDialog.Builder(context)
+        val textView = TextView(context)
+        textView.setPadding(40, 30, 20, 30);
+        textView.textSize = 24f
+        textView.text = title
+        textView.setTextColor(application.resources.getColor(R.color.white));
+        alertDialog.apply {
+
+            setCustomTitle(textView)
+            setTitle(title)
+            setMessage(message)
+            setNeutralButton(context.getString(R.string.ok)) { _, _ ->
+
+            }
+
+        }.create().show()
+    }
+
+    enum class alertMessageType{
+        unknownFormat,
+        errorSetWallpaper,
+        wallpaperSetCompleted
+    }
 
     companion object{
 

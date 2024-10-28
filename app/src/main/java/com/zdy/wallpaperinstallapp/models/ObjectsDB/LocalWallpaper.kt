@@ -11,5 +11,4 @@ data class LocalWallpaper(
     val id: Int? = null,
     val description: String,
     val image_url: String,
-    val image_path: String,
 )

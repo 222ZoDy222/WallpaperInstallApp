@@ -109,31 +109,26 @@ open class FragmentList : Fragment() {
         val recycle = view?.findViewById<RecyclerView>(R.id.rcViewAdapter)
         recycle?.let {
 
-            it.setHasFixedSize(true)
             val gridManager = GridLayoutManager(activity,2)
-//            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
-//                override fun getSpanSize(position: Int): Int {
-//                    return if(imagesAdapter.isButtonType(position)) 2 else 1
-//                }
-//
-//            }
+            gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+                override fun getSpanSize(position: Int): Int {
+                    return if(imagesAdapter.isButtonType(position)) 1 else 1
+                }
+
+            }
             it.layoutManager = gridManager
             it.adapter = imagesAdapter
 
 
-            //it.layoutManager = LinearLayoutManager(activity)
         }
 
         imagesAdapter.setOnItemClickListener { image->
             mViewModel.PickUpImage(image)
         }
 
-        // TODO: Make more optimize
+
         imagesAdapter.setOnItemLikeClickListener {itemRecycle->
             recycleViewModel.onLikeImage(itemRecycle)
-//            view?.let{view->
-//                Snackbar.make(view,result, Snackbar.LENGTH_SHORT).show()
-//            }
         }
     }
 

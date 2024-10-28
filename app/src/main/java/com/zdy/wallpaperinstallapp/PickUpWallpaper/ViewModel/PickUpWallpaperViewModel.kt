@@ -69,6 +69,9 @@ class PickUpWallpaperViewModel(
 
             override fun onLoadCleared(placeholder: Drawable?) {}
 
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                loadWeb(image)
+            }
         })
     }
 

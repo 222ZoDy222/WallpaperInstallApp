@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".WallpapersList.LikedList.UI.ListFragmentLiked">
 
+    <TextView
+        android:id="@+id/noLikedText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/no_liked"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewAdapter"

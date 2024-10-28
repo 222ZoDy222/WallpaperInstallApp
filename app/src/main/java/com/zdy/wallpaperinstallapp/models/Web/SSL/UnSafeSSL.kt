@@ -40,9 +40,9 @@ class UnSafeSSL {
                     .sslSocketFactory(sslContext.socketFactory,trustAllCerts[0] as X509TrustManager)
                     .addInterceptor(getLogging())
                     .hostnameVerifier { _, _ -> true }
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .connectTimeout(15, TimeUnit.SECONDS)
+                    .readTimeout(5, TimeUnit.SECONDS)
+                    .writeTimeout(5, TimeUnit.SECONDS)
                     .build()
 
             } catch (e: Exception) {

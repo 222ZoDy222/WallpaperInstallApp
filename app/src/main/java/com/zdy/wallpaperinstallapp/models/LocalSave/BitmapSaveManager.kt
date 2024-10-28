@@ -21,7 +21,9 @@ class BitmapSaveManager {
 
         suspend fun saveImageWallpaper(image: PickUpImage, context: Context){
             if(image.url != null ){
-                saveImageToHiddenFolder(context, image.bitmap!!,image.url)
+                image.bitmap?.let {
+                    saveImageToHiddenFolder(context, it,image.url)
+                }
             }
         }
 

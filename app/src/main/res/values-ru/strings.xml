@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">WallpaperInstallApp</string>
+    <string name="app_name">Приложение Обои</string>
     <string name="failedtoload">Ошибка загрузки изображений</string>
     <string name="share_wallpaper">Поделиться обоями</string>
     <string name="noInternetConnection">Нет интернет соединения</string>
     <string name="requestError">Ошибка запроса на сервер</string>
     <string name="convertionError">Ошибка конвертации ответа с сервера</string>
+    <string name="ok">Ок</string>
+    <string name="error">Ошибка</string>
+    <string name="unknown_format_of_image">Неизвестный формат изображения</string>
+    <string name="no_liked">Избранных нет</string>
 </resources>
