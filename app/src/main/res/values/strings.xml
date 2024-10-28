@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">WallpaperInstallApp</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="background">test</string>
+    <string name="background" translatable="false">test</string>
     <string name="failedtoload">Failed to load images</string>
     <string name="share_wallpaper">Share wallpaper</string>
+    <string name="noInternetConnection">No Internet Connection</string>
+    <string name="requestError">Request server error</string>
+    <string name="convertionError">Convertion data error</string>
 </resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WallpaperInstallApp</string>
+    <string name="failedtoload">Ошибка загрузки изображений</string>
+    <string name="share_wallpaper">Поделиться обоями</string>
+    <string name="noInternetConnection">Нет интернет соединения</string>
+    <string name="requestError">Ошибка запроса на сервер</string>
+    <string name="convertionError">Ошибка конвертации ответа с сервера</string>
+</resources>

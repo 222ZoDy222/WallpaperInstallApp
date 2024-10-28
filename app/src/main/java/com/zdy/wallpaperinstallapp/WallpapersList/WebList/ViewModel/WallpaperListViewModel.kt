@@ -21,6 +21,11 @@ class WallpaperListViewModel(
     val imageRepository: ImagesRepository) : AndroidViewModel(application) {
 
 
+
+    private val errorMessage : MutableLiveData<ErrorType> = MutableLiveData(null)
+    fun getErrorMessage() = errorMessage
+
+
     private val imageRequest: MutableLiveData<Resource<RequestImages>> = MutableLiveData()
     fun getImageRequest(): MutableLiveData<Resource<RequestImages>> = imageRequest
 
@@ -35,13 +40,22 @@ class WallpaperListViewModel(
     fun getRandomImages() = viewModelScope.launch {
 
         imageRequest.postValue(Resource.Loading())
+        errorMessage.postValue(null)
         try{
-            val response = imageRepository.getRandomImages()
-            imageRequest.postValue(handleImageResponse(response))
+            if(ImagesRepository.hasInternetConnection(application.applicationContext)){
+                val response = imageRepository.getRandomImages()
+                imageRequest.postValue(handleImageResponse(response))
+            } else{
+                errorMessage.postValue(ErrorType.noInternetConnection)
+            }
 
-        } catch (ex: Exception){
-            // TODO: плохое соединение с интернетом / повторить попытку
+        } catch (t: Throwable){
             imageRequest.postValue(null)
+            when(t){
+                is IOException -> errorMessage.postValue(ErrorType.requestError)
+                else -> errorMessage.postValue(ErrorType.convertionError)
+            }
+
         }
 
     }
@@ -91,6 +105,12 @@ class WallpaperListViewModel(
 
 
 
+    enum class ErrorType{
+        noInternetConnection,
+        requestError,
+        convertionError,
+
+    }
 
 
     companion object{

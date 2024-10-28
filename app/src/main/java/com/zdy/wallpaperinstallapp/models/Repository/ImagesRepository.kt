@@ -45,7 +45,7 @@ class ImagesRepository(
                 .into(target)
         }
 
-        private fun hasInternetConnection(context: Context): Boolean {
+        fun hasInternetConnection(context: Context): Boolean {
             val connectivityManager = context.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager

@@ -13,6 +13,7 @@ import androidx.core.view.MenuProvider
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.WallpapersList.UI.FragmentList
 import com.zdy.wallpaperinstallapp.WallpapersList.WebList.Interfaces.INavigate
+import com.zdy.wallpaperinstallapp.WallpapersList.WebList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.databinding.FragmentListBinding
 import com.zdy.wallpaperinstallapp.utils.Resource
 
@@ -79,9 +80,14 @@ class ListFragmentWeb : FragmentList() {
         super.addListeners()
 
         mViewModel.getImageRequest().observe(viewLifecycleOwner){imageRequest ->
-            binding.reloadContainer.visibility = if (imageRequest == null) View.VISIBLE else View.GONE
+
             binding.loadbar.visibility = View.GONE
 
+        }
+
+
+        mViewModel.getErrorMessage().observe(viewLifecycleOwner){error->
+            showErrorMessage(error)
         }
 
         binding.reloadButton.setOnClickListener {
@@ -109,6 +115,29 @@ class ListFragmentWeb : FragmentList() {
         }
     }
 
+
+    private fun showErrorMessage(type: WallpaperListViewModel.ErrorType?){
+
+        binding.reloadContainer.visibility = View.VISIBLE
+        when(type){
+            WallpaperListViewModel.ErrorType.noInternetConnection -> binding.errorTextView.text =
+                getString(
+                    R.string.noInternetConnection
+                )
+            WallpaperListViewModel.ErrorType.requestError -> binding.errorTextView.text =
+                getString(
+                    R.string.requestError
+                )
+            WallpaperListViewModel.ErrorType.convertionError -> binding.errorTextView.text =
+                getString(
+                    R.string.convertionError
+                )
+
+            else -> {
+                binding.reloadContainer.visibility = View.GONE
+            }
+        }
+    }
 
 
     private fun Loading(value: Boolean){

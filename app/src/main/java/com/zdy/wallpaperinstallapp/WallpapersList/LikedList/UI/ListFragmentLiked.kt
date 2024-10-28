@@ -52,13 +52,6 @@ class ListFragmentLiked : FragmentList() {
         mViewModelLiked.getSavedWallpaper().observe(viewLifecycleOwner){wallpapers->
             recycleViewModel.setLocalList(wallpapers)
         }
-
     }
 
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            ListFragmentLiked()
-    }
 }
