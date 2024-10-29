@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Animation.Design.BottomSheetDialog"
     android:id="@+id/bottom_sheet"
+    android:clickable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,6 +11,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
+        android:id="@+id/bottom_sheet_header"
         android:layout_width="match_parent"
         android:layout_height="24dp"
         android:background="@drawable/bottom_sheet_header"
