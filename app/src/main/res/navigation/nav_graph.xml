@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    android:label='"Обои"'
+    android:label='@string/ActionbarWeb'
     app:startDestination="@id/listFragment">
 
     <fragment
         android:id="@+id/listFragment"
         android:name="com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.ListFragmentWeb"
-        android:label="Обои"
+        android:label='@string/ActionbarWeb'
         tools:layout="@layout/fragment_list">
         <action
             android:id="@+id/action_listFragment_to_listFragmentLiked"
@@ -22,6 +22,6 @@
     <fragment
         android:id="@+id/listFragmentLiked"
         android:name="com.zdy.wallpaperinstallapp.WallpapersList.LikedList.UI.ListFragmentLiked"
-        android:label="Избранное"
+        android:label='@string/ActionbarLiked'
         tools:layout="@layout/fragment_list_liked" />
 </navigation>

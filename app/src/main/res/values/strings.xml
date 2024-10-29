@@ -10,4 +10,6 @@
     <string name="error">Error</string>
     <string name="unknown_format_of_image">Unknown Format of image</string>
     <string name="no_liked">Have no liked wallpaper</string>
+    <string name="ActionbarWeb">Wallpapers</string>
+    <string name="ActionbarLiked">Favorites</string>
 </resources>

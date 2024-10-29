@@ -10,4 +10,6 @@
     <string name="error">Ошибка</string>
     <string name="unknown_format_of_image">Неизвестный формат изображения</string>
     <string name="no_liked">Избранных нет</string>
+    <string name="ActionbarWeb">Обои</string>
+    <string name="ActionbarLiked">Избранное</string>
 </resources>
