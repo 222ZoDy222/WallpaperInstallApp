@@ -10,11 +10,11 @@ import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.os.Build
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.Web.RetrofitInstance
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
-import com.zdy.wallpaperinstallapp.models.Web.SSL.GlideApp
 
 class ImagesRepository(
     val db: WallpaperDatabase
@@ -39,7 +39,7 @@ class ImagesRepository(
     companion object
     {
         fun LoadBitmapByURL(context: Context, url : String, target : CustomTarget<Bitmap>){
-            GlideApp.with(context)
+            Glide.with(context)
                 .asBitmap()
                 .load(url)
                 .into(target)

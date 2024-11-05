@@ -11,7 +11,16 @@ class RecycleConverter {
         fun ConvertImages(requestImages: RequestImages): List<PickUpImage> {
             val resultList = mutableListOf<PickUpImage>()
             for (image in requestImages.items) {
-                resultList.add(PickUpImage(null, image.image_url, image.desc))
+                var desk : String = ""
+                for(tag in image.tags){
+                    desk += tag.description + "\n"
+                }
+                desk += image.rating
+                resultList.add(
+                    PickUpImage(
+                        null,
+                        image.image_url,
+                        desk))
             }
             return resultList
         }
