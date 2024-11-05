@@ -18,13 +18,13 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".PickUpWallpaper.UI.SelectWallpaperActivity"
+            android:name=".pickUpWallpaper.UI.SelectWallpaperActivity"
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/Base.Theme.WallpaperInstallApp.FullScreen"/>
 
         <activity
-            android:name=".WallpapersList.UI.MainActivity"
+            android:name=".wallpapersList.UI.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -20,19 +20,17 @@ class BitmapSaveManager {
 
 
         suspend fun saveImageWallpaper(image: PickUpImage, context: Context){
-            if(image.url != null ){
-                image.bitmap?.let {
-                    saveImageToHiddenFolder(context, it,image.url)
-                }
+            image.bitmap?.let {
+                saveImageToHiddenFolder(context, it,image.url)
             }
         }
 
         suspend fun loadImageWallpaper(image: PickUpImage, context: Context) : Bitmap?{
-            return image.url?.let { loadImageFromHiddenFolder(context, it) }
+            return loadImageFromHiddenFolder(context, image.url)
         }
 
         suspend fun deleteImageWallpaper(image: PickUpImage, context: Context){
-            image.url?.let { deleteImageFromHiddenFolder(context, it) }
+            deleteImageFromHiddenFolder(context, image.url)
         }
 
 

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.zdy.wallpaperinstallapp.WallpapersList.WebList.UI.ListFragmentWeb"
+        android:name="com.zdy.wallpaperinstallapp.wallpapersList.WebList.UI.ListFragmentWeb"
         android:label='@string/ActionbarWeb'
         tools:layout="@layout/fragment_list">
         <action
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/listFragmentLiked"
-        android:name="com.zdy.wallpaperinstallapp.WallpapersList.LikedList.UI.ListFragmentLiked"
+        android:name="com.zdy.wallpaperinstallapp.wallpapersList.LikedList.UI.ListFragmentLiked"
         android:label='@string/ActionbarLiked'
         tools:layout="@layout/fragment_list_liked" />
 </navigation>

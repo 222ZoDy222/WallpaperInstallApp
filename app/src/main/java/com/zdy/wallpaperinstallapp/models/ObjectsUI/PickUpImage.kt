@@ -15,12 +15,7 @@ data class PickUpImage(
 
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
-            parcel.readParcelable(Bitmap::class.java.classLoader,Bitmap::class.java)
-        } else{
-            @Suppress("DEPRECATION")
-            parcel.readParcelable(Bitmap::class.java.classLoader)
-        },
+        parcel.readParcelableCompat<Bitmap>(),
         parcel.readString()!!,
         parcel.readString(),
         parcel.readInt() != 0
@@ -46,6 +41,13 @@ data class PickUpImage(
             return arrayOfNulls(size)
         }
     }
+}
 
-
+inline fun <reified T : Parcelable> Parcel.readParcelableCompat(): T? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        readParcelable(T::class.java.classLoader, T::class.java)
+    } else {
+        @Suppress("DEPRECATION")
+        readParcelable(T::class.java.classLoader)
+    }
 }
