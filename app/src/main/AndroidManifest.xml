@@ -16,15 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WallpaperInstallApp"
         tools:targetApi="31">
-
+        <activity
+            android:name=".wallpapersList.UI.LikedActivity"
+            android:exported="false" />
         <activity
             android:name=".pickUpWallpaper.UI.SelectWallpaperActivity"
             android:exported="false"
             android:launchMode="singleInstance"
-            android:theme="@style/Base.Theme.WallpaperInstallApp.FullScreen"/>
-
+            android:theme="@style/Base.Theme.WallpaperInstallApp.FullScreen" />
         <activity
-            android:name=".wallpapersList.UI.MainActivity"
+            android:name=".wallpapersList.WebList.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -42,8 +43,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/cache_paths" />
         </provider>
-
-        
     </application>
 
 </manifest>
