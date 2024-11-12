@@ -40,22 +40,22 @@ class PickUpWallpaperViewModel(
 
     fun onLikeImage(context: Context){
         selectedImage.value?.let {
-            viewModelScope?.launch {
+            viewModelScope.launch {
                 localSaveModel.onLikeClicked(selectedImage.value!!, context)
                 selectedImage.value = selectedImage.value
             }
         }
     }
 
-    fun SelectImage(image : PickUpImage){
-        val bitmap = loadBitmapFromFile()
+    fun SelectImage(image : PickUpImage, context: Context){
+        val bitmap = loadBitmapFromFile(context)
         bitmap?.let {
             image.bitmap = it
         }
-        deleteSavedImage()
+        deleteSavedImage(context)
         selectedImage.value = image
 
-        setBackgroundImage()
+        setBackgroundImage(context)
     }
 
 
@@ -107,7 +107,7 @@ class PickUpWallpaperViewModel(
     fun SetBackgroundImage(bitmap: Bitmap, context: Context){
         selectedImage.value?.bitmap = bitmap
         backgroundDrawable.value = BitmapDrawable(
-            getApplication<Application>().applicationContext.resources,
+            context.resources,
             bitmap
         )
     }
@@ -120,15 +120,15 @@ class PickUpWallpaperViewModel(
         }
     }
 
-    fun deleteSavedImage(){
-        val file = File(getApplication<Application>().cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
+    fun deleteSavedImage(context: Context){
+        val file = File(context.cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
         if (file.exists()) {
             file.delete()
         }
     }
 
-    fun loadBitmapFromFile(): Bitmap? {
-        val file = File(getApplication<Application>().cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
+    fun loadBitmapFromFile(context: Context): Bitmap? {
+        val file = File(context.cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
         return if (file.exists()) {
             BitmapFactory.decodeFile(file.absolutePath)
         } else {
@@ -182,12 +182,12 @@ class PickUpWallpaperViewModel(
         return matrix
     }
 
-    fun setImageToFullScreen(drawable: Drawable){
+    fun setImageToFullScreen(drawable: Drawable, context: Context){
         val imageWidth = drawable.intrinsicWidth
         val imageHeight = drawable.intrinsicHeight
 
-        val viewWidth = application.applicationContext.resources.displayMetrics.widthPixels
-        val viewHeight = application.applicationContext.resources.displayMetrics.heightPixels
+        val viewWidth = context.resources.displayMetrics.widthPixels
+        val viewHeight = context.resources.displayMetrics.heightPixels
 
         val scaleX = viewWidth.toFloat() / imageWidth.toFloat()
         val scaleY = viewHeight.toFloat() / imageHeight.toFloat()

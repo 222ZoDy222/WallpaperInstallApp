@@ -12,6 +12,7 @@ import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedLi
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.Model.RecycleConverter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.LocalSave.BitmapSaveManager
+import com.zdy.wallpaperinstallapp.models.LocalSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class RecycleViewModel(
     private val application: Application,
-    private val likedListViewModel: WallpaperLikedListViewModel,
+    private val localSaveModel: LocalSaveModel,
 ) : AndroidViewModel(application) {
 
 
@@ -62,8 +63,11 @@ class RecycleViewModel(
 
     fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem){
         //TODO: Refactor
-        likedListViewModel.onLikeClicked(item.image, application.applicationContext)
-        onUpdateItem?.invoke(item)
+        viewModelScope.launch {
+            localSaveModel.onLikeClicked(item.image, application.applicationContext)
+            onUpdateItem?.invoke(item)
+        }
+
     }
 
 
@@ -111,7 +115,7 @@ class RecycleViewModel(
     }
 
     private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem) {
-        item.image.url?.let { url->
+        item.image.url.let { url->
             ImagesRepository.LoadBitmapByURL(application.applicationContext,url,
                 object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(

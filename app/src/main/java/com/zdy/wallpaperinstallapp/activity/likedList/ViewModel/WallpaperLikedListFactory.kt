@@ -12,6 +12,6 @@ class WallpaperLikedListFactory(
 ) : ViewModelProvider.AndroidViewModelFactory(application){
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return WallpaperLikedListViewModel(application, imageRepository) as T
+        return WallpaperLikedListViewModel(imageRepository) as T
     }
 }

@@ -39,7 +39,7 @@ class LikedActivity : WallpaperActivity() {
     }
 
     val recycleViewModel : RecycleViewModel by lazy {
-        ViewModelProvider(this, RecycleViewModelFactory(this.application,mViewModelLiked))[RecycleViewModel::class.java]
+        ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
     }
 
     val imagesAdapter: ImagesAdapter by lazy {

@@ -18,7 +18,7 @@ sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(it
         ImagesRecycleViewHolder(itemView) {
 
         private var currentURL : String? = null
-        @SuppressLint("UseCompatLoadingForDrawables")
+
         fun bind(item: ItemRecycle.RecycleWallpaperItem) {
             currentURL = item.image.url
             itemView.apply {

@@ -38,7 +38,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
     val mViewModel : PickUpWallpaperViewModel by lazy{
         ViewModelProvider(
             this,
-            PickUpWallpaperViewModelFactory(application, mViewModelLiked)
+            PickUpWallpaperViewModelFactory(application, imagesRepository)
         )[PickUpWallpaperViewModel::class.java]
     }
 
@@ -63,7 +63,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
 
         if(savedInstanceState == null){
             if(image != null){
-                mViewModel.SelectImage(image)
+                mViewModel.SelectImage(image, applicationContext)
             } else {
                 AppLogger.Log("Select image is null")
                 finish()
@@ -83,7 +83,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
                 binding.loadbar.visibility = View.GONE
                 showButtons(true)
                 binding.backgroundImage.setImageDrawable(drawable)
-                mViewModel.setImageToFullScreen(drawable)
+                mViewModel.setImageToFullScreen(drawable, applicationContext)
                 binding.backgroundImage.imageMatrix = mViewModel.getMatrix()
 
             } else{
@@ -121,7 +121,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
         }
 
         binding.likeButtonInclude.likeButton.setOnClickListener {
-            mViewModel.onLikeImage()
+            mViewModel.onLikeImage(applicationContext)
         }
 
         binding.shareWallpaperButton.setOnClickListener {

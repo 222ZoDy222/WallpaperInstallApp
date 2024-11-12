@@ -29,13 +29,7 @@ class WallpaperLikedListViewModel(
 
 
 
-
-
-
-
     fun getSavedWallpaper() = imageRepository.getSavedWallpaper()
-
-
 
 
 }
