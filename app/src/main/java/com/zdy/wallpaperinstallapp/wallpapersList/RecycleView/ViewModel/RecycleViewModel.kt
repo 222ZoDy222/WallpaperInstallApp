@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.wallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.Model.RecycleConverter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.LocalSave.BitmapSaveManager
@@ -61,7 +61,8 @@ class RecycleViewModel(
     }
 
     fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem){
-        likedListViewModel.onLikeClicked(item.image)
+        //TODO: Refactor
+        likedListViewModel.onLikeClicked(item.image, application.applicationContext)
         onUpdateItem?.invoke(item)
     }
 

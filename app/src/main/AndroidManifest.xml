@@ -17,15 +17,15 @@
         android:theme="@style/Theme.WallpaperInstallApp"
         tools:targetApi="31">
         <activity
-            android:name=".wallpapersList.UI.LikedActivity"
+            android:name=".activity.likedList.LikedActivity"
             android:exported="false" />
         <activity
-            android:name=".pickUpWallpaper.UI.SelectWallpaperActivity"
+            android:name=".activity.wallpaperDetails.SelectWallpaperActivity"
             android:exported="false"
             android:launchMode="singleInstance"
             android:theme="@style/Base.Theme.WallpaperInstallApp.FullScreen" />
         <activity
-            android:name=".wallpapersList.WebList.MainActivity"
+            android:name=".activity.webList.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

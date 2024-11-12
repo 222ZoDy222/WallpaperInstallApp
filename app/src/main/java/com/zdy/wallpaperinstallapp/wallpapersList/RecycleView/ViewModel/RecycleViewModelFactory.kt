@@ -3,7 +3,7 @@ package com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.zdy.wallpaperinstallapp.wallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 
 class RecycleViewModelFactory(
     val application: Application,

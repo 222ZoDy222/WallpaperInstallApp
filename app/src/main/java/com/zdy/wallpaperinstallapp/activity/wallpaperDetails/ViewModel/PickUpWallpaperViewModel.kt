@@ -1,6 +1,7 @@
 package com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -9,19 +10,27 @@ import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.wallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.wallpapersList.WebList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.models.LocalSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
+import kotlinx.coroutines.launch
 import java.io.File
 
 class PickUpWallpaperViewModel(
-    private val application: Application,
-    private val likedListViewModel: WallpaperLikedListViewModel
-) : AndroidViewModel(application) {
+    private val imagesRepository: ImagesRepository
+) : ViewModel() {
 
+    lateinit var localSaveModel: LocalSaveModel
+
+    init {
+        localSaveModel = LocalSaveModel(imagesRepository)
+    }
 
     var selectedImage : MutableLiveData<PickUpImage> = MutableLiveData()
 
@@ -29,11 +38,12 @@ class PickUpWallpaperViewModel(
     fun getBackgroundDrawable() = backgroundDrawable
 
 
-    fun onLikeImage(){
+    fun onLikeImage(context: Context){
         selectedImage.value?.let {
-            likedListViewModel.onLikeClicked(selectedImage.value!!)
-            selectedImage.value = selectedImage.value
-            var t = 0
+            viewModelScope?.launch {
+                localSaveModel.onLikeClicked(selectedImage.value!!, context)
+                selectedImage.value = selectedImage.value
+            }
         }
     }
 
@@ -49,52 +59,52 @@ class PickUpWallpaperViewModel(
     }
 
 
-    private fun setDrawableImage(image: PickUpImage){
+    private fun setDrawableImage(image: PickUpImage, context: Context){
 
         if(image.bitmap != null){
-            backgroundDrawable.value = image.bitmap!!.toDrawable(application.resources)
+            backgroundDrawable.value = image.bitmap!!.toDrawable(context.resources)
         }
         else {
-            loadWeb(image)
+            loadWeb(image, context)
         }
 
     }
 
-    private fun loadWeb(image: PickUpImage){
-        ImagesRepository.LoadBitmapByURL(application.applicationContext,image.url, object : CustomTarget<Bitmap>(){
+    private fun loadWeb(image: PickUpImage, context: Context){
+        ImagesRepository.LoadBitmapByURL(context,image.url, object : CustomTarget<Bitmap>(){
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 selectedImage.value?.bitmap = resource
-                backgroundDrawable.value = resource.toDrawable(application.resources)
+                backgroundDrawable.value = resource.toDrawable(context.resources)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {}
 
             override fun onLoadFailed(errorDrawable: Drawable?) {
-                loadWeb(image)
+                loadWeb(image, context)
             }
         })
     }
 
-    private fun setBackgroundImage(){
+    private fun setBackgroundImage(context: Context){
 
         if(selectedImage.value != null){
             if(selectedImage.value!!.bitmap != null){
 
                 val drawable = BitmapDrawable(
-                    getApplication<Application>().applicationContext.resources,
+                    context.resources,
                     selectedImage.value!!.bitmap)
 
                 backgroundDrawable.value = drawable
 
             } else{
-                loadWeb(selectedImage.value!!)
+                loadWeb(selectedImage.value!!, context)
 
             }
         }
     }
 
     // Set background after getting image by URL
-    fun SetBackgroundImage(bitmap: Bitmap){
+    fun SetBackgroundImage(bitmap: Bitmap, context: Context){
         selectedImage.value?.bitmap = bitmap
         backgroundDrawable.value = BitmapDrawable(
             getApplication<Application>().applicationContext.resources,

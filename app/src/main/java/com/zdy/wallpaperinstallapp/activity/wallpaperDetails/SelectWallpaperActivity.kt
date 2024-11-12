@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.pickUpWallpaper.UI
+package com.zdy.wallpaperinstallapp.activity.wallpaperDetails
 
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -7,44 +7,44 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
+import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListFactory
+import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
+import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
 import com.zdy.wallpaperinstallapp.logger.AppLogger
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModelFactory
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.SetWallpaperViewModel
-import com.zdy.wallpaperinstallapp.R
-import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
-import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
-import com.zdy.wallpaperinstallapp.wallpapersList.LikedList.ViewModel.WallpaperLikedListFactory
-import com.zdy.wallpaperinstallapp.wallpapersList.LikedList.ViewModel.WallpaperLikedListViewModel
 
-class SelectWallpaperActivity : AppCompatActivity() {
+class SelectWallpaperActivity : WallpaperActivity() {
 
 
-    val imagesRepository: ImagesRepository by lazy {
-        val repository = ImagesRepository(WallpaperDatabase(this))
-        repository
-    }
 
     val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        ViewModelProvider(this,
-            WallpaperLikedListFactory(application,imagesRepository)
+        ViewModelProvider(
+            this,
+            WallpaperLikedListFactory(application, imagesRepository)
         )[WallpaperLikedListViewModel::class.java]
     }
 
     val mViewModel : PickUpWallpaperViewModel by lazy{
-        ViewModelProvider(this,
-            PickUpWallpaperViewModelFactory(application,mViewModelLiked)
+        ViewModelProvider(
+            this,
+            PickUpWallpaperViewModelFactory(application, mViewModelLiked)
         )[PickUpWallpaperViewModel::class.java]
     }
 
     val mViewModelSetWallpaper : SetWallpaperViewModel by lazy{
-        ViewModelProvider(this,
+        ViewModelProvider(
+            this,
             ViewModelProvider.AndroidViewModelFactory(application)
         )[SetWallpaperViewModel::class.java]
     }
@@ -57,12 +57,7 @@ class SelectWallpaperActivity : AppCompatActivity() {
         binding = ActivitySelectWallpaperBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.hide()
-//        val image = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//             intent.extras?.getParcelable(WALLPAPER_TAG, PickUpImage::class.java)
-//        } else{
-//            @Suppress("DEPRECATION")
-//            intent.extras?.getParcelable<PickUpImage>(WALLPAPER_TAG)
-//        }
+
 
         val image : PickUpImage? = intent.extras?.getParcelableImage()
 
@@ -197,5 +192,3 @@ private fun Bundle?.getParcelableImage(): PickUpImage? {
         return this?.getParcelable<PickUpImage>(SelectWallpaperActivity.WALLPAPER_TAG)
     }
 }
-
-

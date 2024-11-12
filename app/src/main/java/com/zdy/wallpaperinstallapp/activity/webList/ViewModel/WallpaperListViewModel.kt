@@ -1,10 +1,12 @@
-package com.zdy.wallpaperinstallapp.wallpapersList.WebList.ViewModel
+package com.zdy.wallpaperinstallapp.activity.webList.ViewModel
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zdy.wallpaperinstallapp.inheritance.ListViewModel
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
@@ -17,8 +19,8 @@ import java.io.IOException
 
 
 class WallpaperListViewModel(
-    private val application: Application,
-    val imageRepository: ImagesRepository) : AndroidViewModel(application) {
+    context: Context,
+    val imageRepository: ImagesRepository) : ListViewModel() {
 
 
 
@@ -33,16 +35,16 @@ class WallpaperListViewModel(
 
     init {
 
-        getRandomImages()
+        getRandomImages(context)
 
     }
 
-    fun getRandomImages() = viewModelScope.launch {
+    fun getRandomImages(context: Context) = viewModelScope.launch {
 
         imageRequest.postValue(Resource.Loading())
         errorMessage.postValue(null)
         try{
-            if(ImagesRepository.hasInternetConnection(application.applicationContext)){
+            if(ImagesRepository.hasInternetConnection(context)){
                 val response = imageRepository.getRandomImages()
                 imageRequest.postValue(handleImageResponse(response))
             } else{
@@ -71,37 +73,6 @@ class WallpaperListViewModel(
 
     }
 
-    private val imageToPickUp = MutableLiveData<PickUpImage>()
-    fun getImageToPickUp() : MutableLiveData<PickUpImage> = imageToPickUp
-
-    fun PickUpImage(pickImage: PickUpImage?){
-        if(pickImage != null){
-            SaveImage(pickImage)
-        }
-        imageToPickUp.value = pickImage
-    }
-
-    private fun SaveImage(pickImage: PickUpImage){
-
-        pickImage.bitmap?.let {
-            saveBitmapToFile(it)
-        }
-
-    }
-
-    private fun saveBitmapToFile(bitmap: Bitmap): String? {
-        try {
-            val file = File(application.cacheDir, SELECTED_IMAGE_NAME)
-            val outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-            outputStream.flush()
-            outputStream.close()
-            return file.absolutePath
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return null
-    }
 
 
 
