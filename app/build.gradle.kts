@@ -4,6 +4,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,6 +56,17 @@ android {
 
 dependencies {
 
+
+    // ----- DI ------ //
+    implementation(group="jakarta.inject", name= "jakarta.inject-api", version= "2.0.1")
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    implementation("androidx.activity:activity-ktx:1.9.3")
+
+    //implementation("jakarta.inject:jakarta.inject-api:2.0.1")
+    //-----------------//
 
     // --- Glide --- //
     implementation("com.github.bumptech.glide:glide:4.16.0")

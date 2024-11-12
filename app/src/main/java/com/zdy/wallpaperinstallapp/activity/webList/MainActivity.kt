@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
@@ -33,29 +34,25 @@ import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : WallpaperActivity() {
 
 
+    private val mViewModel : WallpaperListViewModel by viewModels()
 
-
-    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        ViewModelProvider(this,
-            WallpaperLikedListFactory(application,imagesRepository)
-        )[WallpaperLikedListViewModel::class.java]
-    }
-
-    val mViewModel: WallpaperListViewModel by lazy {
-        ViewModelProvider(this, WallpaperListFactory(application,imagesRepository))[WallpaperListViewModel::class.java]
-    }
+//    val mViewModel: WallpaperListViewModel by lazy {
+//        ViewModelProvider(this, WallpaperListFactory(application,imagesRepository))[WallpaperListViewModel::class.java]
+//    }
 
     val recycleViewModel : RecycleViewModel by lazy {
         ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
     }
 
     val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter(lifecycleScope)
+        ImagesAdapter()
     }
 
 

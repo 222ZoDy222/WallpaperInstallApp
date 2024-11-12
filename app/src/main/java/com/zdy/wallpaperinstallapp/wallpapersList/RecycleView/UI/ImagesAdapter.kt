@@ -13,9 +13,7 @@ import com.zdy.wallpaperinstallapp.R
 import java.lang.IllegalArgumentException
 
 
-class ImagesAdapter(
-    private val lifecycleScope: LifecycleCoroutineScope,
-) : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
+class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
 
     private val differCallback = object : DiffUtil.ItemCallback<ItemRecycle>(){
@@ -43,8 +41,7 @@ class ImagesAdapter(
                         R.layout.item_image_layout,
                         parent,
                         false
-                    ),
-                    lifecycleScope
+                    )
                 )
             }
             R.layout.item_button_layout ->{

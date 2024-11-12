@@ -43,7 +43,7 @@ class LikedActivity : WallpaperActivity() {
     }
 
     val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter(lifecycleScope)
+        ImagesAdapter()
     }
 
     lateinit var binding : ActivityLikedBinding

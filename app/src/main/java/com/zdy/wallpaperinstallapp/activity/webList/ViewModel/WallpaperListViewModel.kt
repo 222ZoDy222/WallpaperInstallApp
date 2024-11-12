@@ -11,14 +11,16 @@ import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-
-class WallpaperListViewModel(
+@HiltViewModel
+class WallpaperListViewModel @Inject constructor(
     context: Context,
     val imageRepository: ImagesRepository) : ListViewModel() {
 

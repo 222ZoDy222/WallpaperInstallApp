@@ -13,8 +13,7 @@ import com.zdy.wallpaperinstallapp.R
 
 sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-    class WallpaperRecycleViewHolder(private val itemView: View,
-                                     private val lifecycleScope: LifecycleCoroutineScope) :
+    class WallpaperRecycleViewHolder(private val itemView: View) :
         ImagesRecycleViewHolder(itemView) {
 
         private var currentURL : String? = null

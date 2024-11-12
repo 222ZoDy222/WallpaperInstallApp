@@ -26,11 +26,7 @@ class PickUpWallpaperViewModel(
     private val imagesRepository: ImagesRepository
 ) : ViewModel() {
 
-    lateinit var localSaveModel: LocalSaveModel
-
-    init {
-        localSaveModel = LocalSaveModel(imagesRepository)
-    }
+    private val localSaveModel: LocalSaveModel = LocalSaveModel(imagesRepository)
 
     var selectedImage : MutableLiveData<PickUpImage> = MutableLiveData()
 
@@ -58,17 +54,6 @@ class PickUpWallpaperViewModel(
         setBackgroundImage(context)
     }
 
-
-    private fun setDrawableImage(image: PickUpImage, context: Context){
-
-        if(image.bitmap != null){
-            backgroundDrawable.value = image.bitmap!!.toDrawable(context.resources)
-        }
-        else {
-            loadWeb(image, context)
-        }
-
-    }
 
     private fun loadWeb(image: PickUpImage, context: Context){
         ImagesRepository.LoadBitmapByURL(context,image.url, object : CustomTarget<Bitmap>(){
