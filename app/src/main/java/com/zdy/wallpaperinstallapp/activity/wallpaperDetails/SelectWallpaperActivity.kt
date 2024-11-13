@@ -1,9 +1,7 @@
 package com.zdy.wallpaperinstallapp.activity.wallpaperDetails
 
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -15,6 +13,7 @@ import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModel
+import com.zdy.wallpaperinstallapp.utils.extensions.getParcelableImage
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -57,8 +56,6 @@ class SelectWallpaperActivity : AppCompatActivity() {
                 binding.loadbar.visibility = View.GONE
                 showButtons(true)
                 binding.backgroundImage.setImageDrawable(drawable)
-                mViewModel.setImageToFullScreen(drawable, applicationContext)
-                binding.backgroundImage.imageMatrix = mViewModel.getMatrix()
 
             } else{
                 binding.loadbar.visibility = View.VISIBLE
@@ -117,21 +114,6 @@ class SelectWallpaperActivity : AppCompatActivity() {
             }
         }
 
-
-        // Listener for moving wallpaper image
-        binding.backgroundImage.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    // Set touch coordinates
-                    mViewModel.setLastTouch(event.x, event.y)
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    // Update matrix
-                    binding.backgroundImage.imageMatrix = mViewModel.handleMove(event.x, event.y)
-                }
-            }
-            true
-        }
     }
 
 
@@ -158,11 +140,3 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
 }
 
-private fun Bundle?.getParcelableImage(): PickUpImage? {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        return this?.getParcelable(SelectWallpaperActivity.WALLPAPER_TAG, PickUpImage::class.java)
-    } else{
-        @Suppress("DEPRECATION")
-        return this?.getParcelable<PickUpImage>(SelectWallpaperActivity.WALLPAPER_TAG)
-    }
-}

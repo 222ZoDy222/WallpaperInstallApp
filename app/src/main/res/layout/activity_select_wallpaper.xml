@@ -17,6 +17,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <com.zdy.wallpaperinstallapp.utils.customView.DraggableImageView
+            android:id="@+id/background_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="centerCrop"
+            tools:ignore="MissingConstraints"
+            tools:src="@drawable/test_fit_image"
+            tools:visibility="gone"/>
+        <!--
         <ImageView
             android:id="@+id/background_image"
             android:layout_width="match_parent"
@@ -27,7 +39,7 @@
             android:scaleType="matrix"
             tools:ignore="MissingConstraints"
             tools:src="@drawable/test_fit_image"
-            tools:visibility="gone" />
+            tools:visibility="gone" /> -->
 
     </FrameLayout>
 
