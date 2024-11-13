@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -24,27 +25,20 @@ import com.zdy.wallpaperinstallapp.utils.Resource
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
 import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
+
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class MainActivity : WallpaperActivity() {
+class MainActivity : AppCompatActivity() {
 
 
     val mViewModel : WallpaperListViewModel by viewModels()
 
 
-    val recycleViewModel : RecycleViewModel by lazy {
-        ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
-    }
-
-    val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter()
-    }
+    val imagesAdapter: ImagesAdapter = ImagesAdapter()
 
 
 
@@ -95,11 +89,11 @@ class MainActivity : WallpaperActivity() {
 
     fun addListeners() {
 
-        recycleViewModel.getItemsRecycle().observe(this){ list->
+        mViewModel.getItemsRecycle().observe(this){ list->
             imagesAdapter.differ.submitList(list)
         }
 
-        recycleViewModel.setOnUpdateItem { item->
+        mViewModel.setOnUpdateItem { item->
             imagesAdapter.updateImage(item as ItemRecycle.RecycleWallpaperItem)
         }
 
@@ -138,13 +132,12 @@ class MainActivity : WallpaperActivity() {
             when(response){
                 is Resource.Success ->{
                     response.data?.let {
-                        recycleViewModel.setWebList(it)
+                        mViewModel.setWebList(it, applicationContext)
                     }
                     Loading(false)
                 }
                 is Resource.Error ->{
                     Loading(false)
-                    // TODO: Show Error message
                 }
                 is Resource.Loading ->{
                     Loading(true)
@@ -173,7 +166,7 @@ class MainActivity : WallpaperActivity() {
                 }
                 imageToUpdate?.let {
                     lifecycleScope.launch {
-                        recycleViewModel.checkForUpdates(imageToUpdate)
+                        mViewModel.checkForUpdates(imageToUpdate)
                     }
                 }
 
@@ -201,12 +194,12 @@ class MainActivity : WallpaperActivity() {
         }
 
         imagesAdapter.setOnItemClickListener { image->
-            mViewModel.pickUpImage(image,applicationContext)
+            mViewModel.pickUpImage(image, applicationContext)
         }
 
 
         imagesAdapter.setOnItemLikeClickListener {itemRecycle->
-            recycleViewModel.onLikeImage(itemRecycle)
+            mViewModel.onLikeImage(itemRecycle, applicationContext)
         }
 
         imagesAdapter.setOnRefreshClickListener {

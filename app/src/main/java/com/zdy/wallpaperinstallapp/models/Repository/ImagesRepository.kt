@@ -18,7 +18,7 @@ import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import javax.inject.Inject
 
 
-class ImagesRepository @Inject constructor(
+class ImagesRepository(
     val db: WallpaperDatabase
 ) {
 

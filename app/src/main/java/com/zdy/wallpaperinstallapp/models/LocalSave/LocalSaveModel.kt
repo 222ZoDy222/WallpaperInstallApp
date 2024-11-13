@@ -9,7 +9,7 @@ import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LocalSaveModel @Inject constructor(
+class LocalSaveModel(
     private val imagesRepository: ImagesRepository
 ) {
 

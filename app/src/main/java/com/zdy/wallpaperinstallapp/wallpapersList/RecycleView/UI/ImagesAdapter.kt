@@ -58,9 +58,9 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
     }
 
-    @SuppressLint("CheckResult")
+
     override fun onBindViewHolder(holder: ImagesRecycleViewHolder, position: Int) {
-        var item = differ.currentList[position]
+        val item = differ.currentList[position]
 
         when(holder){
             is ImagesRecycleViewHolder.ButtonRecycleViewHolder -> {

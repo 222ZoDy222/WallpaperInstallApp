@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.inheritance.ListViewModel
+import com.zdy.wallpaperinstallapp.models.LocalSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WallpaperListViewModel @Inject constructor(
-    val imageRepository: ImagesRepository) : ListViewModel() {
+    val imageRepository: ImagesRepository, localSaveModel: LocalSaveModel
+) : ListViewModel(localSaveModel) {
 
 
 

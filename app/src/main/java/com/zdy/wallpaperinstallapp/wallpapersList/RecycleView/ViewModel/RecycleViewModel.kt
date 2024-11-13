@@ -1,10 +1,13 @@
 package com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel
 
 import android.app.Application
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -17,13 +20,14 @@ import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecycleViewModel(
-    private val application: Application,
+@HiltViewModel
+open class RecycleViewModel @Inject constructor(
     private val localSaveModel: LocalSaveModel,
-) : AndroidViewModel(application) {
-
+) : ViewModel() {
 
 
     private val itemsRecycle : MutableLiveData<List<ItemRecycle>> = MutableLiveData(null)
@@ -36,7 +40,7 @@ class RecycleViewModel(
 
     fun getItemsRecycle() = itemsRecycle
 
-    fun setWebList(requestImages: RequestImages){
+    fun setWebList(requestImages: RequestImages, context: Context){
         itemsRecycle.value = null
         val newList = RecycleConverter.ConvertImages(requestImages)
         val listItems = mutableListOf<ItemRecycle>()
@@ -50,21 +54,21 @@ class RecycleViewModel(
         itemsRecycle.value = listItems
 
 
-        loadImages()
+        loadImages(context)
 
     }
 
-    fun setLocalList(images: List<LocalWallpaper>){
+    fun setLocalList(images: List<LocalWallpaper>, context: Context){
         itemsRecycle.value = null
         val listItems = RecycleConverter.ConvertImages(images)
         itemsRecycle.value = listItems
-        loadImages()
+        loadImages(context)
     }
 
-    fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem){
+    fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem, context: Context){
         //TODO: Refactor
         viewModelScope.launch {
-            localSaveModel.onLikeClicked(item.image, application.applicationContext)
+            localSaveModel.onLikeClicked(item.image, context)
             onUpdateItem?.invoke(item)
         }
 
@@ -85,22 +89,22 @@ class RecycleViewModel(
     }
 
     // Load local or Web images
-    private fun loadImages(){
+    private fun loadImages(context: Context){
 
         viewModelScope.launch {
             itemsRecycle.value?.forEach itemScope@{item->
-                loadImage(item)
+                loadImage(item, context)
             }
         }
     }
-    private suspend fun loadImage(item: ItemRecycle){
+    private suspend fun loadImage(item: ItemRecycle, context: Context){
         if(item !is ItemRecycle.RecycleWallpaperItem) return
-        loadImage(item)
+        loadImage(item, context)
     }
-    private suspend fun loadImage(item: ItemRecycle.RecycleWallpaperItem){
+    private suspend fun loadImage(item: ItemRecycle.RecycleWallpaperItem, context: Context){
         val wallpaperItem = item as ItemRecycle.RecycleWallpaperItem
         // try to get saved bitmap
-        val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, application.applicationContext)
+        val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, context)
 
         // it's already exist image, so it's also liked image
         if(bitmap != null){
@@ -109,14 +113,14 @@ class RecycleViewModel(
             onUpdateItem?.invoke(item)
             return
         } else{
-            loadWeb(item)
+            loadWeb(item, context)
             return
         }
     }
 
-    private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem) {
+    private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem, context: Context) {
         item.image.url.let { url->
-            ImagesRepository.LoadBitmapByURL(application.applicationContext,url,
+            ImagesRepository.LoadBitmapByURL(context,url,
                 object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(
                         resource: Bitmap,
@@ -125,7 +129,7 @@ class RecycleViewModel(
                         item.image.bitmap = resource
                         if(item.image.isLiked){
                             viewModelScope.launch {
-                                BitmapSaveManager.saveImageWallpaper(item.image,application.applicationContext)
+                                BitmapSaveManager.saveImageWallpaper(item.image,context)
                             }
                         }
                         onUpdateItem?.invoke(item)
@@ -137,7 +141,7 @@ class RecycleViewModel(
 
                     override fun onLoadFailed(errorDrawable: Drawable?) {
                         viewModelScope.launch {
-                            loadImage(item)
+                            loadImage(item, context)
                         }
                     }
 

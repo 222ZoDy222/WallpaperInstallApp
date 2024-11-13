@@ -13,7 +13,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataBaseModule {
-
     @Provides
     @Singleton
     fun provideDB(app: Application) : WallpaperDatabase{

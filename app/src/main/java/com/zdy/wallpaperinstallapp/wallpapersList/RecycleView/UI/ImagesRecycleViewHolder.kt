@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.zdy.wallpaperinstallapp.R
@@ -33,8 +34,8 @@ sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(it
                 }
                 findViewById<TextView>(R.id.wallpaperDescription).text = item.image.description.toString()
                 val imageID = if(item.image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
-                val iconLike: Drawable =
-                    resources.getDrawable(imageID, context.theme);
+                val iconLike: Drawable? = ResourcesCompat.getDrawable(resources, imageID, context.theme)
+                //resources.getDrawable(imageID, context.theme);
                 findViewById<ImageButton>(R.id.include_like_button).setImageDrawable(iconLike)
 
             }

@@ -7,8 +7,8 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.zdy.wallpaperinstallapp.databinding.ActivityLikedBinding
@@ -17,25 +17,16 @@ import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActi
 import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
-import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class LikedActivity : WallpaperActivity() {
+class LikedActivity : AppCompatActivity() {
 
 
     private val viewModel: WallpaperLikedListViewModel by viewModels()
 
-    val recycleViewModel : RecycleViewModel by lazy {
-        ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
-    }
-
-    val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter()
-    }
+    val imagesAdapter: ImagesAdapter = ImagesAdapter()
 
     lateinit var binding : ActivityLikedBinding
 
@@ -43,7 +34,6 @@ class LikedActivity : WallpaperActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLikedBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setupRecycleView()
         addListeners()
 
@@ -51,17 +41,19 @@ class LikedActivity : WallpaperActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
+        // TODO: Get back from this activity using Actionbar
+
         val menuHost: MenuHost = this
         menuHost.invalidateMenu()
     }
 
     fun addListeners() {
 
-        recycleViewModel.getItemsRecycle().observe(this){ list->
+        viewModel.getItemsRecycle().observe(this){ list->
             imagesAdapter.differ.submitList(list)
         }
 
-        recycleViewModel.setOnUpdateItem { item->
+        viewModel.setOnUpdateItem { item->
             imagesAdapter.updateImage(item as ItemRecycle.RecycleWallpaperItem)
         }
 
@@ -80,7 +72,7 @@ class LikedActivity : WallpaperActivity() {
         addSelectWallpaperListener()
 
         viewModel.getSavedWallpaper().observe(this){ wallpapers->
-            recycleViewModel.setLocalList(wallpapers)
+            viewModel.setLocalList(wallpapers, applicationContext)
             setHaveWallpapers(wallpapers.isNotEmpty())
         }
 
@@ -106,7 +98,7 @@ class LikedActivity : WallpaperActivity() {
                 }
                 imageToUpdate?.let {
                     lifecycleScope.launch {
-                        recycleViewModel.checkForUpdates(imageToUpdate)
+                        viewModel.checkForUpdates(imageToUpdate)
                     }
                 }
             }
@@ -135,7 +127,7 @@ class LikedActivity : WallpaperActivity() {
         }
 
         imagesAdapter.setOnItemLikeClickListener {itemRecycle->
-            recycleViewModel.onLikeImage(itemRecycle)
+            viewModel.onLikeImage(itemRecycle, applicationContext)
         }
     }
 
