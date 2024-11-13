@@ -22,7 +22,6 @@ import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
-import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
 import kotlinx.coroutines.launch

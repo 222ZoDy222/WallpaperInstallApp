@@ -15,8 +15,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.models.Web.RetrofitInstance
 import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
+import javax.inject.Inject
 
-class ImagesRepository(
+
+class ImagesRepository @Inject constructor(
     val db: WallpaperDatabase
 ) {
 

@@ -10,28 +10,22 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivityMainBinding
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.utils.Resource
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListFactory
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
 import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
-import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListFactory
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,11 +35,10 @@ import kotlinx.coroutines.launch
 class MainActivity : WallpaperActivity() {
 
 
-    private val mViewModel : WallpaperListViewModel by viewModels()
+    val mViewModel : WallpaperListViewModel by viewModels()
 
-//    val mViewModel: WallpaperListViewModel by lazy {
-//        ViewModelProvider(this, WallpaperListFactory(application,imagesRepository))[WallpaperListViewModel::class.java]
-//    }
+
+
 
     val recycleViewModel : RecycleViewModel by lazy {
         ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
@@ -91,6 +84,8 @@ class MainActivity : WallpaperActivity() {
 
         setupRecycleView()
         addListeners()
+
+        mViewModel.getRandomImages(this)
 
     }
 

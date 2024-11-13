@@ -1,27 +1,21 @@
 package com.zdy.wallpaperinstallapp.activity.webList.ViewModel
 
-import android.app.Application
 import android.content.Context
-import android.graphics.Bitmap
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.inheritance.ListViewModel
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Web.ObjectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
+import javax.inject.Inject
 
 @HiltViewModel
 class WallpaperListViewModel @Inject constructor(
-    context: Context,
     val imageRepository: ImagesRepository) : ListViewModel() {
 
 
@@ -35,11 +29,7 @@ class WallpaperListViewModel @Inject constructor(
 
 
 
-    init {
 
-        getRandomImages(context)
-
-    }
 
     fun getRandomImages(context: Context) = viewModelScope.launch {
 

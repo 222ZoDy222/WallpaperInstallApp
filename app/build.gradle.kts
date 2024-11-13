@@ -57,16 +57,12 @@ android {
 dependencies {
 
 
-    // ----- DI ------ //
-    implementation(group="jakarta.inject", name= "jakarta.inject-api", version= "2.0.1")
-
+    // ----- Hilt ------ //
+    implementation (group= "javax.inject", name= "javax.inject", version= "1")
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
-    implementation("androidx.activity:activity-ktx:1.9.3")
-
-    //implementation("jakarta.inject:jakarta.inject-api:2.0.1")
-    //-----------------//
+    //-------------------//
 
     // --- Glide --- //
     implementation("com.github.bumptech.glide:glide:4.16.0")
@@ -116,4 +112,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
