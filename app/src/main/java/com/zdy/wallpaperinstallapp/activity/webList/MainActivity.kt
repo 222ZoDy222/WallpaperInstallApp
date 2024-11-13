@@ -38,8 +38,6 @@ class MainActivity : WallpaperActivity() {
     val mViewModel : WallpaperListViewModel by viewModels()
 
 
-
-
     val recycleViewModel : RecycleViewModel by lazy {
         ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
     }
@@ -112,7 +110,7 @@ class MainActivity : WallpaperActivity() {
                 val intent = Intent(this, SelectWallpaperActivity::class.java)
                 intent.putExtras(bundle)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                mViewModel.PickUpImage(null, applicationContext)
+                mViewModel.pickUpImage(null, applicationContext)
                 selectWallpaperLauncher?.launch(intent)
             }
 
@@ -203,7 +201,7 @@ class MainActivity : WallpaperActivity() {
         }
 
         imagesAdapter.setOnItemClickListener { image->
-            mViewModel.PickUpImage(image,applicationContext)
+            mViewModel.pickUpImage(image,applicationContext)
         }
 
 

@@ -16,14 +16,14 @@ open class ListViewModel : ViewModel() {
     private val imageToPickUp = MutableLiveData<PickUpImage>()
     fun getImageToPickUp() : MutableLiveData<PickUpImage> = imageToPickUp
 
-    fun PickUpImage(pickImage: PickUpImage?, context: Context){
+    fun pickUpImage(pickImage: PickUpImage?, context: Context){
         if(pickImage != null){
-            SaveImage(pickImage, context)
+            saveImage(pickImage, context)
         }
         imageToPickUp.value = pickImage
     }
 
-    private fun SaveImage(pickImage: PickUpImage, context: Context){
+    private fun saveImage(pickImage: PickUpImage, context: Context){
 
         pickImage.bitmap?.let {
             saveBitmapToFile(it, context)

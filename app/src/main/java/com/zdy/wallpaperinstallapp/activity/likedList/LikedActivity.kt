@@ -2,40 +2,32 @@ package com.zdy.wallpaperinstallapp.activity.likedList
 
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.view.MenuHost
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.databinding.ActivityLikedBinding
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListFactory
 import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
 import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModelFactory
-import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LikedActivity : WallpaperActivity() {
 
 
-
-
-    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        ViewModelProvider(this,
-            WallpaperLikedListFactory(application,imagesRepository)
-        )[WallpaperLikedListViewModel::class.java]
-    }
+    private val viewModel: WallpaperLikedListViewModel by viewModels()
 
     val recycleViewModel : RecycleViewModel by lazy {
         ViewModelProvider(this, RecycleViewModelFactory(this.application, imagesRepository))[RecycleViewModel::class.java]
@@ -73,21 +65,21 @@ class LikedActivity : WallpaperActivity() {
             imagesAdapter.updateImage(item as ItemRecycle.RecycleWallpaperItem)
         }
 
-        mViewModelLiked.getImageToPickUp().observe(this){image ->
+        viewModel.getImageToPickUp().observe(this){ image ->
             if(image != null){
                 val bundle = Bundle()
                 bundle.putParcelable(SelectWallpaperActivity.WALLPAPER_TAG, image)
                 val intent = Intent(this, SelectWallpaperActivity::class.java)
                 intent.putExtras(bundle)
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                mViewModelLiked.PickUpImage(null, applicationContext)
+                viewModel.pickUpImage(null, applicationContext)
                 selectWallpaperLauncher?.launch(intent)
             }
         }
 
         addSelectWallpaperListener()
 
-        mViewModelLiked.getSavedWallpaper().observe(this){wallpapers->
+        viewModel.getSavedWallpaper().observe(this){ wallpapers->
             recycleViewModel.setLocalList(wallpapers)
             setHaveWallpapers(wallpapers.isNotEmpty())
         }
@@ -105,9 +97,7 @@ class LikedActivity : WallpaperActivity() {
         selectWallpaperLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ){  result->
-
             if(result.resultCode == RESULT_OK){
-
                 val imageToUpdate : PickUpImage? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     result.data?.getParcelableExtra(SelectWallpaperActivity.WALLPAPER_TAG, PickUpImage::class.java)
                 } else {
@@ -119,9 +109,7 @@ class LikedActivity : WallpaperActivity() {
                         recycleViewModel.checkForUpdates(imageToUpdate)
                     }
                 }
-
             }
-
         }
     }
 
@@ -140,19 +128,15 @@ class LikedActivity : WallpaperActivity() {
             it.layoutManager = gridManager
             it.adapter = imagesAdapter
 
-
         }
 
         imagesAdapter.setOnItemClickListener { image->
-            mViewModelLiked.PickUpImage(image,applicationContext)
+            viewModel.pickUpImage(image,applicationContext)
         }
-
 
         imagesAdapter.setOnItemLikeClickListener {itemRecycle->
             recycleViewModel.onLikeImage(itemRecycle)
         }
-
-
     }
 
 

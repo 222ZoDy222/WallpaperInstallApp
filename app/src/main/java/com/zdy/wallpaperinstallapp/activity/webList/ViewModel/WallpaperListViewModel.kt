@@ -28,9 +28,6 @@ class WallpaperListViewModel @Inject constructor(
     fun getImageRequest(): MutableLiveData<Resource<RequestImages>> = imageRequest
 
 
-
-
-
     fun getRandomImages(context: Context) = viewModelScope.launch {
 
         imageRequest.postValue(Resource.Loading())

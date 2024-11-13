@@ -7,8 +7,9 @@ import com.zdy.wallpaperinstallapp.models.ObjectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LocalSaveModel(
+class LocalSaveModel @Inject constructor(
     private val imagesRepository: ImagesRepository
 ) {
 

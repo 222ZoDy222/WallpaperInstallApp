@@ -1,6 +1,5 @@
 package com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel
 
-import android.app.Application
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,23 +7,24 @@ import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import androidx.core.graphics.drawable.toDrawable
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.LocalSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import javax.inject.Inject
 
-class PickUpWallpaperViewModel(
+@HiltViewModel
+class PickUpWallpaperViewModel @Inject constructor(
     private val imagesRepository: ImagesRepository
-) : ViewModel() {
+) : SetWallpaperViewModel() {
 
     private val localSaveModel: LocalSaveModel = LocalSaveModel(imagesRepository)
 
@@ -43,7 +43,7 @@ class PickUpWallpaperViewModel(
         }
     }
 
-    fun SelectImage(image : PickUpImage, context: Context){
+    fun selectImage(image : PickUpImage, context: Context){
         val bitmap = loadBitmapFromFile(context)
         bitmap?.let {
             image.bitmap = it
@@ -86,15 +86,6 @@ class PickUpWallpaperViewModel(
 
             }
         }
-    }
-
-    // Set background after getting image by URL
-    fun SetBackgroundImage(bitmap: Bitmap, context: Context){
-        selectedImage.value?.bitmap = bitmap
-        backgroundDrawable.value = BitmapDrawable(
-            context.resources,
-            bitmap
-        )
     }
 
 
@@ -188,25 +179,6 @@ class PickUpWallpaperViewModel(
         maxX = viewWidth - imageWidth * scale
         maxY = viewHeight - imageHeight * scale
     }
-
-    // Начальная установка изображения на полный экран
-    fun setImageToFullScreen(imageWidth: Int, imageHeight: Int, viewWidth: Int, viewHeight: Int) {
-
-        val scaleX = viewWidth.toFloat() / imageWidth.toFloat()
-        val scaleY = viewHeight.toFloat() / imageHeight.toFloat()
-        val scale = maxOf(scaleX, scaleY)
-
-        val dx = (viewWidth - imageWidth * scale) / 2
-        val dy = (viewHeight - imageHeight * scale) / 2
-
-        matrix.setScale(scale, scale)
-        matrix.postTranslate(dx, dy)
-
-        // Устанавливаем максимальные смещения по осям
-        maxX = viewWidth - imageWidth * scale
-        maxY = viewHeight - imageHeight * scale
-    }
-
 
 
 

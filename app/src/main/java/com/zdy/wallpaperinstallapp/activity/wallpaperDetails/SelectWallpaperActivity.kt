@@ -8,46 +8,23 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.addCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.zdy.wallpaperinstallapp.DB.WallpaperDatabase
 import com.zdy.wallpaperinstallapp.R
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListFactory
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
 import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
-import com.zdy.wallpaperinstallapp.inheritance.WallpaperActivity
 import com.zdy.wallpaperinstallapp.logger.AppLogger
 import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModel
-import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModelFactory
-import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.SetWallpaperViewModel
-
-class SelectWallpaperActivity : WallpaperActivity() {
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
+class SelectWallpaperActivity : AppCompatActivity() {
 
-    val mViewModelLiked: WallpaperLikedListViewModel by lazy {
-        ViewModelProvider(
-            this,
-            WallpaperLikedListFactory(application, imagesRepository)
-        )[WallpaperLikedListViewModel::class.java]
-    }
+    val mViewModel : PickUpWallpaperViewModel by viewModels()
 
-    val mViewModel : PickUpWallpaperViewModel by lazy{
-        ViewModelProvider(
-            this,
-            PickUpWallpaperViewModelFactory(application, imagesRepository)
-        )[PickUpWallpaperViewModel::class.java]
-    }
-
-    val mViewModelSetWallpaper : SetWallpaperViewModel by lazy{
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory(application)
-        )[SetWallpaperViewModel::class.java]
-    }
 
     lateinit var binding : ActivitySelectWallpaperBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -63,7 +40,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
 
         if(savedInstanceState == null){
             if(image != null){
-                mViewModel.SelectImage(image, applicationContext)
+                mViewModel.selectImage(image, applicationContext)
             } else {
                 AppLogger.Log("Select image is null")
                 finish()
@@ -102,7 +79,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
         binding.settingsWallpaperButton.setOnClickListener {
             mViewModel.selectedImage.value?.let { image ->
                 this.let {context ->
-                    mViewModelSetWallpaper.setWallpaper(
+                    mViewModel.setWallpaper(
                         image,
                         context
                     )
@@ -128,7 +105,7 @@ class SelectWallpaperActivity : WallpaperActivity() {
 
             mViewModel.selectedImage.value?.let {image->
                 this.let {context->
-                    mViewModelSetWallpaper.ShareWallpaper(image,context)
+                    mViewModel.shareWallpaper(image,context)
                 }
             }
         }
