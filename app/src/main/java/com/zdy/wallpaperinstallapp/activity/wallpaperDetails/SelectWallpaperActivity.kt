@@ -10,12 +10,10 @@ import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
-import com.zdy.wallpaperinstallapp.logger.AppLogger
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.pickUpWallpaper.ViewModel.PickUpWallpaperViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,7 +40,6 @@ class SelectWallpaperActivity : AppCompatActivity() {
             if(image != null){
                 mViewModel.selectImage(image, applicationContext)
             } else {
-                AppLogger.Log("Select image is null")
                 finish()
             }
         } else{

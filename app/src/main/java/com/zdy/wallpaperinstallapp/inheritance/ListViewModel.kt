@@ -2,14 +2,11 @@ package com.zdy.wallpaperinstallapp.inheritance
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
-import com.zdy.wallpaperinstallapp.models.LocalSave.LocalSaveModel
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.models.Repository.ImagesRepository
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
+import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
+import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.activity.recycleView.viewModel.RecycleViewModel
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException

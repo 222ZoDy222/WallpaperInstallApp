@@ -14,19 +14,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivityMainBinding
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.utils.Resource
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.ViewModel.RecycleViewModel
+import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ImagesAdapter
+import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
-import com.zdy.wallpaperinstallapp.activity.webList.ViewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

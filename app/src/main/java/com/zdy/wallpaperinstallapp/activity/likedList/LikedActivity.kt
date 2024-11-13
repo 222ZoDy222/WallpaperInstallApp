@@ -12,11 +12,11 @@ import androidx.core.view.MenuHost
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.zdy.wallpaperinstallapp.databinding.ActivityLikedBinding
-import com.zdy.wallpaperinstallapp.models.ObjectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
-import com.zdy.wallpaperinstallapp.activity.likedList.ViewModel.WallpaperLikedListViewModel
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ImagesAdapter
-import com.zdy.wallpaperinstallapp.wallpapersList.RecycleView.UI.ItemRecycle
+import com.zdy.wallpaperinstallapp.activity.likedList.viewModel.WallpaperLikedListViewModel
+import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ImagesAdapter
+import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -107,8 +107,7 @@ class LikedActivity : AppCompatActivity() {
 
     fun setupRecycleView() {
 
-        val recycle = binding.rcViewAdapter
-        recycle.let {
+        binding.rcViewAdapter.let {
 
             val gridManager = GridLayoutManager(this,2)
             gridManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
