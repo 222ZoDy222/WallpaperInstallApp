@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.databinding.ItemButtonLayoutBinding
 import com.zdy.wallpaperinstallapp.databinding.ItemImageLayoutBinding
 
 sealed class ImagesRecycleViewHolder(binding: ViewBinding): RecyclerView.ViewHolder(binding.root) {
@@ -45,12 +46,13 @@ sealed class ImagesRecycleViewHolder(binding: ViewBinding): RecyclerView.ViewHol
         }
     }
 
-    class ButtonRecycleViewHolder(private val binding: ViewBinding) : ImagesRecycleViewHolder(binding) {
+    class ButtonRecycleViewHolder(private val binding: ItemButtonLayoutBinding) : ImagesRecycleViewHolder(binding) {
         var onRefreshClickListener: (()->Unit)? = null
         fun bind(){
-            binding.root.setOnClickListener {
+            binding.refreshButton.setOnClickListener {
                 onRefreshClickListener?.invoke()
             }
+            
         }
 
     }
