@@ -3,7 +3,6 @@ package com.zdy.wallpaperinstallapp.activity.wallpaperDetails
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.viewModels
@@ -41,8 +40,6 @@ class SelectWallpaperActivity : AppCompatActivity() {
             } else {
                 finish()
             }
-        } else{
-            finish()
         }
 
         onBackPressedDispatcher.addCallback(this) {
@@ -65,10 +62,6 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
         }
 
-
-
-        // If user clicked so fast
-        binding.backgroundImage.viewTreeObserver.addOnGlobalLayoutListener { mViewModel.updateDrawableImage() }
 
         binding.settingsWallpaperButton.setOnClickListener {
             mViewModel.selectedImage.value?.let { image ->
