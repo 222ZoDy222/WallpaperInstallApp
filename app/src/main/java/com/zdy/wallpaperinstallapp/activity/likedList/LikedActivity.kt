@@ -3,6 +3,7 @@ package com.zdy.wallpaperinstallapp.activity.likedList
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,8 +16,8 @@ import com.zdy.wallpaperinstallapp.databinding.ActivityLikedBinding
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.activity.likedList.viewModel.WallpaperLikedListViewModel
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ImagesAdapter
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ImagesAdapter
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.utils.extensions.getPickUpImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -46,8 +47,18 @@ class LikedActivity : AppCompatActivity() {
 
         val menuHost: MenuHost = this
         menuHost.invalidateMenu()
+        
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     fun addListeners() {
 
         viewModel.getItemsRecycle().observe(this){ list->

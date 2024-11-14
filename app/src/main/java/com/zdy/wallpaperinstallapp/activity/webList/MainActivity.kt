@@ -21,8 +21,8 @@ import com.zdy.wallpaperinstallapp.databinding.ActivityMainBinding
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
 import com.zdy.wallpaperinstallapp.utils.Resource
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ImagesAdapter
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ImagesAdapter
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
 import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.utils.extensions.getPickUpImage
@@ -111,10 +111,8 @@ class MainActivity : AppCompatActivity() {
 
         addSelectWallpaperListener()
 
-        mViewModel.getImageRequest().observe(this){imageRequest ->
-
+        mViewModel.getImageRequest().observe(this){_ ->
             binding.loadbar.visibility = View.GONE
-
         }
 
 

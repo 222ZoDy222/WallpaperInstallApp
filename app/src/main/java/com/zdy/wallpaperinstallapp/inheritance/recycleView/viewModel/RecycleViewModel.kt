@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.activity.recycleView.viewModel
+package com.zdy.wallpaperinstallapp.inheritance.recycleView.viewModel
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.models.recycleModels.RecycleConverter
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.models.localSave.BitmapSaveManager
 import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.db.objectsDB.LocalWallpaper
@@ -63,12 +63,10 @@ open class RecycleViewModel @Inject constructor(
     }
 
     fun onLikeImage(item: ItemRecycle.RecycleWallpaperItem, context: Context){
-        //TODO: Refactor
         viewModelScope.launch {
             localSaveModel.onLikeClicked(item.image, context)
             onUpdateItem?.invoke(item)
         }
-
     }
 
 
@@ -99,7 +97,7 @@ open class RecycleViewModel @Inject constructor(
         loadImage(item, context)
     }
     private suspend fun loadImage(item: ItemRecycle.RecycleWallpaperItem, context: Context){
-        val wallpaperItem = item as ItemRecycle.RecycleWallpaperItem
+        val wallpaperItem = item
         // try to get saved bitmap
         val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, context)
 

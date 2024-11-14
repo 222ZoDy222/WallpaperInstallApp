@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.activity.recycleView.ui
+package com.zdy.wallpaperinstallapp.inheritance.recycleView.ui
 
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 

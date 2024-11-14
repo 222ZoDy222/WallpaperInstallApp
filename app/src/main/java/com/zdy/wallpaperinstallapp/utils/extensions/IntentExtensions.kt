@@ -8,9 +8,9 @@ import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpIma
 
 fun Intent?.getPickUpImage(tag: String) : PickUpImage?{
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        return this?.getParcelableExtra(SelectWallpaperActivity.WALLPAPER_TAG, PickUpImage::class.java)
+        return this?.getParcelableExtra(tag, PickUpImage::class.java)
     } else {
         @Suppress("DEPRECATION")
-        return this?.getParcelableExtra(SelectWallpaperActivity.WALLPAPER_TAG)
+        return this?.getParcelableExtra(tag)
     }
 }

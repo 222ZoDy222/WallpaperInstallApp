@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.activity.recycleView.ui
+package com.zdy.wallpaperinstallapp.inheritance.recycleView.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -67,7 +67,7 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         when(holder){
             is ImagesRecycleViewHolder.ButtonRecycleViewHolder -> {
                 holder.onRefreshClickListener = onRefreshClickListener
-                holder.bind(item as ItemRecycle.RecycleButtonItem)
+                holder.bind()
 
             }
             is ImagesRecycleViewHolder.WallpaperRecycleViewHolder -> {

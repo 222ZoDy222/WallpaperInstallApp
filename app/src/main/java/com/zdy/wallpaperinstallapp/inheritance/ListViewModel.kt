@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.activity.recycleView.viewModel.RecycleViewModel
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.viewModel.RecycleViewModel
 import com.zdy.wallpaperinstallapp.models.localSave.TransferBitmap
 import java.io.File
 import java.io.FileOutputStream

@@ -1,6 +1,6 @@
 package com.zdy.wallpaperinstallapp.models.recycleModels
 
-import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
+import com.zdy.wallpaperinstallapp.inheritance.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.db.objectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.api.objectsWeb.RequestImages

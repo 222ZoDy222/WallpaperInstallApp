@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Wallpaper App</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="failedtoload">Failed to load images</string>
     <string name="share_wallpaper">Share wallpaper</string>
     <string name="noInternetConnection">No Internet Connection</string>

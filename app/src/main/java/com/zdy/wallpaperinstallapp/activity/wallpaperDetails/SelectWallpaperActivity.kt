@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivitySelectWallpaperBinding
@@ -101,8 +102,7 @@ class SelectWallpaperActivity : AppCompatActivity() {
         mViewModel.selectedImage.observe(this) { image ->
             image?.let {
                 val imageID = if(image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
-                val iconLike: Drawable =
-                    resources.getDrawable(imageID, this.theme);
+                val iconLike: Drawable? = ResourcesCompat.getDrawable(resources, imageID, applicationContext.theme)
                 binding.likeButtonInclude.likeButton.setImageDrawable(iconLike)
                 binding.bottomSheetInclude.descriptionText.text = image.description
             }

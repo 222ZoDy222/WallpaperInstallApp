@@ -1,4 +1,4 @@
-package com.zdy.wallpaperinstallapp.activity.recycleView.ui
+package com.zdy.wallpaperinstallapp.inheritance.recycleView.ui
 
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -47,7 +47,7 @@ sealed class ImagesRecycleViewHolder(binding: ViewBinding): RecyclerView.ViewHol
 
     class ButtonRecycleViewHolder(private val binding: ViewBinding) : ImagesRecycleViewHolder(binding) {
         var onRefreshClickListener: (()->Unit)? = null
-        fun bind(item: ItemRecycle.RecycleButtonItem){
+        fun bind(){
             binding.root.setOnClickListener {
                 onRefreshClickListener?.invoke()
             }
