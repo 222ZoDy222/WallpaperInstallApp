@@ -14,6 +14,8 @@ import com.bumptech.glide.request.transition.Transition
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
 import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
+import com.zdy.wallpaperinstallapp.models.localSave.TransferBitmap
+import com.zdy.wallpaperinstallapp.models.web.GlideModel
 import com.zdy.wallpaperinstallapp.repository.ImagesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -43,11 +45,13 @@ class PickUpWallpaperViewModel @Inject constructor(
     }
 
     fun selectImage(image : PickUpImage, context: Context){
-        val bitmap = loadBitmapFromFile(context)
+        val transferBitmap = TransferBitmap()
+
+        val bitmap = transferBitmap.loadBitmapFromFile(context)
         bitmap?.let {
             image.bitmap = it
         }
-        deleteSavedImage(context)
+        transferBitmap.deleteSavedImage(context)
         selectedImage.value = image
 
         setBackgroundImage(context)
@@ -55,7 +59,7 @@ class PickUpWallpaperViewModel @Inject constructor(
 
 
     private fun loadWeb(image: PickUpImage, context: Context){
-        ImagesRepository.LoadBitmapByURL(context,image.url, object : CustomTarget<Bitmap>(){
+        GlideModel.LoadBitmapByURL(context,image.url, object : CustomTarget<Bitmap>(){
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 selectedImage.value?.bitmap = resource
                 backgroundDrawable.value = resource.toDrawable(context.resources)
@@ -95,21 +99,7 @@ class PickUpWallpaperViewModel @Inject constructor(
         }
     }
 
-    fun deleteSavedImage(context: Context){
-        val file = File(context.cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
-        if (file.exists()) {
-            file.delete()
-        }
-    }
 
-    fun loadBitmapFromFile(context: Context): Bitmap? {
-        val file = File(context.cacheDir, WallpaperListViewModel.SELECTED_IMAGE_NAME)
-        return if (file.exists()) {
-            BitmapFactory.decodeFile(file.absolutePath)
-        } else {
-            null
-        }
-    }
 
 
 

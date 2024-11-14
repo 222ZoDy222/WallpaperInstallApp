@@ -33,7 +33,7 @@ class SelectWallpaperActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
 
-        val image : PickUpImage? = intent.extras?.getParcelableImage()
+        val image : PickUpImage? = intent.extras?.getParcelableImage(WALLPAPER_TAG)
 
         if(savedInstanceState == null){
             if(image != null){
@@ -83,7 +83,8 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
         // Show/Hide BottomSheet
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetInclude.bottomSheet)
-        binding.bottomSheetInclude.bottomSheet.findViewById<ImageView>(R.id.bottom_sheet_header).setOnClickListener {
+
+        binding.bottomSheetInclude.bottomSheetHeader.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             } else {

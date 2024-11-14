@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.zdy.wallpaperinstallapp.inheritance.ListViewModel
 import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.api.objectsWeb.RequestImages
+import com.zdy.wallpaperinstallapp.models.web.InternetConnectionModel
 import com.zdy.wallpaperinstallapp.repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,7 +35,7 @@ class WallpaperListViewModel @Inject constructor(
         imageRequest.postValue(Resource.Loading())
         errorMessage.postValue(null)
         try{
-            if(ImagesRepository.hasInternetConnection(context)){
+            if(InternetConnectionModel.hasInternetConnection(context)){
                 val response = imageRepository.getRandomImages()
                 imageRequest.postValue(handleImageResponse(response))
             } else{
@@ -74,12 +75,6 @@ class WallpaperListViewModel @Inject constructor(
     }
 
 
-    companion object{
-
-        const val SELECTED_IMAGE_NAME = "SelectedImage.wi"
-
-
-    }
 
 
 }

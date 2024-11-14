@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.databinding.ItemButtonLayoutBinding
+import com.zdy.wallpaperinstallapp.databinding.ItemImageLayoutBinding
 import java.lang.IllegalArgumentException
 
 
@@ -35,17 +37,19 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
         return when(viewType){
             R.layout.item_image_layout ->{
                 ImagesRecycleViewHolder.WallpaperRecycleViewHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                        R.layout.item_image_layout,
+                    ItemImageLayoutBinding.inflate(
+                        LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
                 )
+
+
             }
             R.layout.item_button_layout ->{
                 ImagesRecycleViewHolder.ButtonRecycleViewHolder(
-                    LayoutInflater.from(parent.context).inflate(
-                        R.layout.item_button_layout,
+                    ItemButtonLayoutBinding.inflate(
+                        LayoutInflater.from(parent.context),
                         parent,
                         false
                     )
@@ -62,22 +66,14 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
 
         when(holder){
             is ImagesRecycleViewHolder.ButtonRecycleViewHolder -> {
-                holder.itemView.apply {
-                    findViewById<ImageButton>(R.id.refresh_button).setOnClickListener {
-                        onRefreshClickListener?.invoke()
-                    }
-                }
+                holder.onRefreshClickListener = onRefreshClickListener
+                holder.bind(item as ItemRecycle.RecycleButtonItem)
+
             }
             is ImagesRecycleViewHolder.WallpaperRecycleViewHolder -> {
+                holder.onItemLikeClickListener = onItemLikeClickListener
+                holder.onItemClickListener = onItemClickListener
                 holder.bind(item as ItemRecycle.RecycleWallpaperItem)
-                holder.itemView.apply {
-                    setOnClickListener{
-                        onItemClickListener?.invoke(item.image)
-                    }
-                    findViewById<ImageButton>(R.id.include_like_button).setOnClickListener {
-                        onItemLikeClickListener?.invoke(item)
-                    }
-                }
             }
         }
 

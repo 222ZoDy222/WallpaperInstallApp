@@ -8,42 +8,50 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.zdy.wallpaperinstallapp.R
+import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
+import com.zdy.wallpaperinstallapp.databinding.ItemImageLayoutBinding
 
-sealed class ImagesRecycleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+sealed class ImagesRecycleViewHolder(binding: ViewBinding): RecyclerView.ViewHolder(binding.root) {
 
-    class WallpaperRecycleViewHolder(private val itemView: View) :
-        ImagesRecycleViewHolder(itemView) {
+    class WallpaperRecycleViewHolder(private val binding: ItemImageLayoutBinding) : ImagesRecycleViewHolder(binding) {
 
         private var currentURL : String? = null
-
+        var onItemClickListener: ((PickUpImage)->Unit)? = null
+        var onItemLikeClickListener: ((ItemRecycle.RecycleWallpaperItem)->Unit)? = null
         fun bind(item: ItemRecycle.RecycleWallpaperItem) {
             currentURL = item.image.url
             itemView.apply {
-
-                val progressbar = findViewById<ProgressBar>(R.id.progress_bar)
-
                 if(item.image.bitmap != null){
-                    val imageView = findViewById<ImageView>(R.id.imageWallpaper)
-                    progressbar.visibility = View.GONE
-                    imageView.setImageBitmap(item.image.bitmap)
+                    binding.progressBar.visibility = View.GONE
+                    binding.imageWallpaper.setImageBitmap(item.image.bitmap)
                 } else{
-                    progressbar.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.VISIBLE
                 }
-                findViewById<TextView>(R.id.wallpaperDescription).text = item.image.description.toString()
+                binding.wallpaperDescription.text = item.image.description.toString()
                 val imageID = if(item.image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
                 val iconLike: Drawable? = ResourcesCompat.getDrawable(resources, imageID, context.theme)
-                //resources.getDrawable(imageID, context.theme);
-                findViewById<ImageButton>(R.id.include_like_button).setImageDrawable(iconLike)
+                binding.includeLikeButton.likeButton.setImageDrawable(iconLike)
 
+                setOnClickListener {
+                    onItemClickListener?.invoke(item.image)
+                }
+
+                binding.includeLikeButton.likeButton.setOnClickListener {
+                    onItemLikeClickListener?.invoke(item)
+                }
             }
-
         }
-
-
     }
 
-    class ButtonRecycleViewHolder(private val itemView: View) : ImagesRecycleViewHolder(itemView) {
+    class ButtonRecycleViewHolder(private val binding: ViewBinding) : ImagesRecycleViewHolder(binding) {
+        var onRefreshClickListener: (()->Unit)? = null
+        fun bind(item: ItemRecycle.RecycleButtonItem){
+            binding.root.setOnClickListener {
+                onRefreshClickListener?.invoke()
+            }
+        }
 
     }
 

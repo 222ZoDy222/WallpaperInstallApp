@@ -25,6 +25,7 @@ import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ImagesAdapter
 import com.zdy.wallpaperinstallapp.activity.recycleView.ui.ItemRecycle
 import com.zdy.wallpaperinstallapp.activity.likedList.LikedActivity
 import com.zdy.wallpaperinstallapp.activity.webList.viewModel.WallpaperListViewModel
+import com.zdy.wallpaperinstallapp.utils.extensions.getPickUpImage
 
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -156,12 +157,7 @@ class MainActivity : AppCompatActivity() {
 
             if(result.resultCode == RESULT_OK){
 
-                val imageToUpdate : PickUpImage? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    result.data?.getParcelableExtra(SelectWallpaperActivity.WALLPAPER_TAG, PickUpImage::class.java)
-                } else {
-                    @Suppress("DEPRECATION")
-                    result.data?.getParcelableExtra(SelectWallpaperActivity.WALLPAPER_TAG)
-                }
+                val imageToUpdate : PickUpImage? = result.data.getPickUpImage(SelectWallpaperActivity.WALLPAPER_TAG)
                 imageToUpdate?.let {
                     lifecycleScope.launch {
                         mViewModel.checkForUpdates(imageToUpdate)

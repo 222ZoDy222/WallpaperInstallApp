@@ -16,6 +16,7 @@ import com.zdy.wallpaperinstallapp.db.objectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.api.objectsWeb.RequestImages
+import com.zdy.wallpaperinstallapp.models.web.GlideModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -116,7 +117,7 @@ open class RecycleViewModel @Inject constructor(
 
     private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem, context: Context) {
         item.image.url.let { url->
-            ImagesRepository.LoadBitmapByURL(context,url,
+            GlideModel.LoadBitmapByURL(context,url,
                 object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(
                         resource: Bitmap,

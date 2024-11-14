@@ -24,7 +24,7 @@ class DraggableImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        // Сохраняем текущее состояние Canvas и смещаем его по X и Y
+        // Save current state of Canvas and move it by X & Y
         canvas.save()
         canvas.translate(offsetX, offsetY)
         super.onDraw(canvas)
@@ -34,24 +34,24 @@ class DraggableImageView @JvmOverloads constructor(
     override fun onTouch(view: View?, event: MotionEvent): Boolean {
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                // Запоминаем начальную позицию касания
+                // Save start position of touch
                 lastTouchX = event.x
                 lastTouchY = event.y
             }
             MotionEvent.ACTION_MOVE -> {
-                // Вычисляем смещение
+                // calc the offset
                 val dx = event.x - lastTouchX
                 val dy = event.y - lastTouchY
 
-                // Обновляем положение с учётом границ
+                // update the position ensure within bounds
                 offsetX = ensureWithinBoundsX(offsetX + dx)
                 offsetY = ensureWithinBoundsY(offsetY + dy)
 
-                // Перезапоминаем последнюю точку касания
+                // save the last touch position
                 lastTouchX = event.x
                 lastTouchY = event.y
 
-                // Перерисовываем View
+                // redraw View
                 invalidate()
             }
         }
