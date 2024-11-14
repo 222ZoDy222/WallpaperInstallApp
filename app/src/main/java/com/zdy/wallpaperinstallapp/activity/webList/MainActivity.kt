@@ -1,7 +1,6 @@
 package com.zdy.wallpaperinstallapp.activity.webList
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -34,15 +33,15 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
 
-    val mViewModel : WallpaperListViewModel by viewModels()
+    private val mViewModel : WallpaperListViewModel by viewModels()
 
 
-    val imagesAdapter: ImagesAdapter = ImagesAdapter()
+    private val imagesAdapter: ImagesAdapter = ImagesAdapter()
 
 
 
 
-    lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +85,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun addListeners() {
+    private fun addListeners() {
 
         mViewModel.getItemsRecycle().observe(this){ list->
             imagesAdapter.differ.submitList(list)
@@ -131,13 +130,13 @@ class MainActivity : AppCompatActivity() {
                     response.data?.let {
                         mViewModel.setWebList(it, applicationContext)
                     }
-                    Loading(false)
+                    loading(false)
                 }
                 is Resource.Error ->{
-                    Loading(false)
+                    loading(false)
                 }
                 is Resource.Loading ->{
-                    Loading(true)
+                    loading(true)
                 }
             }
 
@@ -148,7 +147,7 @@ class MainActivity : AppCompatActivity() {
     private var selectWallpaperLauncher : ActivityResultLauncher<Intent>? = null
 
 
-    fun addSelectWallpaperListener(){
+    private fun addSelectWallpaperListener(){
         selectWallpaperLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ){  result->
@@ -167,7 +166,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setupRecycleView() {
+    private fun setupRecycleView() {
 
         val recycle = binding.rcViewAdapter
         recycle.let {
@@ -223,7 +222,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun Loading(value: Boolean){
+    private fun loading(value: Boolean){
         if(value)
             binding.loadbar.visibility = View.VISIBLE
         else

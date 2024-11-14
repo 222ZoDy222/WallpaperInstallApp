@@ -14,7 +14,6 @@ import com.zdy.wallpaperinstallapp.models.localSave.BitmapSaveManager
 import com.zdy.wallpaperinstallapp.models.localSave.LocalSaveModel
 import com.zdy.wallpaperinstallapp.db.objectsDB.LocalWallpaper
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
-import com.zdy.wallpaperinstallapp.repository.ImagesRepository
 import com.zdy.wallpaperinstallapp.api.objectsWeb.RequestImages
 import com.zdy.wallpaperinstallapp.models.web.GlideModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +38,7 @@ open class RecycleViewModel @Inject constructor(
 
     fun setWebList(requestImages: RequestImages, context: Context){
         itemsRecycle.value = null
-        val newList = RecycleConverter.ConvertImages(requestImages)
+        val newList = RecycleConverter.convertImages(requestImages)
         val listItems = mutableListOf<ItemRecycle>()
 
         for(i in newList){
@@ -57,7 +56,7 @@ open class RecycleViewModel @Inject constructor(
 
     fun setLocalList(images: List<LocalWallpaper>, context: Context){
         itemsRecycle.value = null
-        val listItems = RecycleConverter.ConvertImages(images)
+        val listItems = RecycleConverter.convertImages(images)
         itemsRecycle.value = listItems
         loadImages(context)
     }
@@ -97,9 +96,9 @@ open class RecycleViewModel @Inject constructor(
         loadImage(item, context)
     }
     private suspend fun loadImage(item: ItemRecycle.RecycleWallpaperItem, context: Context){
-        val wallpaperItem = item
+
         // try to get saved bitmap
-        val bitmap = BitmapSaveManager.loadImageWallpaper(wallpaperItem.image, context)
+        val bitmap = BitmapSaveManager.loadImageWallpaper(item.image, context)
 
         // it's already exist image, so it's also liked image
         if(bitmap != null){
@@ -115,7 +114,7 @@ open class RecycleViewModel @Inject constructor(
 
     private suspend fun loadWeb(item : ItemRecycle.RecycleWallpaperItem, context: Context) {
         item.image.url.let { url->
-            GlideModel.LoadBitmapByURL(context,url,
+            GlideModel.loadBitmapByURL(context,url,
                 object : CustomTarget<Bitmap>(){
                     override fun onResourceReady(
                         resource: Bitmap,

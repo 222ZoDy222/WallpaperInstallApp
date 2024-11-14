@@ -8,7 +8,7 @@ import com.zdy.wallpaperinstallapp.api.objectsWeb.RequestImages
 class RecycleConverter {
 
     companion object{
-        fun ConvertImages(requestImages: RequestImages): List<PickUpImage> {
+        fun convertImages(requestImages: RequestImages): List<PickUpImage> {
             val resultList = mutableListOf<PickUpImage>()
             for (image in requestImages.items) {
                 var desk : String = ""
@@ -26,7 +26,7 @@ class RecycleConverter {
             return resultList
         }
 
-        fun ConvertImages(locaWallpapers : List<LocalWallpaper>) : List<ItemRecycle> {
+        fun convertImages(locaWallpapers : List<LocalWallpaper>) : List<ItemRecycle> {
 
             val resultList = mutableListOf<ItemRecycle>()
             for (image in locaWallpapers) {

@@ -13,10 +13,10 @@ class LocalSaveModel(
 
     suspend fun onLikeClicked(wallpaper: PickUpImage, context: Context) : String{
 
-        if(wallpaper.isLiked){
-            return deleteWallpaper(wallpaper, context)
+        return if(wallpaper.isLiked){
+            deleteWallpaper(wallpaper, context)
         } else{
-            return saveWallpaper(wallpaper, context)
+            saveWallpaper(wallpaper, context)
         }
 
     }

@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WallpaperListViewModel @Inject constructor(
-    val imageRepository: ImagesRepository, localSaveModel: LocalSaveModel
+    private val imageRepository: ImagesRepository, localSaveModel: LocalSaveModel
 ) : ListViewModel(localSaveModel) {
 
 

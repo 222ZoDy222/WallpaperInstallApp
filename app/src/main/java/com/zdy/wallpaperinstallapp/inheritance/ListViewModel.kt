@@ -35,7 +35,4 @@ open class ListViewModel @Inject constructor(
         }
     }
 
-
-
-
 }

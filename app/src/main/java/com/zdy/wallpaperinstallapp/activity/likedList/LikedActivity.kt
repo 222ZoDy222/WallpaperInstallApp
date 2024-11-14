@@ -3,6 +3,8 @@ package com.zdy.wallpaperinstallapp.activity.likedList
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
@@ -10,8 +12,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.zdy.wallpaperinstallapp.R
 import com.zdy.wallpaperinstallapp.databinding.ActivityLikedBinding
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.objectsUI.PickUpImage
 import com.zdy.wallpaperinstallapp.activity.wallpaperDetails.SelectWallpaperActivity
@@ -28,9 +32,9 @@ class LikedActivity : AppCompatActivity() {
 
     private val viewModel: WallpaperLikedListViewModel by viewModels()
 
-    val imagesAdapter: ImagesAdapter = ImagesAdapter()
+    private val imagesAdapter: ImagesAdapter = ImagesAdapter()
 
-    lateinit var binding : ActivityLikedBinding
+    private lateinit var binding : ActivityLikedBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,23 +47,28 @@ class LikedActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        // TODO: Get back from this activity using Actionbar
-
         val menuHost: MenuHost = this
         menuHost.invalidateMenu()
-        
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId){
+                    android.R.id.home ->{
+                        finish()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+        }, this)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-    fun addListeners() {
+
+    private fun addListeners() {
 
         viewModel.getItemsRecycle().observe(this){ list->
             imagesAdapter.differ.submitList(list)
@@ -97,7 +106,7 @@ class LikedActivity : AppCompatActivity() {
     private var selectWallpaperLauncher : ActivityResultLauncher<Intent>? = null
 
 
-    fun addSelectWallpaperListener(){
+    private fun addSelectWallpaperListener(){
         selectWallpaperLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ){  result->
@@ -112,7 +121,7 @@ class LikedActivity : AppCompatActivity() {
         }
     }
 
-    fun setupRecycleView() {
+    private fun setupRecycleView() {
 
         binding.rcViewAdapter.let {
 

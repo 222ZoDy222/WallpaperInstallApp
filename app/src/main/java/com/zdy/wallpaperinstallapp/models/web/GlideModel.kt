@@ -9,7 +9,7 @@ class GlideModel {
 
     companion object{
 
-        fun LoadBitmapByURL(context: Context, url : String, target : CustomTarget<Bitmap>){
+        fun loadBitmapByURL(context: Context, url : String, target : CustomTarget<Bitmap>){
             Glide.with(context)
                 .asBitmap()
                 .load(url)

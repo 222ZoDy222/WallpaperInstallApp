@@ -118,18 +118,6 @@ class ImagesAdapter() : RecyclerView.Adapter<ImagesRecycleViewHolder>() {
     }
 
 
-    fun updateImageSavedStatus(image: PickUpImage){
-        for (wallpaperIndex in differ.currentList.indices){
-            val wallpaper = differ.currentList[wallpaperIndex]
-            if(wallpaper is ItemRecycle.RecycleWallpaperItem){
-                if(wallpaper.image == image){
-                    notifyItemChanged(wallpaperIndex)
-                    break
-                }
-            }
-        }
-    }
-
     fun updateImage(item: ItemRecycle.RecycleWallpaperItem){
         val index = differ.currentList.indexOf(item)
         notifyItemChanged(index)

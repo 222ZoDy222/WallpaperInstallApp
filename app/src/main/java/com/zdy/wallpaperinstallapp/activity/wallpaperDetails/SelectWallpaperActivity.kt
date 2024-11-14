@@ -20,10 +20,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SelectWallpaperActivity : AppCompatActivity() {
 
-    val mViewModel : PickUpWallpaperViewModel by viewModels()
+    private val mViewModel : PickUpWallpaperViewModel by viewModels()
 
 
-    lateinit var binding : ActivitySelectWallpaperBinding
+    private lateinit var binding : ActivitySelectWallpaperBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +65,7 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
 
         binding.settingsWallpaperButton.setOnClickListener {
-            mViewModel.selectedImage.value?.let { image ->
+            mViewModel.getSelectedImage().value?.let { image ->
                 this.let {context ->
                     mViewModel.setWallpaper(
                         image,
@@ -92,14 +92,14 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
         binding.shareWallpaperButton.setOnClickListener {
 
-            mViewModel.selectedImage.value?.let {image->
+            mViewModel.getSelectedImage().value?.let {image->
                 this.let {context->
                     mViewModel.shareWallpaper(image,context)
                 }
             }
         }
 
-        mViewModel.selectedImage.observe(this) { image ->
+        mViewModel.getSelectedImage().observe(this) { image ->
             image?.let {
                 val imageID = if(image.isLiked) R.drawable.liked_icon else R.drawable.like_icon
                 val iconLike: Drawable? = ResourcesCompat.getDrawable(resources, imageID, applicationContext.theme)
@@ -112,7 +112,7 @@ class SelectWallpaperActivity : AppCompatActivity() {
 
 
     private fun completeActivity(){
-        intent.putExtra(WALLPAPER_TAG,mViewModel.selectedImage.value)
+        intent.putExtra(WALLPAPER_TAG,mViewModel.getSelectedImage().value)
         setResult(RESULT_OK,intent)
     }
 
